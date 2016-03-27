@@ -1,9 +1,8 @@
     <?php 
-        require_once ("Includes/simplecms-config.php"); 
-        require_once  ("Includes/connectDB.php");
-        include("Includes/header.php");         
+        //require_once ("Includes/simplecms-config.php"); 
+        //require_once  ("Includes/connectDB.php");
+        include ("/Includes/header.php");         
      ?>
-
 
     <div id="main">
         <h2>Learn How To Play Texas Hold'em</h2>
@@ -32,5 +31,5 @@
 </div> <!-- End of outer-wrapper which opens in header.php -->
 
 <?php 
-    include ("Includes/footer.php");
+    include ("/Includes/footer.php");
  ?>

@@ -54,4 +54,4 @@
     </form>
 </div>
 </div> <!-- End of outer-wrapper which opens in header.php -->
-<?php include ("Includes/footer.php"); ?>
+<?php include ("/Includes/footer.php"); ?>

@@ -1,5 +1,5 @@
 <?php
-include ("Includes/closeDB.php");        
+//include ("/Includes/closeDB.php");        
 ?>
 <footer>
             <div class="footer-wrapper">
