@@ -1,0 +1,14 @@
+
+/Functions/database.php
+/addpage.php
+/deletepage.php
+/editpage.php
+/page.php
+/selectpagetoedit.php
+/Includes/simplecms-config.php
+/Includes/simplecms-config-sample.php
+/Includes/connectDB.php
+/Includes/closeDB.php
+/logoff.php
+/Styles/.sass-cache
+/web.config

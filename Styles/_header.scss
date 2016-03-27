@@ -1,0 +1,27 @@
+/* #Start Header CSS */
+
+$nav-links-width: 200px;
+
+header {
+
+    section.navigation {
+        
+        ul#menu {
+            
+            li {
+                width: $nav-links-width;
+                background-color: #BADA55;
+
+
+                a {
+                    width: 100%;
+                    border: solid blue 1px;
+                }
+            }
+            
+        }
+        
+    }
+
+}
+/* #End Header CSS */
