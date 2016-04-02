@@ -1,6 +1,6 @@
 <?php require_once ("/Includes/session.php"); ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="deck">
     <head>
         <meta charset="utf-8" />
         <title>Poker 101</title>
@@ -8,8 +8,10 @@
         <script type="text/javascript" src="/Scripts/angular.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
+        <script type="text/javascript" src="/Game/Scripts/deck.js"></script>
+    <script type="text/javascript" src="/Scripts/angular.js"></script>
     </head>
-    <body>
+    <body data-ng-controller="DeckController as deckCtrl">
         <div class="outer-wrapper">
 
             <header>
@@ -26,7 +28,7 @@
                                 <li><a href="/basicrules.php">Basic Rules</a></li>
                                 <li><a href="/protips.php">"Pro Tips"</a></li>
                                 <li><a href="/aboutme.php">About Me</a></li>
-                                <li><a href="/Game/index.html">Play Poker</a></li>
+                                <li><a href="/Game/index.php">Play Poker</a></li>
                                 <?php
                                     /*
                                         $statement = $databaseConnection->prepare("SELECT id, menulabel FROM pages");
