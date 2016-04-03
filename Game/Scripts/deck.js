@@ -1,7 +1,8 @@
 (function () {
     var app = angular.module('game', [])
         .controller('GameController', ['$scope', function ($scope) {
-
+            this.errorMessage = "";
+            errorMessage = this.errorMessage;
         } ])
     /* Controller for all players */
         .controller('PlayersController', ['$scope', function ($scope) {
@@ -33,11 +34,20 @@
         .controller('CardController', ['$scope', function ($scope) {
             /* Initialize shuffledDeck and assign data to it */
             this.shuffledDeck = shuffle(cards);
+
             /* Create object to view in Firebug */
             shuffledDeck = this.shuffledDeck;
 
             /* Function to deal cards to each player */
             this.dealCards = function (players) {
+                /* Clear all previous card data */
+                for (p = 0; p < players.length; p++) {
+                    players[p].cards.length = 0;
+                }
+
+                /* Re-Shuffle Cards */
+                this.shuffledDeck = shuffle(cards);
+
                 /* Set initial seat/card values */
                 var seat = 0;
                 var card = 0;
@@ -60,9 +70,35 @@
                     }
                 }
             };
+
+            this.dealFlop = function (players) {
+
+                if (players.length) {
+                    if (players[0].cards.length) {
+                        board.flop.push(this.shuffledDeck[(players.length * 2) + 1]);
+                        board.flop.push(this.shuffledDeck[(players.length * 2) + 2]);
+                        board.flop.push(this.shuffledDeck[(players.length * 2) + 3]);
+                    } else {
+                        errorMessage = "You cannot play the flop before players have cards.";
+                    }
+                } else {
+                    errorMessage = "You cannot play the flop when there are no players.";
+                }
+
+            };
         } ])
         .controller('BoardController', ['$scope', function ($scope) {
-            this.board = {};
+            this.board = {
+                flop: [],
+                turn: {},
+                river: {},
+                pot: 50
+            }
+            board = this.board;
+
+            this.clearBoard = function () {
+                this.board.cards.length = 0;
+            };
         } ]);
 
 

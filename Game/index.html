@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="game">
+<html lang="en" data-ng-app="game" data-ng-controller="GameController as gameCtrl">
     <head>
         <title>Poker 101</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
         
     </head>
-    <body data-ng-controller="GameController as gameCtrl">
+    <body data-ng-controller="CardController as cardCtrl">
         <div class="outer-wrapper">
 
             <!-- #Start header -->
@@ -54,7 +54,7 @@
 
 
             <!-- #Start div#main -->
-            <div id="main" data-ng-controller="CardController as cardCtrl">
+            <div id="main">
                 <h1>Play The Game</h1>
 
                 <!-- #Start section#players -->
@@ -77,6 +77,15 @@
                                 </ul>
                             </li>
                         </ul>
+                        <ul data-ng-controller="BoardController as boardCtrl">
+                            <li><h3>The Flop:</h3></li>
+                            <li>Pot Size: {{ boardCtrl.board.pot | currency }}</li>
+                            <li>
+                                <span data-ng-repeat="card in boardCtrl.board.flop">
+                                    <img data-ng-src="{{ card.imgFull }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="150" height="200" />
+                                </span>
+                            </li>
+                        </ul>
 
                         <form name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
                             <blockquote>
@@ -88,6 +97,8 @@
                             <button data-ng-click="playerCtrl.addPlayer(playersCtrl.players)">Add Player</button>
                             <br />
                             <button data-ng-click="cardCtrl.dealCards(playersCtrl.players)">Shuffle Up and Deal!</button>
+                            <br />
+                            <button data-ng-click="cardCtrl.dealFlop(playersCtrl.players)">Deal the Flop!</button>
                         </form>
                     </div>
                 </section>
