@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="cardGame">
+<html lang="en" data-ng-app="game">
     <head>
         <title>Poker 101</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8" />
          
-        <script type="text/javascript" src="/Scripts/angular.min.js"></script>
+        <script type="text/javascript" src="/Scripts/angular.js"></script>
         <script type="text/javascript" src="/Game/Scripts/deck.js"></script>
 
+        <link rel="stylesheet" type="text/css" href="/Game/Styles/game.css" />
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
+        
     </head>
     <body data-ng-controller="GameController as gameCtrl">
         <div class="outer-wrapper">
@@ -52,42 +54,57 @@
 
 
             <!-- #Start div#main -->
-            <div id="main">
-                <h2>The Game</h2>
+            <div id="main" data-ng-controller="CardController as cardCtrl">
+                <h1>Play The Game</h1>
 
-                <!-- #Start section#gameBase -->
-                <section id="gameBase" class="the-game">
-                    <h3>Play The Game</h3>
-
-                    <div data-ng-controller="PlayerController as playerCtrl">
-                        <form ng
-                        <h3>Players</h3>
+                <!-- #Start section#players -->
+                <section id="players">
+                    <div data-ng-controller="PlayersController as playersCtrl">
+                        <h2>Players: {{ playersCtrl.players.length }}</h2>
                         <ul>
-                            <li data-ng-repeat="player in playerCtrl.players">
-                                <h4>Player {{ $index + 1 }}:</h4>
+                            <li data-ng-repeat="player in playersCtrl.players">
+                                <h3>Player {{ $index + 1 }}:</h3>
                                 <ul>
-                                    <li>Name: {{ player.name }}</li>
-                                    <li>1st Card: {{ gameCtrl.shuffledDeck[player.holeCards[0].card].name }} of {{ gameCtrl.shuffledDeck[player.holeCards[0].card].suit }}</li>
-                                    <li>2nd Card: {{ gameCtrl.shuffledDeck[player.holeCards[1].card].name }} of {{ gameCtrl.shuffledDeck[player.holeCards[1].card].suit }}</li>
+                                    <li>
+                                        <b>Name:</b> {{ player.name }}
+                                    </li>
+                                    <li>
+                                        <b>Money:</b> {{ player.money }}
+                                    </li>
+                                    <li data-ng-repeat="card in player.cards" class="player-hand">
+                                        <i>{{ card.shortname }}{{ card.shortsuit }}</i>
+                                    </li>
                                 </ul>
                             </li>
-                            <li>
-                                button
-                            </li>
                         </ul>
-                    </div>
 
-                    <div>
-                        <h4>Cards</h4>
-                        <ul class="list-group">
-                            <li data-ng-repeat="card in gameCtrl.shuffledDeck">
-                                <h5>{{ card.name }} of {{ card.suit }}</h5>
-                            </li>
-                        </ul>
-                    </div>
+                        <form name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
+                            <blockquote>
+                                {{ playerCtrl.player.name }} <br />
+                            </blockquote>
 
+                            <label>New Player: </label>
+                            <input type="text" data-ng-model="playerCtrl.player.name" />
+                            <button data-ng-click="playerCtrl.addPlayer(playersCtrl.players)">Add Player</button>
+                            <br />
+                            <button data-ng-click="cardCtrl.dealCards(playersCtrl.players)">Shuffle Up and Deal!</button>
+                        </form>
+                    </div>
                 </section>
-                <!-- #End section#gameBase -->
+                <!-- #End section#players -->
+
+                <!-- #Start section#cards -->
+                <section id="cards" class="the-game">
+                    <h2>Cards (All)</h2>
+                    <div>
+                        <ul class="list-group">
+                            <li data-ng-repeat="card in cardCtrl.shuffledDeck">
+                                <h5>{{ card.name }} of {{ card.suit }} ({{ card.shortsuit }})</h5>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <!-- #End section#cards -->
 
 
             </div>
