@@ -71,8 +71,10 @@
                                     <li>
                                         <b>Money:</b> {{ player.money }}
                                     </li>
-                                    <li data-ng-repeat="card in player.cards" class="player-hand">
-                                        <i>{{ card.shortname }}{{ card.shortsuit }}</i>
+                                    <li class="player-hand">
+                                        <span data-ng-repeat="card in player.cards">
+                                            <img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                                        </span>
                                     </li>
                                 </ul>
                             </li>
@@ -82,7 +84,7 @@
                             <li>Pot Size: {{ boardCtrl.board.pot | currency }}</li>
                             <li>
                                 <span data-ng-repeat="card in boardCtrl.board.flop">
-                                    <img data-ng-src="{{ card.imgFull }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="150" height="200" />
+                                    <img data-ng-src="{{ card.imgThumb }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
                                 </span>
                             </li>
                         </ul>
@@ -110,7 +112,7 @@
                     <div>
                         <ul class="list-group">
                             <li data-ng-repeat="card in cardCtrl.shuffledDeck">
-                                <h5>{{ card.name }} of {{ card.suit }} ({{ card.shortsuit }})</h5>
+                                <img data-ng-src="{{ card.imgThumb }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
                             </li>
                         </ul>
                     </div>

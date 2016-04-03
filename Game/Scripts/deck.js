@@ -290,8 +290,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 2,
-            imgFull: "/game/images/cards/2-diamond.png",
-            imgThumb: "/game/images/cards/2-diamond-thumb.png"
+            imgFull: "/game/images/cards/2-diamonds.png",
+            imgThumb: "/game/images/cards/2-diamonds-thumb.png"
         },
         {
             value: 3,
@@ -301,8 +301,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 3,
-            imgFull: "/game/images/cards/3-diamond.png",
-            imgThumb: "/game/images/cards/3-diamond-thumb.png"
+            imgFull: "/game/images/cards/3-diamonds.png",
+            imgThumb: "/game/images/cards/3-diamonds-thumb.png"
         },
         {
             value: 4,
@@ -312,8 +312,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 4,
-            imgFull: "/game/images/cards/4-diamond.png",
-            imgThumb: "/game/images/cards/4-diamond-thumb.png"
+            imgFull: "/game/images/cards/4-diamonds.png",
+            imgThumb: "/game/images/cards/4-diamonds-thumb.png"
         },
         {
             value: 5,
@@ -323,8 +323,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 5,
-            imgFull: "/game/images/cards/5-diamond.png",
-            imgThumb: "/game/images/cards/5-diamond-thumb.png"
+            imgFull: "/game/images/cards/5-diamonds.png",
+            imgThumb: "/game/images/cards/5-diamonds-thumb.png"
         },
         {
             value: 6,
@@ -334,8 +334,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 6,
-            imgFull: "/game/images/cards/6-diamond.png",
-            imgThumb: "/game/images/cards/6-diamond-thumb.png"
+            imgFull: "/game/images/cards/6-diamonds.png",
+            imgThumb: "/game/images/cards/6-diamonds-thumb.png"
         },
         {
             value: 7,
@@ -345,8 +345,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 7,
-            imgFull: "/game/images/cards/7-diamond.png",
-            imgThumb: "/game/images/cards/7-diamond-thumb.png"
+            imgFull: "/game/images/cards/7-diamonds.png",
+            imgThumb: "/game/images/cards/7-diamonds-thumb.png"
         },
         {
             value: 8,
@@ -356,8 +356,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 8,
-            imgFull: "/game/images/cards/8-diamond.png",
-            imgThumb: "/game/images/cards/8-diamond-thumb.png"
+            imgFull: "/game/images/cards/8-diamonds.png",
+            imgThumb: "/game/images/cards/8-diamonds-thumb.png"
         },
         {
             value: 9,
@@ -367,8 +367,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 9,
-            imgFull: "/game/images/cards/9-diamond.png",
-            imgThumb: "/game/images/cards/9-diamond-thumb.png"
+            imgFull: "/game/images/cards/9-diamonds.png",
+            imgThumb: "/game/images/cards/9-diamonds-thumb.png"
         },
         {
             value: 10,
@@ -378,8 +378,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 10,
-            imgFull: "/game/images/cards/10-diamond.png",
-            imgThumb: "/game/images/cards/10-diamond-thumb.png"
+            imgFull: "/game/images/cards/10-diamonds.png",
+            imgThumb: "/game/images/cards/10-diamonds-thumb.png"
         },
         {
             value: 11,
@@ -389,8 +389,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 11,
-            imgFull: "/game/images/cards/J-diamond.png",
-            imgThumb: "/game/images/cards/J-diamond-thumb.png"
+            imgFull: "/game/images/cards/J-diamonds.png",
+            imgThumb: "/game/images/cards/J-diamonds-thumb.png"
         },
         {
             value: 12,
@@ -400,8 +400,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 12,
-            imgFull: "/game/images/cards/Q-diamond.png",
-            imgThumb: "/game/images/cards/Q-diamond-thumb.png"
+            imgFull: "/game/images/cards/Q-diamonds.png",
+            imgThumb: "/game/images/cards/Q-diamonds-thumb.png"
         },
         {
             value: 13,
@@ -411,8 +411,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 13,
-            imgFull: "/game/images/cards/K-diamond.png",
-            imgThumb: "/game/images/cards/K-diamond-thumb.png"
+            imgFull: "/game/images/cards/K-diamonds.png",
+            imgThumb: "/game/images/cards/K-diamonds-thumb.png"
         },
         {
             value: 14,
@@ -422,8 +422,8 @@
             suit: "Diamonds",
             shortsuit: '♦',
             suitVal: 14,
-            imgFull: "/game/images/cards/A-diamond.png",
-            imgThumb: "/game/images/cards/A-diamond-thumb.png"
+            imgFull: "/game/images/cards/A-diamonds.png",
+            imgThumb: "/game/images/cards/A-diamonds-thumb.png"
         },
         {
             value: 2,
