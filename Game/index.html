@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
         
     </head>
-    <body data-ng-controller="CardController as cardCtrl">
+    <body data-ng-controller="TableController as tableCtrl">
         <div class="outer-wrapper">
 
             <!-- #Start header -->
@@ -60,31 +60,37 @@
                 <!-- #Start section#players -->
                 <section id="players">
                     <div data-ng-controller="PlayersController as playersCtrl">
-                        <h2>Players: {{ playersCtrl.players.length }}</h2>
+                        <h2>Players: {{ tableCtrl.players.length }}</h2>
                         <ul>
-                            <li data-ng-repeat="player in playersCtrl.players">
+                            <li data-ng-repeat="player in tableCtrl.players">
                                 <h3>Player {{ $index + 1 }}:</h3>
                                 <ul>
                                     <li>
                                         <b>Name:</b> {{ player.name }}
                                     </li>
                                     <li>
-                                        <b>Money:</b> {{ player.money }}
+                                        <b>Money:</b> <img data-ng-src="{{ player.chips[2] }}" alt="chips" />
                                     </li>
                                     <li class="player-hand">
                                         <span data-ng-repeat="card in player.cards">
-                                            <img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                                            <img data-ng-src="{{ card.imgMid }}" alt="{{ card.name }} of {{ card.suit }}" width="72" height="100" />
                                         </span>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                         <ul data-ng-controller="BoardController as boardCtrl">
-                            <li><h3>The Flop:</h3></li>
                             <li>Pot Size: {{ boardCtrl.board.pot | currency }}</li>
+                            <li><h3>The Flop:</h3></li>
                             <li>
                                 <span data-ng-repeat="card in boardCtrl.board.flop">
-                                    <img data-ng-src="{{ card.imgThumb }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                                    <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                                </span>
+                                <span>
+                                    <img data-ng-src="{{ boardCtrl.board.turn.imgMid }}"  data-ng-alt="{{ boardCtrl.board.turn.name }} of {{ boardCtrl.board.turn.suit }}" width="143" height="200" />
+                                </span>
+                                <span>
+                                    <img data-ng-src="{{ boardCtrl.board.river.imgMid }}"  data-ng-alt="{{ boardCtrl.board.river.name }} of {{ boardCtrl.board.river.suit }}" width="143" height="200" />
                                 </span>
                             </li>
                         </ul>
@@ -101,6 +107,10 @@
                             <button data-ng-click="cardCtrl.dealCards(playersCtrl.players)">Shuffle Up and Deal!</button>
                             <br />
                             <button data-ng-click="cardCtrl.dealFlop(playersCtrl.players)">Deal the Flop!</button>
+                            <br />
+                            <button data-ng-click="cardCtrl.dealTurn(playersCtrl.players)">Deal the Turn!</button>
+                            <br />
+                            <button data-ng-click="cardCtrl.dealRiver(playersCtrl.players)">Deal the River!</button>
                         </form>
                     </div>
                 </section>
@@ -112,7 +122,7 @@
                     <div>
                         <ul class="list-group">
                             <li data-ng-repeat="card in cardCtrl.shuffledDeck">
-                                <img data-ng-src="{{ card.imgThumb }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                                <img data-ng-src="{{ card.imgThumb }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" />
                             </li>
                         </ul>
                     </div>
