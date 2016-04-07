@@ -1,184 +1,69 @@
 (function () {
     var app = angular.module('game', [])
         .controller('GameController', ['$scope', function ($scope) {
-            this.errorMessage = "";
+            $scope.errorMessage = "";
             errorMessage = this.errorMessage;
+
+            $scope.cards = allCards;
+            cards = $scope.cards;
         } ])
-        /* Controller for all table-related things */
-        .controller('TableController', ['$scope', function($scope) {
-            this.table = {
-                players: [
-                    {
-                        name: 'Melanie',
-                        money: 200,
-                        chips: [
-                            {
-                                amt: 1,
-                                name: "1 Dollars",
-                                shortName: "$1",
-                                imgFull: "/game/images/chips/1-dollar.png",
-                                imgThumb: "/game/images/chips/1-dollar-thumb.png",
-                                qty: 10
-                            },
-                            {
-                                amt: 2,
-                                name: "2 Dollars",
-                                shortName: "$2",
-                                imgFull: "/game/images/chips/2-dollar.png",
-                                imgThumb: "/game/images/chips/2-dollar-thumb.png",
-                                qty: 20
-                            },
-                            {
-                                amt: 5,
-                                name: "5 Dollars",
-                                shortName: "$5",
-                                imgFull: "/game/images/chips/5-dollar.png",
-                                imgThumb: "/game/images/chips/5-dollar-thumb.png",
-                                qty: 10
-                            },
-                            {
-                                amt: 10,
-                                name: "10 Dollars",
-                                shortName: "$10",
-                                imgFull: "/game/images/chips/10-dollar.png",
-                                imgThumb: "/game/images/chips/10-dollar-thumb.png",
-                                qty: 5
-                            },
-                            {
-                                amt: 50,
-                                name: "50 Dollars",
-                                shortName: "$50",
-                                imgFull: "/game/images/chips/50-dollar.png",
-                                imgThumb: "/game/images/chips/50-dollar-thumb.png",
-                                qty: 1
-                            }
-                        ],
-                        cards: []
-                    },
-                    {
-                        name: 'Alison',
-                        money: 200,
-                        chips: [
-                            {
-                                amt: 1,
-                                name: "1 Dollars",
-                                shortName: "$1",
-                                imgFull: "/game/images/chips/1-dollar.png",
-                                imgThumb: "/game/images/chips/1-dollar-thumb.png",
-                                qty: 10
-                            },
-                            {
-                                amt: 2,
-                                name: "2 Dollars",
-                                shortName: "$2",
-                                imgFull: "/game/images/chips/2-dollar.png",
-                                imgThumb: "/game/images/chips/2-dollar-thumb.png",
-                                qty: 20
-                            },
-                            {
-                                amt: 5,
-                                name: "5 Dollars",
-                                shortName: "$5",
-                                imgFull: "/game/images/chips/5-dollar.png",
-                                imgThumb: "/game/images/chips/5-dollar-thumb.png",
-                                qty: 10
-                            },
-                            {
-                                amt: 10,
-                                name: "10 Dollars",
-                                shortName: "$10",
-                                imgFull: "/game/images/chips/10-dollar.png",
-                                imgThumb: "/game/images/chips/10-dollar-thumb.png",
-                                qty: 5
-                            },
-                            {
-                                amt: 50,
-                                name: "50 Dollars",
-                                shortName: "$50",
-                                imgFull: "/game/images/chips/50-dollar.png",
-                                imgThumb: "/game/images/chips/50-dollar-thumb.png",
-                                qty: 1
-                            }
-                        ],
-                        cards: []
-                    },
-                    {
-                        name: 'Krish',
-                        money: 200,
-                        chips: [
-                            {
-                                amt: 1,
-                                name: "1 Dollars",
-                                shortName: "$1",
-                                imgFull: "/game/images/chips/1-dollar.png",
-                                imgThumb: "/game/images/chips/1-dollar-thumb.png",
-                                qty: 10
-                            },
-                            {
-                                amt: 2,
-                                name: "2 Dollars",
-                                shortName: "$2",
-                                imgFull: "/game/images/chips/2-dollar.png",
-                                imgThumb: "/game/images/chips/2-dollar-thumb.png",
-                                qty: 20
-                            },
-                            {
-                                amt: 5,
-                                name: "5 Dollars",
-                                shortName: "$5",
-                                imgFull: "/game/images/chips/5-dollar.png",
-                                imgThumb: "/game/images/chips/5-dollar-thumb.png",
-                                qty: 10
-                            },
-                            {
-                                amt: 10,
-                                name: "10 Dollars",
-                                shortName: "$10",
-                                imgFull: "/game/images/chips/10-dollar.png",
-                                imgThumb: "/game/images/chips/10-dollar-thumb.png",
-                                qty: 5
-                            },
-                            {
-                                amt: 50,
-                                name: "50 Dollars",
-                                shortName: "$50",
-                                imgFull: "/game/images/chips/50-dollar.png",
-                                imgThumb: "/game/images/chips/50-dollar-thumb.png",
-                                qty: 1
-                            }
-                        ],
-                        cards: []
-                    }
-                ],
-                cards: cards,
-                shuffledDeck: shuffle(cards),
-                chips: chips
+    /* Controller for all table-related things */
+        .controller('TableController', ['$scope', function ($scope) {
+            $scope.deck = allCards;
+            /* Create a deck DOM object to view in Firebug (for testing environment only) */
+            deck = $scope.deck;
+            $scope.table = {
+                players: people,
+                cards: [],
+                shuffledDeck: [], //shuffle(allCards),
+                money: 0,
+                chips: []
             }
-        }])
+
+            /* Create a table DOM object to view in Firebug (For Testing Environment Only) */
+            table = $scope.table;
+
+            /* Deal the cards to the players */
+            this.dealCards = function () {
+                /* Reset board */
+                $scope.table.cards.length = 0;
+                $scope.table.shuffledDeck = shuffle($scope.cards);
+                $scope.table.players = dealCards(table.players)
+            }
+            this.dealFlop = function () { table.cards = dealBoard(table.players, table.cards, 3) }
+            this.dealTurn = function () { table.cards = dealBoard(table.players, table.cards, 1) }
+            this.dealRiver = function () { table.cards = dealBoard(table.players, table.cards, 1) }
+        } ])
     /* Controller for all players */
         .controller('PlayersController', ['$scope', function ($scope) {
             /* Initialize Players and assign data to it */
-            this.players = people;
+            //is.players = people;
             /* Create object to view in Firebug */
-            players = this.players;
+            //ayers = this.players;
         } ])
     /* Controller for add/modifying an individual player */
         .controller('PlayerController', ['$scope', function ($scope) {
             /* Create an empty player object */
             this.player = {
                 name: '',
-                money: 100,
-                cards: [],
-                chips: []
+                money: 200,
+                chips: [],
+                cards: []
             };
 
             this.addPlayer = function (players) {
                 /* Clear all previous card data */
-                for (p = 0; p < players.length; p++) {
-                    players[p].cards.length = 0;
+                for (p = 0; p < table.players.length; p++) {
+                    table.players[p].cards.length = 0;
                 }
+
+                /* Re-shuffle the deck since we're adding a new player */
                 shuffledDeck = shuffle(cards);
-                players.push(this.player);
+
+                /* Add the player to the table */
+                table.players.push(this.player);
+
+                /* Clear the new player object, since the player is now added to the table */
                 this.player = {};
             };
         } ])
@@ -187,145 +72,237 @@
             this.chips = chips;
         } ])
     /* Controller to handle all card functionality and logic */
-        .controller('CardController', ['$scope', function ($scope) {
-            /* Initialize shuffledDeck and assign data to it */
-            this.shuffledDeck = shuffle(cards);
-
-            /* Create object to view in Firebug */
-            shuffledDeck = this.shuffledDeck;
-
-            /* Function to deal cards to each player */
-            this.dealCards = function (players) {
-                /* Clear all previous card data */
-                for (p = 0; p < players.length; p++) {
-                    players[p].cards.length = 0;
-                }
-
-                /* Re-Shuffle Cards */
-                this.shuffledDeck = shuffle(cards);
-
-                /* Set initial seat/card values */
-                var seat = 0;
-                var card = 0;
-
-                /* Iterate through each player */
-                for (var i = 0; i < players.length * 2; i++) {
-
-                    /* Assign current player's card position in the deck */
-                    players[seat].cards.push(this.shuffledDeck[i]);
-
-                    /* Move to the next player/seat */
-                    seat++;
-
-                    /* Check to see if we've reached the last player */
-                    if (i == players.length - 1) {
-                        /* Change player/seat back to the first player to deal the second round of cards */
-                        seat = 0;
-                        /* Change the card we're dealing to the second of the player's hole cards */
-                        card++;
-                    }
-                }
-            };
-
-            /* Deal the "flop", while "burning" the card immediately after the last one dealt to a player */
-            this.dealFlop = function (players) {
-
-                if (players.length) {
-                    if (players[0].cards.length) {
-                        board.flop.push(this.shuffledDeck[(players.length * 2) + 1]);
-                        board.flop.push(this.shuffledDeck[(players.length * 2) + 2]);
-                        board.flop.push(this.shuffledDeck[(players.length * 2) + 3]);
-                    } else {
-                        errorMessage = "You cannot play the flop before players have cards.";
-                    }
-                } else {
-                    errorMessage = "You cannot play the flop when there are no players.";
-                }
-
-            };
-
-            /* Deal the "turn", while "burning" the card immediately after the last card of the flop */
-            this.dealTurn = function (players) {
-
-                if (players.length) {
-                    if (players[0].cards.length) {
-                        board.turn = this.shuffledDeck[(players.length * 2) + 5];
-                    } else {
-                        errorMessage = "You cannot play the turn before players have cards.";
-                    }
-                } else {
-                    errorMessage = "You cannot play the turn when there are no players.";
-                }
-
-            };
-
-            /* Deal the "river", while "burning" the card immediately after the turn */
-            this.dealRiver = function (players) {
-
-                if (players.length) {
-                    if (players[0].cards.length) {
-                        board.river = this.shuffledDeck[(players.length * 2) + 7];
-                    } else {
-                        errorMessage = "You cannot play the turn before players have cards.";
-                    }
-                } else {
-                    errorMessage = "You cannot play the turn when there are no players.";
-                }
-
-            };
-        } ])
+        .controller('CardController', ['$scope', function ($scope) { } ])
         .controller('BoardController', ['$scope', function ($scope) {
-            this.board = {
-                flop: [],
-                turn: {},
-                river: {},
-                pot: 50
-            }
-            board = this.board;
 
-            this.clearBoard = function () {
-                this.board.cards.length = 0;
-            };
         } ]);
 
 
     /* Begin function to randomize/shuffle the "deck" array */
-    function shuffle(deck) {
-        var i = deck.length, j, tempi, tempj;
+    function shuffle(d) {
+        var newDeck = [];
+        for (var row = 0; row < d.length; row++) {
+            newDeck.push(d[row]);
+        }
+
+        var i = newDeck.length, j, tempi, tempj;
         if (i == 0) return false;
         while (--i) {
             j = Math.floor(Math.random() * (i + 1));
-            tempi = deck[i];
-            tempj = deck[j];
-            deck[i] = tempj;
-            deck[j] = tempi;
+            tempi = newDeck[i];
+            tempj = newDeck[j];
+            newDeck[i] = tempj;
+            newDeck[j] = tempi;
         }
-        return deck;
+        return newDeck;
     }
     /* End function to randomize/shuffle the "deck" array */
 
+
+    /* Begin function to deal cards to each player */
+    function dealCards(players) {
+        /* Clear all previous card data */
+
+        for (p = 0; p < table.players.length; p++) {
+            table.players[p].cards.length = 0;
+        }
+
+
+        /* Set initial seat/card values */
+        var seat = 0;
+        var card = 0;
+
+        /* Iterate through each player */
+        for (var i = 0; i < table.players.length * 2; i++) {
+
+            /* Assign current player's card position in the deck */
+            table.players[seat].cards.push(table.shuffledDeck[0]);
+            table.shuffledDeck.splice(0, 1);
+
+            /* Move to the next player/seat */
+            seat++;
+
+            /* Check to see if we've reached the last player */
+            if (i == table.players.length - 1) {
+                /* Change player/seat back to the first player to deal the second round of cards */
+                seat = 0;
+                /* Change the card we're dealing to the second of the player's hole cards */
+                card++;
+            }
+        }
+
+        /* Return the updated players object */
+        return players;
+    };
+    /* End function to deal cards to each player */
+
+    /* Begin function to deal the flop */
+    this.dealBoard = function (players, cards, qty) {
+        /* "Burn" the next card */
+        table.shuffledDeck.splice(0, 1);
+
+        for (var x = 1; x < qty + 1; x++) {
+            /* Add the card to the board */
+            cards.push(table.shuffledDeck[0]);
+
+            /* Remove the card from the shuffled deck */
+            table.shuffledDeck.splice(0, 1);
+        }
+
+        /* Return the flop */
+        return cards;
+
+    };
+    /* End function to deal the flop */
+
     /* Begin "people" array, containing all player data */
     var people = [
-        {
-            name: 'Melanie',
-            money: 100,
-            cards: []
-        },
-        {
-            name: 'Alison',
-            money: 100,
-            cards: []
-        },
-        {
-            name: 'Krish',
-            money: 100,
-            cards: []
-        }
+            {
+                name: 'Melanie',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: []
+            },
+            {
+                name: 'Alison',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: []
+            },
+            {
+                name: 'Krish',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: []
+            }
     ];
     /* End "people" array, containing all player data */
 
     /* Begin "cards" array, containing all poker card/deck data */
-    var cards = [
+    var allCards = [
         {
             value: 2,
             name: 'Two',
