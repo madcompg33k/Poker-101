@@ -12,6 +12,10 @@ body {
   padding: 0;
   height: 100%; }
 
+.clearfix {
+    overflow:  auto;
+}
+
 a:link, a:visited,
 a:active, a:hover {
   color: #333;

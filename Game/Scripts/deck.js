@@ -66,28 +66,72 @@
         } ])
     /* Controller for add/modifying an individual player */
         .controller('PlayerController', ['$scope', function ($scope) {
-            /* Create an empty player object */
-            this.player = {
-                name: '',
-                money: 200,
-                chips: [],
-                cards: []
-            };
+            this.player = {};
 
             this.addPlayer = function (players) {
+                /* Create an empty player object */
+                this.player = {
+                    name: this.player.name,
+                    money: 200,
+                    chips: [
+                        {
+                            amt: 1,
+                            name: "1 Dollars",
+                            shortName: "$1",
+                            imgFull: "/game/images/chips/1-dollar.png",
+                            imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                            qty: 10
+                        },
+                        {
+                            amt: 2,
+                            name: "2 Dollars",
+                            shortName: "$2",
+                            imgFull: "/game/images/chips/2-dollar.png",
+                            imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                            qty: 20
+                        },
+                        {
+                            amt: 5,
+                            name: "5 Dollars",
+                            shortName: "$5",
+                            imgFull: "/game/images/chips/5-dollar.png",
+                            imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                            qty: 10
+                        },
+                        {
+                            amt: 10,
+                            name: "10 Dollars",
+                            shortName: "$10",
+                            imgFull: "/game/images/chips/10-dollar.png",
+                            imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                            qty: 5
+                        },
+                        {
+                            amt: 50,
+                            name: "50 Dollars",
+                            shortName: "$50",
+                            imgFull: "/game/images/chips/50-dollar.png",
+                            imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                            qty: 1
+                        }
+                    ],
+                    cards: [],
+                    handRank: 0
+                };
+
                 /* Clear all previous card data */
                 for (p = 0; p < table.players.length; p++) {
                     table.players[p].cards.length = 0;
                 }
-
-                /* Re-shuffle the deck since we're adding a new player */
-                shuffledDeck = shuffle(cards);
 
                 /* Add the player to the table */
                 table.players.push(this.player);
 
                 /* Clear the new player object, since the player is now added to the table */
                 this.player = {};
+
+                /* Re-shuffle the deck since we're adding a new player */
+                shuffledDeck = shuffle(cards);
             };
         } ])
 
@@ -249,7 +293,7 @@
                 if (hand[previousCard].value == (hand[card].value - 1)) {
                     /* Add 1 to cards to straight before checking if we have one, and set to true if we do */
                     if (++cardsToStraight >= 5) { straight = true; }
-                } else { cardsToStraight = 0; } /* This card isn't part of the straight, so reset the count */
+                } else { cardsToStraight = 1; } /* This card isn't part of the straight, so reset the count */
             }
 
         } /* End for loop iterating through current hand */
@@ -452,6 +496,198 @@
             },
             {
                 name: 'Krish',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: [],
+                handRank: 0
+            },
+            {
+                name: 'Lauren',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: [],
+                handRank: 0
+            },
+            {
+                name: 'Britney',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: [],
+                handRank: 0
+            },
+            {
+                name: 'Vien',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: [],
+                handRank: 0
+            },
+            {
+                name: 'Alex',
                 money: 200,
                 chips: [
                     {

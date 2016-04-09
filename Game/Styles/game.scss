@@ -8,6 +8,13 @@ $card-mid-height:       200px;
 $card-thumb-width:      54px;
 $card-thumb-height:     75px;
 
+$mainDiv-width:         1400px;
+$mainDiv-height:        800px;
+
+$options-width:         200px;
+
+$table-width:           $mainDiv-width - $options-width - 50px;
+
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius;
     -moz-border-radius: $radius;
@@ -17,24 +24,57 @@ $card-thumb-height:     75px;
 
 
 div#main {
-    width: 1400px;
-    height: 800px;
+    width: $mainDiv-width;
+    height: $mainDiv-height;
     margin: 0px auto;
     border: dotted green 2px;
+
+    form.actions {
+        width: $options-width;
+        height: 100%;
+        float: left;
+        clear: none;
+        padding: 10px;
+        border: outset darkgreen 3px;
+
+        label {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        button.game-play-button {
+            display: inline-block;
+            width: $options-width - 30px;
+            height: 50px;
+            margin: 3px auto;
+            border-width: 3px;
+            @include border-radius(10px);
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 0px 0px 2px rgba(255, 255, 255, 1);
+        }
+
+    }
 }
 
 section#table {
-    width: ($card-mid-width * 5) + 200px;
+    width: $table-width;
+    position: relative;
     margin: 0px auto;
+    float: left;
+    clear: none;
     
     
     ul#board {
         display: block;
         width: ($card-mid-width * 5) + 150px;
         height: $card-mid-height + 60px;
+        position: absolute;
+        top: 300px;
+        left: 75px;
         padding: 15px 50px;
-        margin: 0px auto;
-        background-color: #33cc33;
+        /*margin: 175px auto;*/
+        background-color: darkgreen;
         border: double #0a290a 20px;
         @include border-radius(30px);
         clear: both;
@@ -60,21 +100,14 @@ section#table {
             list-style: none;
         }
 
-    }
-
-
-    ul#players {
-        display: inline-block;
-        width: 100%;
-        padding: 15px 50px;
-        margin: 0px auto;
-        clear: both;
 
         li.player {
             display: inline-block;
             width: ($card-thumb-width * 2) + 60px;
             height: $card-thumb-height + 125px;
+            position: absolute;
             padding: 0px 5px;
+            color: #000;
 
             h3 {
                 font: $font-stack;
@@ -92,22 +125,32 @@ section#table {
                 span.hand-rank { }
             }
 
-            span.player-hand {
-                
-            }
+            span.player-hand { }
             
         }
+
+        li.seat-1, li.seat-2, li.seat-3, li.seat-4 { top: -220px; /*0 - ($card-thumb-height);*/ }
+        li.seat-5, li.seat-6, li.seat-7, li.seat-8 { bottom: -220px; }
+
+        li.seat-1 { left: 0px; }
+
+        li.seat-2 { left: ($card-thumb-width * 2) + 110px; }
+
+        li.seat-3 { right: ($card-thumb-width * 2) + 110px; }
+
+        li.seat-4 { right: 0px; }
+
+        li.seat-5 { left: 0px; }
+
+        li.seat-6 {  left: ($card-thumb-width * 2) + 110px; }
+
+        li.seat-7 { right: ($card-thumb-width * 2) + 110px; }
+
+        li.seat-8 { right: 0px; }
+
     }
 
-    button.game-play-button {
-        display: inline-block;
-        width: 200px;
-        height: 50px;
-        border-width: 3px;
-        @include border-radius(10px);
-        font-size: 1.4em;
-        font-weight: bold;
-    }
+
 }
 
 

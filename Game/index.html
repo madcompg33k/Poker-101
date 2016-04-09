@@ -55,20 +55,50 @@
 
             <!-- #Start div#main -->
             <div id="main">
+                <form class="actions clearfix" name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
+                    <label>New Player: </label>
+                    <input type="text" data-ng-model="playerCtrl.player.name" />
+                    <br />
+                    <button data-ng-click="playerCtrl.addPlayer()">
+                        Add Player
+                    </button>
 
-                <!-- #Start section#players -->
+                    <hr />
+
+                    <button class="game-play-button" data-ng-click="tableCtrl.dealCards()">
+                        Deal Cards
+                    </button>
+
+                    <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-hide="table.cards.length || table.players[0].cards.length !== 2">
+                        Deal the Flop!
+                    </button>
+                            
+                    <button class="game-play-button" data-ng-click="tableCtrl.dealTurn()" data-ng-hide="table.cards.length !== 3">
+                        Deal the Turn!
+                    </button>
+                            
+                    <button class="game-play-button" data-ng-click="tableCtrl.dealRiver()" data-ng-hide="table.cards.length !== 4">
+                        Deal the River!
+                    </button>
+                            
+                    <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-hide="table.cards.length !== 5">
+                        Who Won!?
+                    </button>
+
+
+                         
+                </form>
+
                 <section id="table">
                     <h1>Play The Game</h1>
                     <div>
-                        <ul id="board">
-                            <li class="card" data-ng-repeat="card in table.cards">
-                                    <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
-                            </li>
-                            <li id="potSize">Pot Size: {{ table.money | currency }}</li>
+                        <ul id="players">
+                            
                         </ul>
 
-                        <ul id="players">
-                            <li class="player" data-ng-repeat="player in table.players">
+
+                        <ul id="board">
+                            <li class="player seat-{{$index + 1}}" data-ng-repeat="player in table.players">
 
                                 <blockquote>
                                     <h3 class="player-name">
@@ -92,39 +122,13 @@
                                     </li>
                                 </ul -->
                             </li>
+
+                            <li class="card" data-ng-repeat="card in table.cards">
+                                    <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                            </li>
+                            <li id="potSize">Pot Size: {{ table.money | currency }}</li>
                         </ul>
                         
-
-                        <form name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
-                            <button class="game-play-button" data-ng-click="tableCtrl.dealCards()">
-                                Deal Cards
-                            </button>
-
-                            <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-hide="table.cards.length || table.players[0].cards.length !== 2">
-                                Deal the Flop!
-                            </button>
-                            
-                            <button class="game-play-button" data-ng-click="tableCtrl.dealTurn()" data-ng-hide="table.cards.length !== 3">
-                                Deal the Turn!
-                            </button>
-                            
-                            <button class="game-play-button" data-ng-click="tableCtrl.dealRiver()" data-ng-hide="table.cards.length !== 4">
-                                Deal the River!
-                            </button>
-                            
-                            <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-hide="table.cards.length !== 5">
-                                Who Won!?
-                            </button>
-
-
-                            <label>New Player: </label>
-                            <input type="text" data-ng-model="playerCtrl.player.name" />
-                            <button data-ng-click="playerCtrl.addPlayer()">
-                                Add Player
-                            </button>
-
-                            
-                        </form>
                     </div>
                 </section>
                 <!-- #End section#players -->
