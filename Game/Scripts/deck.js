@@ -10,14 +10,24 @@
     /* Controller for all table-related things */
         .controller('TableController', ['$scope', function ($scope) {
             $scope.deck = allCards;
+
+            /* DOM variables for testing purposes only */
+            this.hand = [];
+            var hand = this.hand;
+            this.matchingCards = [];
+            matchingCards = this.matchingCards;
+
+
             /* Create a deck DOM object to view in Firebug (for testing environment only) */
             deck = $scope.deck;
             $scope.table = {
                 players: people,
                 cards: [],
-                shuffledDeck: [], //shuffle(allCards),
+                shuffledDeck: [],
                 money: 0,
-                chips: []
+                chips: [],
+                handHistory: [],
+                winner: {}
             }
 
             /* Create a table DOM object to view in Firebug (For Testing Environment Only) */
@@ -29,10 +39,23 @@
                 $scope.table.cards.length = 0;
                 $scope.table.shuffledDeck = shuffle($scope.cards);
                 $scope.table.players = dealCards(table.players)
+
+                for (var p = 0; p < $scope.table.players.length; p++) {
+                    $scope.table.players[p].handRank = null;
+                }
             }
             this.dealFlop = function () { table.cards = dealBoard(table.players, table.cards, 3) }
             this.dealTurn = function () { table.cards = dealBoard(table.players, table.cards, 1) }
             this.dealRiver = function () { table.cards = dealBoard(table.players, table.cards, 1) }
+
+            /* Find the winner! */
+            this.getWinner = function () {
+                for (var p = 0; p < table.players.length; p++) {
+                    table.players[p].handRank = evaluateHand(table.players[p], table.cards);
+                }
+
+                //table.winner = calculateWinner(table.players, table.cards)
+            }
         } ])
     /* Controller for all players */
         .controller('PlayersController', ['$scope', function ($scope) {
@@ -67,15 +90,6 @@
                 this.player = {};
             };
         } ])
-    /* Controller to handle all chip/money functionality and logic */
-        .controller('ChipController', ['$scope', function ($scope) {
-            this.chips = chips;
-        } ])
-    /* Controller to handle all card functionality and logic */
-        .controller('CardController', ['$scope', function ($scope) { } ])
-        .controller('BoardController', ['$scope', function ($scope) {
-
-        } ]);
 
 
     /* Begin function to randomize/shuffle the "deck" array */
@@ -107,7 +121,6 @@
             table.players[p].cards.length = 0;
         }
 
-
         /* Set initial seat/card values */
         var seat = 0;
         var card = 0;
@@ -136,6 +149,7 @@
     };
     /* End function to deal cards to each player */
 
+
     /* Begin function to deal the flop */
     this.dealBoard = function (players, cards, qty) {
         /* "Burn" the next card */
@@ -154,6 +168,189 @@
 
     };
     /* End function to deal the flop */
+
+
+
+    var sort_by = function (field, reverse, primer) {
+        var key = primer ?
+            function (x) { return primer(x[field]) } :
+            function (x) { return x[field] };
+
+        reverse = !reverse ? 1 : -1;
+
+        return function (a, b) {
+            return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+        }
+    }
+
+
+    /* !!! !!! !!! Hand Hierarchy/Winner Code and Logic !!! !!! !!! */
+
+    /* Still needs extra logic to hand high card, highest pair(s)/three of a kind, and highest hand for FH vs. FH */
+    function evaluateHand(player, cards) {
+        hand = [];
+
+        /* Add the player's hole cards and cards from the board to the hand object */
+        hand.push(player.cards[0]);
+        hand.push(player.cards[1]);
+        for (var i = 0; i < cards.length; i++) { hand.push(cards[i]); }
+
+        /* Sort hand in order of value, lowest to highest */
+        hand.sort(sort_by('value', false, parseInt));
+
+
+        var strFlush = false;
+        var four = false;
+        var full = false;
+        var flush = false;
+        var straight = false;
+        var three = false;
+        var pairs = 0;
+        var k = 0;
+
+        var card = 0;
+
+        var hearts = 0;
+        var diamonds = 0;
+        var spades = 0;
+        var clubs = 0;
+
+        /* Set current cardsToStraight as 1, since you're ALWAYS at least 1 card to a straight */
+        var cardsToStraight = 1;
+
+        var matches = 0;
+        var z = 0;
+
+        /* Iterate through all of the player's cards */
+        for (card = 0; card < hand.length; card++) {
+
+            /* Check to see which suit this card is, and add to the total number of that suit */
+            switch (hand[card].suit) {
+                case 'Hearts':
+                    if (++hearts >= 5) { flush = true; }
+                    break;
+                case 'Diamonds':
+                    if (++diamonds >= 5) { flush = true; }
+                    break;
+                case 'Spades':
+                    if (++spades >= 5) { flush = true; }
+                    break;
+                case 'Clubs':
+                    if (++clubs >= 5) { flush = true; }
+                    break;
+            }
+
+            /* Don't check previous card against first, since there is no previous card */
+            if (card >= 1) {
+                /* Set previous card */
+                var previousCard = card - 1;
+
+                /* Find out how many cards the player has to a straight */
+                if (hand[previousCard].value == (hand[card].value - 1)) {
+                    /* Add 1 to cards to straight before checking if we have one, and set to true if we do */
+                    if (++cardsToStraight >= 5) { straight = true; }
+                } else { cardsToStraight = 0; } /* This card isn't part of the straight, so reset the count */
+            }
+
+        } /* End for loop iterating through current hand */
+
+
+        /* Check for four of a kind */
+        /* Add my altered version of the below four of a kind check */
+
+        /* Check for fours */
+        for (var i = 0; i < 4; i++) {
+            k = i;
+
+            while (k < i + 3 && hand[k].value == hand[k + 1].value) {
+                k++;
+
+                if (k == i + 3) {
+                    four = true;
+                }
+            }
+        }
+
+
+        /* Check for threes and full house */
+        if (!four) {
+            for (var i = 0; i < 5; i++) {
+                k = i;
+                var nextCard = k + 1;
+
+                while (k < i + 2 && hand[k].value == hand[nextCard].value) {
+                    k++;
+                    nextCard = k + 1;
+
+                    if (k == i + 2) {
+                        three = true;
+
+                        if (i == 0) {
+                            if (hand[3].value == hand[4].value || hand[4].value == hand[5].value || hand[5].value == hand[6].value) { full = true; }
+                        } else if (i == 1) {
+                            if (hand[4].value == hand[5].value || hand[5].value == hand[6].value) { full = true; }
+                        } else if (i == 2) {
+                            if (hand[0].value == hand[1].value || hand[5].value == hand[6].value) { full = true; }
+                        } else {
+                            if (hand[0].value == hand[1].value || hand[1].value == hand[2].value) { full = true; }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* If we've found something so far, go ahead and return the hand rank */
+        if (straight && flush) { return 9; }
+        else if (four) { return 8; }
+        else if (full) { return 7; }
+        else if (flush) { return 6; }
+        else if (straight) { return 5; }
+        else if (three) { return 4; }
+
+
+        /* Check for pairs */
+        for (k = 0; k < 6; k++) {
+            if (hand[k].value == hand[k + 1].value) { pairs++; }
+        }
+
+
+        if (pairs >= 2) { return 3; }
+        else if (pairs) { return 2; }
+        else { return 1; }
+    }
+
+
+    /* Begin function to find out who won */
+    function calculateWinner(players, cards) {
+        var allHands = {
+
+        };
+
+
+        var seat = [
+            {
+                hasPair: {},
+                hasTwoPair: {},
+                hasThree: {},
+                hasStraight: {},
+                hasFlush: {},
+                hasFull: {},
+                hasFour: {},
+                hasStraightFlush: {}
+            }
+        ];
+    }
+    /* End function to find out who won */
+
+    function hasPair(cards) {
+
+    }
+
+    /* ^^^ ^^^ ^^^ Hand Hierarchy/Winner Code and Logic ^^^ ^^^ ^^^ */
+
+
+
+
 
     /* Begin "people" array, containing all player data */
     var people = [
@@ -202,7 +399,8 @@
                         qty: 1
                     }
                 ],
-                cards: []
+                cards: [],
+                handRank: 0
             },
             {
                 name: 'Alison',
@@ -249,7 +447,8 @@
                         qty: 1
                     }
                 ],
-                cards: []
+                cards: [],
+                handRank: 0
             },
             {
                 name: 'Krish',
@@ -296,7 +495,8 @@
                         qty: 1
                     }
                 ],
-                cards: []
+                cards: [],
+                handRank: 0
             }
     ];
     /* End "people" array, containing all player data */

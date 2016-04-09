@@ -1,3 +1,71 @@
-li.player-hand{
-    font-size:  1.4em;
-}
+div#main {
+  width: 1400px;
+  height: 800px;
+  margin: 0px auto;
+  border: dotted green 2px; }
+
+section#table {
+  width: 915px;
+  margin: 0px auto; }
+  section#table ul#board {
+    display: block;
+    width: 865px;
+    height: 260px;
+    padding: 15px 50px;
+    margin: 0px auto;
+    background-color: #33cc33;
+    border: double #0a290a 20px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    border-radius: 30px;
+    clear: both; }
+    section#table ul#board li.card {
+      display: inline-block;
+      width: 143px;
+      height: 200px; }
+      section#table ul#board li.card img {
+        width: 143px;
+        height: 200px; }
+    section#table ul#board li#potSize {
+      font-family: Helvetica, sans-serif;
+      font-size: 1.5em;
+      font-weight: bold;
+      list-style: none; }
+  section#table ul#players {
+    display: inline-block;
+    width: 100%;
+    padding: 15px 50px;
+    margin: 0px auto;
+    clear: both; }
+    section#table ul#players li.player {
+      display: inline-block;
+      width: 168px;
+      height: 200px;
+      padding: 0px 5px; }
+      section#table ul#players li.player h3 {
+        font: Helvetica, sans-serif;
+        font-weight: bold;
+        margin: 0px;
+        padding: 0px; }
+        section#table ul#players li.player h3 span {
+          display: block;
+          font-size: .6em;
+          font-weight: normal;
+          font-style: italic; }
+  section#table button.game-play-button {
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    border-width: 3px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    border-radius: 10px;
+    font-size: 1.4em;
+    font-weight: bold; }
+
+li.player-hand {
+  font-size: 1.4em; }
+
+/*# sourceMappingURL=game.css.map */

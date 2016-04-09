@@ -1,0 +1,118 @@
+$font-stack:            Helvetica, sans-serif;
+$primary-font-color:    #333;
+$font-size:             1em;
+$card-full-width:       800px;
+$card-full-height:      1120px;
+$card-mid-width:        143px;
+$card-mid-height:       200px;
+$card-thumb-width:      54px;
+$card-thumb-height:     75px;
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+
+div#main {
+    width: 1400px;
+    height: 800px;
+    margin: 0px auto;
+    border: dotted green 2px;
+}
+
+section#table {
+    width: ($card-mid-width * 5) + 200px;
+    margin: 0px auto;
+    
+    
+    ul#board {
+        display: block;
+        width: ($card-mid-width * 5) + 150px;
+        height: $card-mid-height + 60px;
+        padding: 15px 50px;
+        margin: 0px auto;
+        background-color: #33cc33;
+        border: double #0a290a 20px;
+        @include border-radius(30px);
+        clear: both;
+
+
+        li.card {
+            display: inline-block;
+            width: $card-mid-width;
+            height: $card-mid-height;
+        
+        
+            img {
+                width: $card-mid-width;
+                height: $card-mid-height;
+            }
+
+        }
+
+        li#potSize {
+            font-family: $font-stack;
+            font-size: 1.5em;
+            font-weight: bold;
+            list-style: none;
+        }
+
+    }
+
+
+    ul#players {
+        display: inline-block;
+        width: 100%;
+        padding: 15px 50px;
+        margin: 0px auto;
+        clear: both;
+
+        li.player {
+            display: inline-block;
+            width: ($card-thumb-width * 2) + 60px;
+            height: $card-thumb-height + 125px;
+            padding: 0px 5px;
+
+            h3 {
+                font: $font-stack;
+                font-weight: bold;
+                margin: 0px;
+                padding: 0px;
+                
+                span {
+                    display: block;
+                    font-size: .6em;
+                    font-weight: normal;
+                    font-style: italic;
+                }
+                span.player-money { }
+                span.hand-rank { }
+            }
+
+            span.player-hand {
+                
+            }
+            
+        }
+    }
+
+    button.game-play-button {
+        display: inline-block;
+        width: 200px;
+        height: 50px;
+        border-width: 3px;
+        @include border-radius(10px);
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+}
+
+
+
+li.player-hand {
+    font-size:  1.4em;
+}
+

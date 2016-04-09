@@ -8,9 +8,9 @@
         <script type="text/javascript" src="/Scripts/angular.js"></script>
         <script type="text/javascript" src="/Game/Scripts/deck.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="/Game/Styles/game.css" />
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
+        <link rel="stylesheet" type="text/css" href="/Game/Styles/game.css" />
         
     </head>
     <body data-ng-controller="TableController as tableCtrl">
@@ -55,76 +55,82 @@
 
             <!-- #Start div#main -->
             <div id="main">
-                <h1>Play The Game</h1>
 
                 <!-- #Start section#players -->
-                <section id="players">
+                <section id="table">
+                    <h1>Play The Game</h1>
                     <div>
-                        <h2>Players: {{ table.players.length }}</h2>
-                        <ul>
-                            <li data-ng-repeat="player in table.players">
-                                <h3>Player {{ $index + 1 }}: <b>{{ player.name }}</b></h3>
-                                <ul>
+                        <ul id="board">
+                            <li class="card" data-ng-repeat="card in table.cards">
+                                    <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                            </li>
+                            <li id="potSize">Pot Size: {{ table.money | currency }}</li>
+                        </ul>
+
+                        <ul id="players">
+                            <li class="player" data-ng-repeat="player in table.players">
+
+                                <blockquote>
+                                    <h3 class="player-name">
+                                        {{ player.name }}
+                                        <span class="player-money">({{ player.money | currency }})</span>
+                                        <span class="hand-rank" data-ng-show="player.handRank">(Hand Rank: {{ player.handRank }})</span>
+                                    </h3>
+                                </blockquote>
+
+                                <span class="player-hand" data-ng-repeat="card in player.cards">
+                                    <img data-ng-src="{{ card.imgMid }}" alt="{{ card.name }} of {{ card.suit }}" width="72" height="100" />
+                                </span>
+
+                                <!-- ul>
                                     <li>
                                         <b>Money:</b>
                                         <span data-ng-repeat="chip in player.chips">
-                                             <img data-ng-src="{{ chip.imgThumb }}" alt="chips" width="20" height="20" />
+                                             <img data-ng-src="{{ chip.imgThumb }}" alt="chips" width="25" height="25" />
                                             x {{ chip.qty }}
                                         </span>
                                     </li>
-                                    <li class="player-hand">
-                                        <span data-ng-repeat="card in player.cards">
-                                            <img data-ng-src="{{ card.imgMid }}" alt="{{ card.name }} of {{ card.suit }}" width="72" height="100" />
-                                        </span>
-                                    </li>
-                                </ul>
+                                </ul -->
                             </li>
                         </ul>
-                        <ul>
-                            <li>Pot Size: {{ table.money | currency }}</li>
-                            <li><h3>The Board: (Length: {{ table.cards.length }})</h3></li>
-                            <li>
-                                <span data-ng-repeat="card in table.cards">
-                                    <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
-                                </span>
-                            </li>
-                        </ul>
+                        
 
                         <form name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
-                            <blockquote>
-                                {{ playerCtrl.player.name }} <br />
-                            </blockquote>
+                            <button class="game-play-button" data-ng-click="tableCtrl.dealCards()">
+                                Deal Cards
+                            </button>
+
+                            <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-hide="table.cards.length || table.players[0].cards.length !== 2">
+                                Deal the Flop!
+                            </button>
+                            
+                            <button class="game-play-button" data-ng-click="tableCtrl.dealTurn()" data-ng-hide="table.cards.length !== 3">
+                                Deal the Turn!
+                            </button>
+                            
+                            <button class="game-play-button" data-ng-click="tableCtrl.dealRiver()" data-ng-hide="table.cards.length !== 4">
+                                Deal the River!
+                            </button>
+                            
+                            <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-hide="table.cards.length !== 5">
+                                Who Won!?
+                            </button>
+
 
                             <label>New Player: </label>
                             <input type="text" data-ng-model="playerCtrl.player.name" />
                             <button data-ng-click="playerCtrl.addPlayer()">
                                 Add Player
                             </button>
-                            <br />
-                            <button data-ng-click="tableCtrl.dealCards()">
-                                Shuffle Up and Deal!
-                            </button>
-                            <br /><br />
-                            <button data-ng-click="resetDeck()">Reset Deck</button>"
-                            <br />
-                            <button data-ng-click="tableCtrl.dealFlop()" data-ng-hide="table.cards.length || table.players[0].cards.length !== 2">
-                                Deal the Flop!
-                            </button>
+
                             
-                            <button data-ng-click="tableCtrl.dealTurn()" data-ng-hide="table.cards.length !== 3">
-                                Deal the Turn!
-                            </button>
-                            <br />
-                            <button data-ng-click="tableCtrl.dealRiver()" data-ng-hide="table.cards.length !== 4">
-                                Deal the River!
-                            </button>
                         </form>
                     </div>
                 </section>
                 <!-- #End section#players -->
 
                 <!-- #Start section#cards -->
-                <section id="cards" class="the-game">
+                <!-- section id="cards" class="the-game">
                     <h2>All Cards (Count: {{ table.shuffledDeck.length }})</h2>
                     <div>
                         <ul class="list-group">
@@ -133,7 +139,7 @@
                             </li>
                         </ul>
                     </div>
-                </section>
+                </section -->
                 <!-- #End section#cards -->
 
 
