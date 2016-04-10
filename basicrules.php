@@ -5,11 +5,11 @@
      ?>
 
 
-    <div id="main">
-        <h2>Basic Rules of Texas Hold'em</h2>
+    <section id="main">
+        <h2 class="page-header">Basic Rules of Texas Hold'em</h2>
 
-        <!-- #Start section#rulesCardValue -->
-        <section id="rulesCardValue" class="rules">
+        <!-- #Start div#rulesCardValue -->
+        <div id="rulesCardValue" class="rules">
             <h4>List of card values (Highest to Lowest)</h4>
             <ul>
                 <li>Ace (A)</li>
@@ -31,11 +31,11 @@
                     </span>
                 </li>
             </ul>
-        </section>
-        <!-- #End section#rulesCardValue -->
+        </div>
+        <!-- #End div#rulesCardValue -->
 
-        <!-- #Start section#rulesPokerHands -->
-        <section id="rulesPokerHands" class="rules">
+        <!-- #Start div#rulesPokerHands -->
+        <div id="rulesPokerHands" class="rules">
             <h4>List of Poker Hands (Highest to Lowest)</h4>
             <ul>
                 <li>
@@ -103,11 +103,11 @@
                     </p>
                 </li>
             </ul>
-        </section>
-        <!-- #End section#rulesPokerHands -->
+        </div>
+        <!-- #End div#rulesPokerHands -->
 
-        <!-- #Start section#ruleGamePlay -->
-        <section id="rulesGamePlay" class="rules">
+        <!-- #Start div#ruleGamePlay -->
+        <div id="rulesGamePlay" class="rules">
             <h4>Gameplay</h4>
 
             <ul>
@@ -246,9 +246,9 @@
                     </p>
                 </li>
             </ul>
-        </section>
-        <!-- #End section#rulesGamePlay -->
-    </div>
+        </div>
+        <!-- #End div#rulesGamePlay -->
+    </section>
 
 </div> <!-- End of outer-wrapper which opens in header.php -->
 

@@ -804,6 +804,102 @@
                 ],
                 cards: [],
                 handRank: 0
+            },
+            {
+                name: 'Tina',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: [],
+                handRank: 0
+            },
+            {
+                name: 'Jess',
+                money: 200,
+                chips: [
+                    {
+                        amt: 1,
+                        name: "1 Dollars",
+                        shortName: "$1",
+                        imgFull: "/game/images/chips/1-dollar.png",
+                        imgThumb: "/game/images/chips/1-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 2,
+                        name: "2 Dollars",
+                        shortName: "$2",
+                        imgFull: "/game/images/chips/2-dollar.png",
+                        imgThumb: "/game/images/chips/2-dollar-thumb.png",
+                        qty: 20
+                    },
+                    {
+                        amt: 5,
+                        name: "5 Dollars",
+                        shortName: "$5",
+                        imgFull: "/game/images/chips/5-dollar.png",
+                        imgThumb: "/game/images/chips/5-dollar-thumb.png",
+                        qty: 10
+                    },
+                    {
+                        amt: 10,
+                        name: "10 Dollars",
+                        shortName: "$10",
+                        imgFull: "/game/images/chips/10-dollar.png",
+                        imgThumb: "/game/images/chips/10-dollar-thumb.png",
+                        qty: 5
+                    },
+                    {
+                        amt: 50,
+                        name: "50 Dollars",
+                        shortName: "$50",
+                        imgFull: "/game/images/chips/50-dollar.png",
+                        imgThumb: "/game/images/chips/50-dollar-thumb.png",
+                        qty: 1
+                    }
+                ],
+                cards: [],
+                handRank: 0
             }
     ];
     /* End "people" array, containing all player data */

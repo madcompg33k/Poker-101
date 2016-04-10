@@ -4,7 +4,11 @@
     <head>
         <meta charset="utf-8" />
         <title>Poker 101</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://use.typekit.net/hiv2jke.js"></script>
+        <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
         <script type="text/javascript" src="/Scripts/angular.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
@@ -12,10 +16,11 @@
     <body>
         <div class="outer-wrapper">
 
+            <!-- #Start header -->
             <header>
                 <div class="content-wrapper">
-                    <div class="float-left">
-                        <p class="site-title"><a href="/index.php">How To Play Texas Hold'em</a></p>
+                    <div class="site-title">
+                        How To Play Texas Hold'em
                     </div>
 
                     <!-- #Start Navigation -->
@@ -27,6 +32,7 @@
                                 <li><a href="/protips.php">"Pro Tips"</a></li>
                                 <li><a href="/aboutme.php">About Me</a></li>
                                 <li><a href="/Game/index.html">Play Poker</a></li>
+
                                 <?php
                                     /*
                                         $statement = $databaseConnection->prepare("SELECT id, menulabel FROM pages");
@@ -44,51 +50,49 @@
                                         }
                                     */
                                 ?>
+
                             </ul>
+
+                            <!-- #Start Login -->
+                            <div class="float-right">
+                                <section id="login">
+                                    <ul id="login">
+                                    <?php
+                                        // To be added later //
+                                        /*
+                                            if (logged_on())
+                                            {
+                                                echo '<li><a href="/logoff.php">Sign out</a></li>' . "\n";
+                                                if (is_admin())
+                                                {
+                                                    echo '<li><a href="/addpage.php">Add</a></li>' . "\n";
+                                                    echo '<li><a href="/selectpagetoedit.php">Edit</a></li>' . "\n";
+                                                    echo '<li><a href="/deletepage.php">Delete</a></li>' . "\n";
+                                                }
+                                            }
+                                            else
+                                            {
+                                                echo '<li><a href="/logon.php">Login</a></li>' . "\n";
+                                                //echo '<li><a href="/register.php">Register</a></li>' . "\n";
+                                            }
+                                        */
+                                    ?>
+                                    </ul>
+                                    <?php
+                                        /* 
+                                            if (logged_on()) {
+                                                echo "<div class=\"welcomeMessage\">Welcome, <strong>{$_SESSION['username']}</strong></div>\n";
+                                            }
+                                        */
+                                    ?>
+                                </section>
+                            </div>
+                            <!-- #End Login -->
                         </nav>
                     </section>
                     <!-- #End Navigation -->
 
-
-                    <!-- #Start Login -->
-                    <div class="float-right">
-                        <section id="login">
-                            <ul id="login">
-                                <a href="sandbox/">Sandbox</a>
-                            <?php
-                                // To be added later //
-                                /*
-                                    if (logged_on())
-                                    {
-                                        echo '<li><a href="/logoff.php">Sign out</a></li>' . "\n";
-                                        if (is_admin())
-                                        {
-                                            echo '<li><a href="/addpage.php">Add</a></li>' . "\n";
-                                            echo '<li><a href="/selectpagetoedit.php">Edit</a></li>' . "\n";
-                                            echo '<li><a href="/deletepage.php">Delete</a></li>' . "\n";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        echo '<li><a href="/logon.php">Login</a></li>' . "\n";
-                                        //echo '<li><a href="/register.php">Register</a></li>' . "\n";
-                                    }
-                                */
-                            ?>
-                            </ul>
-                            <?php
-                                /* 
-                                    if (logged_on()) {
-                                        echo "<div class=\"welcomeMessage\">Welcome, <strong>{$_SESSION['username']}</strong></div>\n";
-                                    }
-                                */
-                            ?>
-                        </section>
-                    </div>
-                    <!-- #End Login -->
-
-
-                    <div class="clear-fix"></div>
                 </div>
-
+                <!-- #End div-content-wrapper -->
             </header>
+            <!-- #End header -->

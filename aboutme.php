@@ -5,11 +5,11 @@
      ?>
 
 
-    <div id="main">
-        <h2>About Me</h2>
+    <section id="main">
+        <h2 class="page-header">About Me</h2>
 
-        <!-- #Start section#tipsCalculatingOdds -->
-        <section id="aboutHistory" class="about-me">
+        <!-- #Start div#tipsCalculatingOdds -->
+        <div id="aboutHistory" class="about-me">
             <h4>My History With Poker</h4>
 
             <p>
@@ -31,17 +31,17 @@
             </p>
 
             <p>
-                As I got older, and subsequently better at poker, I would often set up small games with friends if I needed some extra money.
-                Often, the friends had played a few times and thought they were better than they were, but my early and long exposure to the
-                game gave me a major advantage. A few times I even would give a friend or two their money back as a gesture of good will,
-                which of course brought them back for future games.
+                As I got older, and subsequently better at poker, I of course would regularly set up small games with friends to create
+                opportunities to improve. Often, some of my friends had some experience with the game, which gave me a wonderful opportunity
+                to improve my own skills or a chance to teach a friend a few new skills. This would continue regularly until I finally went
+                into a casino for the first time.
             </p>
 
-        </section>
-        <!-- #End section#tipsCalculatingOdds -->
+        </div>
+        <!-- #End div#tipsCalculatingOdds -->
 
-        <!-- #Start section#aboutCasino -->
-        <section id="aboutCasino" class="about-me">
+        <!-- #Start div#aboutCasino -->
+        <div id="aboutCasino" class="about-me">
             <h4>My First Time in a Casino</h4>
 
             <p>
@@ -91,10 +91,10 @@
                 but to this day I still have that $1 chip, which to me represents the same as the first dollar of profit a
                 business makes and hangs on the wall.
             </p>
-        </section>
-        <!-- #End section#aboutCasino -->
+        </div>
+        <!-- #End div#aboutCasino -->
 
-    </div>
+    </section>
 
 </div> <!-- End of outer-wrapper which opens in header.php -->
 

@@ -1,7 +1,7 @@
 <?php
 //include ("/Includes/closeDB.php");        
 ?>
-<footer>
+        <footer>
             <div class="footer-wrapper">
                 <div class="float-left">
                     <p>(&copy; 2016 Melanie Yaun) Texas Hold'em 101</p>

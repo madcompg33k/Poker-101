@@ -19,32 +19,43 @@
             <!-- #Start header -->
             <header>
                 <div class="content-wrapper">
-                    <div class="float-left">
-                        <p class="site-title"><a href="/index.php">How To Play Texas Hold'em</a></p>
+                    <div class="site-title">
+                        How To Play Texas Hold'em
                     </div>
 
                     <!-- #Start Navigation -->
                     <section class="navigation" data-role="navbar">
                         <nav>
                             <ul id="menu">
-                                <li><a href="/index.php">Home</a></li>
-                                <li><a href="/basicrules.php">Basic Rules</a></li>
-                                <li><a href="/protips.php">"Pro Tips"</a></li>
-                                <li><a href="/aboutme.php">About Me</a></li>
-                                <li><a href="/Game/index.html">Play Poker</a></li>
+                                <li>
+                                    <a href="/index.php">
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/basicrules.php">
+                                        Basic Rules
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/protips.php">
+                                        "Pro Tips"
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/aboutme.php">
+                                        About Me
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/Game/index.html">
+                                        Play Poker
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </section>
                     <!-- #End Navigation -->
-
-
-                    <!-- #Start Login -->
-                    <div class="float-right">
-                        <section id="login">
-                            <a href="sandbox/">Sandbox</a>
-                        </section>
-                    </div>
-                    <!-- #End Login -->
 
                     <div class="clear-fix"></div>
                 </div>
@@ -54,8 +65,13 @@
 
 
             <!-- #Start div#main -->
-            <div id="main">
-                <form class="actions clearfix" name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
+            <div id="main" class="clearfix">
+
+                <form class="actions clearfix box" name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
+                    <h2>Play The Game</h2>
+                    
+                    <hr />
+                    
                     <label>New Player: </label>
                     <input type="text" data-ng-model="playerCtrl.player.name" />
                     <br />
@@ -90,42 +106,46 @@
                 </form>
 
                 <section id="table">
-                    <h1>Play The Game</h1>
-                    <div>
-                        <ul id="players">
-                            
-                        </ul>
 
+                    <div>
 
                         <ul id="board">
+                            <li class="player seat-dealer">
+                                <h3 class="player-name">Dealer</h3>
+                            </li>
                             <li class="player seat-{{$index + 1}}" data-ng-repeat="player in table.players">
 
-                                <blockquote>
-                                    <h3 class="player-name">
-                                        {{ player.name }}
-                                        <span class="player-money">({{ player.money | currency }})</span>
-                                        <span class="hand-rank" data-ng-show="player.handRank">(Hand Rank: {{ player.handRank }})</span>
-                                    </h3>
-                                </blockquote>
-
-                                <span class="player-hand" data-ng-repeat="card in player.cards">
-                                    <img data-ng-src="{{ card.imgMid }}" alt="{{ card.name }} of {{ card.suit }}" width="72" height="100" />
-                                </span>
+                                <h3 class="player-name">
+                                    {{ player.name }}
+                                    <span class="player-money">({{ player.money | currency }})</span>
+                                    <span class="hand-rank" data-ng-show="player.handRank">(Hand Rank: {{ player.handRank }})</span>
+                                </h3>
 
                                 <!-- ul>
                                     <li>
                                         <b>Money:</b>
                                         <span data-ng-repeat="chip in player.chips">
-                                             <img data-ng-src="{{ chip.imgThumb }}" alt="chips" width="25" height="25" />
+                                            <br />
+                                            <img data-ng-src="{{ chip.imgThumb }}" alt="chips" width="25" height="25" />
                                             x {{ chip.qty }}
                                         </span>
                                     </li>
                                 </ul -->
+
+                                <div class="player-hand">
+                                    <span data-ng-repeat="card in player.cards">
+                                        <img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" />
+                                    </span>
+                                </div>
+
                             </li>
 
-                            <li class="card" data-ng-repeat="card in table.cards">
+                            <div id="cardContainer">
+                                <li class="card" data-ng-repeat="card in table.cards">
                                     <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
-                            </li>
+                                </li>
+                            </div>
+                            
                             <li id="potSize">Pot Size: {{ table.money | currency }}</li>
                         </ul>
                         

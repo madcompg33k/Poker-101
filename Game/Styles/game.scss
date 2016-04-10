@@ -8,12 +8,22 @@ $card-mid-height:       200px;
 $card-thumb-width:      54px;
 $card-thumb-height:     75px;
 
-$mainDiv-width:         1400px;
-$mainDiv-height:        800px;
+$options-width:         250px;
 
-$options-width:         200px;
+$board-border-size:     30px;
+$board-width:           ($card-mid-width * 7) + 150px;
+$board-height:          ($card-mid-height * 2) + 150px;
+$board-x-middle:        ($board-width / 2) - $board-border-size;
+$board-y-middle:        ($board-height / 2) - $board-border-size;
 
-$table-width:           $mainDiv-width - $options-width - 50px;
+$player-width:          ($card-thumb-width * 2) + 50px;
+$player-height:         62px;
+
+$table-width:           $board-width + ($player-width * 2);
+
+$mainDiv-width:         $table-width + $options-width + 50px;
+$mainDiv-height:        $board-height + ($player-height * 2);
+
 
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius;
@@ -24,10 +34,8 @@ $table-width:           $mainDiv-width - $options-width - 50px;
 
 
 div#main {
-    width: $mainDiv-width;
     height: $mainDiv-height;
-    margin: 0px auto;
-    border: dotted green 2px;
+    margin: 30px auto;
 
     form.actions {
         width: $options-width;
@@ -35,7 +43,12 @@ div#main {
         float: left;
         clear: none;
         padding: 10px;
-        border: outset darkgreen 3px;
+        border-right: dashed #999 3px;
+
+        h2{
+            font-weight: bold;
+            text-decoration: underline;
+        }
 
         label {
             font-size: 1.3em;
@@ -67,46 +80,66 @@ section#table {
     
     ul#board {
         display: block;
-        width: ($card-mid-width * 5) + 150px;
-        height: $card-mid-height + 60px;
-        position: absolute;
-        top: 300px;
-        left: 75px;
+        width: $board-width;
+        height: $board-height;
+        position: relative;
         padding: 15px 50px;
-        /*margin: 175px auto;*/
-        background-color: darkgreen;
-        border: double #0a290a 20px;
-        @include border-radius(30px);
+        margin: 20px auto;
+        margin-top: $player-height;
+        background-color: #006400;
+        border: solid #0f3e0f $board-border-size;
+        @include border-radius(100px);
         clear: both;
 
+        div#cardContainer{
+            width: $card-mid-width * 5;
+            height: $card-mid-height + 5px;
+            margin: 0px;
+            padding: 0px;
+            margin-top: $board-y-middle / 2;
+            margin-left: $board-x-middle / 4;
 
-        li.card {
-            display: inline-block;
-            width: $card-mid-width;
-            height: $card-mid-height;
-        
-        
-            img {
+
+            li.card {
+                display: inline-block;
                 width: $card-mid-width;
                 height: $card-mid-height;
-            }
+        
+        
+                img {
+                    width: $card-mid-width;
+                    height: $card-mid-height;
+                }
 
+            }
         }
+        
 
         li#potSize {
+            width: $player-width;
+            position: absolute;
+            bottom: 0px;
+            left: $board-x-middle - ($player-width / 2);
             font-family: $font-stack;
-            font-size: 1.5em;
+            color: #fff;
+            text-align: center;
+            font-size: 1.2em;
             font-weight: bold;
+            font-style: italic;
             list-style: none;
         }
+
+        li#potSize:before{ content: "("; }
+        li#potSize:after{ content: ")"; }
 
 
         li.player {
             display: inline-block;
-            width: ($card-thumb-width * 2) + 60px;
-            height: $card-thumb-height + 125px;
+            width: $player-width;
+            height: $player-height;
             position: absolute;
-            padding: 0px 5px;
+            margin: 0px;
+            padding: 0px 10px;
             color: #000;
 
             h3 {
@@ -121,32 +154,97 @@ section#table {
                     font-weight: normal;
                     font-style: italic;
                 }
-                span.player-money { }
-                span.hand-rank { }
             }
 
-            span.player-hand { }
+            div.player-hand { position: absolute; }
             
         }
 
-        li.seat-1, li.seat-2, li.seat-3, li.seat-4 { top: -220px; /*0 - ($card-thumb-height);*/ }
-        li.seat-5, li.seat-6, li.seat-7, li.seat-8 { bottom: -220px; }
+        li.seat-1, li.seat-2, li.seat-3, li.seat-4,
+        li.seat-5, li.seat-6, li.seat-7, li.seat-8,
+        li.seat-dealer {
+            
+        }
 
-        li.seat-1 { left: 0px; }
+        li.seat-dealer{
+            bottom: 0px - $player-height - $board-border-size;
+            left: $board-x-middle - ($player-width / 2);
+            text-transform: uppercase;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
 
-        li.seat-2 { left: ($card-thumb-width * 2) + 110px; }
+        li.seat-1 {
+            bottom: 0px - $player-height - $board-border-size;
+            left: ($board-x-middle - ($player-width / 2)) + $player-width;
 
-        li.seat-3 { right: ($card-thumb-width * 2) + 110px; }
+            div { top: 0px - $card-thumb-height - $board-border-size; }
+        }
 
-        li.seat-4 { right: 0px; }
+        li.seat-2 {
+            bottom: 0px - $player-height - $board-border-size;
+            right: 0px;
+            
+            div { top: 0px - $card-thumb-height - $board-border-size; }
+        }
 
-        li.seat-5 { left: 0px; }
+        li.seat-3 {
+            top: $board-y-middle - ($board-y-middle / 4);
+            right: 0px - $player-width - $board-border-size;
 
-        li.seat-6 {  left: ($card-thumb-width * 2) + 110px; }
+            div {
+                top: 0px;
+                left: 0px - ($card-thumb-width * 2) - $board-border-size - 5px;
+            }
+        }
 
-        li.seat-7 { right: ($card-thumb-width * 2) + 110px; }
+        li.seat-4 {
+            top: 0 - $player-height - $board-border-size;
+            right: $board-x-middle / 6;
 
-        li.seat-8 { right: 0px; }
+            div { bottom: 0px - $card-thumb-height - $board-border-size; }
+        }
+
+        li.seat-5 {
+            top: 0 - $player-height - $board-border-size;
+            left: $board-x-middle - ($player-width / 2);
+
+            div { bottom: 0px - $card-thumb-height - $board-border-size; }
+        }
+
+        li.seat-6 {
+            top: 0 - $player-height - $board-border-size;
+            left: $board-x-middle / 6;
+
+            div { bottom: 0px - $card-thumb-height - $board-border-size; }
+        }
+
+        li.seat-7 {
+            top: $board-y-middle - ($board-y-middle / 4);
+            left: 0px - $player-width - $board-border-size;
+            text-align: right;
+
+            div {
+                top: 0px;
+                right: 0px - ($card-thumb-width * 2) - $board-border-size - 5px;
+            }
+        }
+
+        li.seat-8 {
+            bottom: 0px - $player-height - $board-border-size;
+            left: 0px;
+            text-align: right;
+            
+            div { top: 0px - $card-thumb-height - $board-border-size; }
+        }
+
+        li.seat-9 {
+            bottom: 0px - $player-height - $board-border-size;
+            left: ($board-x-middle - ($player-width / 2)) - $player-width;
+            text-align: right;
+
+            div { top: 0px - $card-thumb-height - $board-border-size; }
+        }
 
     }
 

@@ -5,11 +5,11 @@
      ?>
 
 
-    <div id="main">
-        <h2>Texas Hold'em - Pro Tips</h2>
+    <section id="main">
+        <h2 class="page-header">Texas Hold'em - Pro Tips</h2>
 
-        <!-- #Start section#tipsCalculatingOdds -->
-        <section id="tipsCalculatingOdds" class="pro-tips">
+        <!-- #Start div#tipsCalculatingOdds -->
+        <div id="tipsCalculatingOdds" class="pro-tips">
             <h4>Your hand</h4>
 
             <p>
@@ -33,7 +33,7 @@
 
             <ul>
                 <li>
-                    <h4>Calculating Odds/Percentages</h4>
+                    <h5>Calculating Odds/Percentages</h5>
                     <p>
                         You can actually calculate what the approximate percentage is of "hitting" your goal hand as you play, it's much easier than you may think.
                     </p>
@@ -82,11 +82,11 @@
                 </li>
 
             </ul>
-        </section>
-        <!-- #End section#tipsCalculatingOdds -->
+        </div>
+        <!-- #End div#tipsCalculatingOdds -->
 
         <!-- #Start section#tipsValueBetting -->
-        <section id="tipsValueBetting" class="pro-tips">
+        <div id="tipsValueBetting" class="pro-tips">
             <h4>"Value" Betting</h4>
             <ul>
                 <li>
@@ -112,11 +112,11 @@
                     </p>
                 </li>
             </ul>
-        </section>
-        <!-- #End section#tipsValueBetting -->
+        </div>
+        <!-- #End div#tipsValueBetting -->
 
-        <!-- #Start section#tipsControlPotSize -->
-        <section id="tipsControlPotSize" class="pro-tips">
+        <!-- #Start div#tipsControlPotSize -->
+        <div id="tipsControlPotSize" class="pro-tips">
             <h4>"Controlling" the Pot Size</h4>
             <ul>
                 <li>
@@ -153,9 +153,9 @@
                     </p>
                 </li>
             </ul>
-        </section>
-        <!-- #End section#tipsControlPotSize -->
-    </div>
+        </div>
+        <!-- #End div#tipsControlPotSize -->
+    </section>
 
 </div> <!-- End of outer-wrapper which opens in header.php -->
 
