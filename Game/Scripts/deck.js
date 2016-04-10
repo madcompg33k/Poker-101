@@ -51,11 +51,12 @@
             /* Find the winner! */
             this.getWinner = function () {
                 for (var p = 0; p < table.players.length; p++) {
-                    table.players[p].handRank = evaluateHand(table.players[p], table.cards);
+                    $scope.table.players[p].handRank = evaluateHand(table.players[p], table.cards);
                 }
 
-                //table.winner = calculateWinner(table.players, table.cards)
+                //table.winner = calculateWinner(table.players)
             }
+
         } ])
     /* Controller for all players */
         .controller('PlayersController', ['$scope', function ($scope) {
@@ -214,7 +215,6 @@
     /* End function to deal the flop */
 
 
-
     var sort_by = function (field, reverse, primer) {
         var key = primer ?
             function (x) { return primer(x[field]) } :
@@ -243,7 +243,7 @@
         hand.sort(sort_by('value', false, parseInt));
 
 
-        var strFlush = false;
+        var straightFlush = false;
         var four = false;
         var full = false;
         var flush = false;
@@ -259,8 +259,9 @@
         var spades = 0;
         var clubs = 0;
 
-        /* Set current cardsToStraight as 1, since you're ALWAYS at least 1 card to a straight */
+        /* Set current cardsToStraight and cardsToStraightFlush as 1, since you're ALWAYS at least 1 card to a straight/straight flush */
         var cardsToStraight = 1;
+        var cardsToStraightFlush = 1;
 
         var matches = 0;
         var z = 0;
@@ -286,17 +287,87 @@
 
             /* Don't check previous card against first, since there is no previous card */
             if (card >= 1) {
-                /* Set previous card */
+                /* Set the previous, and last card's indexes */
                 var previousCard = card - 1;
+                var lastCard = hand.length - 1;
+
+                if ((hand[previousCard].value == 2 && hand[card].value == 3) && hand[lastCard].value == 14) {
+                    /* There is a 2, 3, and an ace, so add 1 to cardsToStraight for the Ace */
+                    cardsToStraight++;
+                }
 
                 /* Find out how many cards the player has to a straight */
                 if (hand[previousCard].value == (hand[card].value - 1)) {
                     /* Add 1 to cards to straight before checking if we have one, and set to true if we do */
                     if (++cardsToStraight >= 5) { straight = true; }
-                } else { cardsToStraight = 1; } /* This card isn't part of the straight, so reset the count */
+                }
+                /* This card isn't part of the straight, and it's not a pair for the prior card, so reset the count */
+                else if (hand[previousCard].value != hand[card].value) {
+                    cardsToStraight = 1;
+                }
+
+
             }
 
         } /* End for loop iterating through current hand */
+
+
+        /* Since we have 7 cards but would only want to use 5, check for straight flush */
+        if (straight && flush) {
+            var lastMatchingCardPos = -1;
+
+
+            for (card = 1; card < hand.length; card++) {
+                /* Set previousCard to the card before the one at the current index */
+                var previousCard = card - 1;
+
+                if (((hand[previousCard].value == 2 && hand[card].value == 3) && hand[lastCard].value == 14) &&
+                    (hand[previousCard].suitVal == hand[card].suitVal && hand[lastCard].suitVal == hand[card].suitVal)) {
+                    /* There is a suited 2, 3, and an ace, so add 1 to cardsToStraightFlush for the Ace */
+                    cardsToStraightFlush++;
+                }
+
+                /* See if the previous card's value is 1 less than the current card */
+                if ((hand[card].value - 1) == hand[previousCard].value) {
+
+                    /* We have a numerical progression, check if suit matches and if so, add 1 to cardsToStraightFlush */
+                    if (hand[card].suitVal == hand[previousCard].suitVal) {
+                        /* Set the number for the last matching card's index (lastMatchingCardPos) to the current index (card) */
+                        lastMatchingCardPos = card;
+                        /* We have a suited straight progression, so add 1 to cardsToStraightFlush */
+                        if (++cardsToStraightFlush >= 5) { straightFlush = true; }
+                    }
+
+
+                    /* Check to see if this card and the previous is a pair, and if so, check the current card against the last matchingCardPos */
+                } else if (hand[card].value == hand[previousCard].value) {
+
+                    if (lastMatchingCardPos >= 0 &&                                     /* Make sure there "is" a lastMatchingCardPosition */
+                        ((hand[card].value - 1) == hand[lastMatchingCardPos].value &&   /* Check current card value - 1 against last matching card's value */
+                        hand[card].suitVal == hand[lastMatchingCardPos].suitVal)) {     /* Check current card's suit against last matching card's suit */
+
+                        /* The previous card is a pair for this one, AND the card in the last matching index follows the suited straight progression */
+
+
+                        /* Set the number for the last matching card's index (lastMatchingCardPos) to the current index (card) */
+                        lastMatchingCardPos = card;
+
+                        if (++cardsToStraightFlush >= 5) { straightFlush = true; }
+
+
+                    } else {
+                        /* There is no straight progression and the previous card isn't a pair for this one, so reset our variables */
+                        lastMatchingCardPos = -1;
+                        cardsToStraightFlush = 1;
+                    }
+                } else {
+                    /* There is no straight progression and the previous card isn't a pair for this one, so reset our variables */
+                    lastMatchingCardPos = -1;
+                    cardsToStraightFlush = 1;
+                }
+
+            } /* End for loop */
+        }
 
 
         /* Check for four of a kind */
@@ -344,7 +415,7 @@
         }
 
         /* If we've found something so far, go ahead and return the hand rank */
-        if (straight && flush) { return 9; }
+        if (straightFlush) { return 9; }
         else if (four) { return 8; }
         else if (full) { return 7; }
         else if (flush) { return 6; }
@@ -746,7 +817,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 2,
+            suitVal: 1,
             imgFull: "/game/images/cards/2-hearts.png",
             imgMid: "/game/images/cards/2-hearts-mid.png",
             imgThumb: "/game/images/cards/2-hearts-thumb.png"
@@ -758,7 +829,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 3,
+            suitVal: 1,
             imgFull: "/game/images/cards/3-hearts.png",
             imgMid: "/game/images/cards/3-hearts-mid.png",
             imgThumb: "/game/images/cards/3-hearts-thumb.png"
@@ -770,7 +841,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 4,
+            suitVal: 1,
             imgFull: "/game/images/cards/4-hearts.png",
             imgMid: "/game/images/cards/4-hearts-mid.png",
             imgThumb: "/game/images/cards/4-hearts-thumb.png"
@@ -782,7 +853,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 5,
+            suitVal: 1,
             imgFull: "/game/images/cards/5-hearts.png",
             imgMid: "/game/images/cards/5-hearts-mid.png",
             imgThumb: "/game/images/cards/5-hearts-thumb.png"
@@ -794,7 +865,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 6,
+            suitVal: 1,
             imgFull: "/game/images/cards/6-hearts.png",
             imgMid: "/game/images/cards/6-hearts-mid.png",
             imgThumb: "/game/images/cards/6-hearts-thumb.png"
@@ -806,7 +877,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 7,
+            suitVal: 1,
             imgFull: "/game/images/cards/7-hearts.png",
             imgMid: "/game/images/cards/7-hearts-mid.png",
             imgThumb: "/game/images/cards/7-hearts-thumb.png"
@@ -818,7 +889,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 8,
+            suitVal: 1,
             imgFull: "/game/images/cards/8-hearts.png",
             imgMid: "/game/images/cards/8-hearts-mid.png",
             imgThumb: "/game/images/cards/8-hearts-thumb.png"
@@ -830,7 +901,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 9,
+            suitVal: 1,
             imgFull: "/game/images/cards/9-hearts.png",
             imgMid: "/game/images/cards/9-hearts-mid.png",
             imgThumb: "/game/images/cards/9-hearts-thumb.png"
@@ -842,7 +913,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 10,
+            suitVal: 1,
             imgFull: "/game/images/cards/10-hearts.png",
             imgMid: "/game/images/cards/10-hearts-mid.png",
             imgThumb: "/game/images/cards/10-hearts-thumb.png"
@@ -854,7 +925,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 11,
+            suitVal: 1,
             imgFull: "/game/images/cards/J-hearts.png",
             imgMid: "/game/images/cards/J-hearts-mid.png",
             imgThumb: "/game/images/cards/J-hearts-thumb.png"
@@ -866,7 +937,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 12,
+            suitVal: 1,
             imgFull: "/game/images/cards/Q-hearts.png",
             imgMid: "/game/images/cards/Q-hearts-mid.png",
             imgThumb: "/game/images/cards/Q-hearts-thumb.png"
@@ -878,7 +949,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 13,
+            suitVal: 1,
             imgFull: "/game/images/cards/K-hearts.png",
             imgMid: "/game/images/cards/K-hearts-mid.png",
             imgThumb: "/game/images/cards/K-hearts-thumb.png"
@@ -890,7 +961,7 @@
             qty: 1,
             suit: "Hearts",
             shortsuit: '♥',
-            suitVal: 14,
+            suitVal: 1,
             imgFull: "/game/images/cards/A-hearts.png",
             imgMid: "/game/images/cards/A-hearts-mid.png",
             imgThumb: "/game/images/cards/A-hearts-thumb.png"
@@ -914,7 +985,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 3,
+            suitVal: 2,
             imgFull: "/game/images/cards/3-diamonds.png",
             imgMid: "/game/images/cards/3-diamonds-mid.png",
             imgThumb: "/game/images/cards/3-diamonds-thumb.png"
@@ -926,7 +997,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 4,
+            suitVal: 2,
             imgFull: "/game/images/cards/4-diamonds.png",
             imgMid: "/game/images/cards/4-diamonds-mid.png",
             imgThumb: "/game/images/cards/4-diamonds-thumb.png"
@@ -938,7 +1009,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 5,
+            suitVal: 2,
             imgFull: "/game/images/cards/5-diamonds.png",
             imgMid: "/game/images/cards/5-diamonds-mid.png",
             imgThumb: "/game/images/cards/5-diamonds-thumb.png"
@@ -950,7 +1021,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 6,
+            suitVal: 2,
             imgFull: "/game/images/cards/6-diamonds.png",
             imgMid: "/game/images/cards/6-diamonds-mid.png",
             imgThumb: "/game/images/cards/6-diamonds-thumb.png"
@@ -962,7 +1033,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 7,
+            suitVal: 2,
             imgFull: "/game/images/cards/7-diamonds.png",
             imgMid: "/game/images/cards/7-diamonds-mid.png",
             imgThumb: "/game/images/cards/7-diamonds-thumb.png"
@@ -974,7 +1045,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 8,
+            suitVal: 2,
             imgFull: "/game/images/cards/8-diamonds.png",
             imgMid: "/game/images/cards/8-diamonds-mid.png",
             imgThumb: "/game/images/cards/8-diamonds-thumb.png"
@@ -986,7 +1057,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 9,
+            suitVal: 2,
             imgFull: "/game/images/cards/9-diamonds.png",
             imgMid: "/game/images/cards/9-diamonds-mid.png",
             imgThumb: "/game/images/cards/9-diamonds-thumb.png"
@@ -998,7 +1069,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 10,
+            suitVal: 2,
             imgFull: "/game/images/cards/10-diamonds.png",
             imgMid: "/game/images/cards/10-diamonds-mid.png",
             imgThumb: "/game/images/cards/10-diamonds-thumb.png"
@@ -1010,7 +1081,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 11,
+            suitVal: 2,
             imgFull: "/game/images/cards/J-diamonds.png",
             imgMid: "/game/images/cards/J-diamonds-mid.png",
             imgThumb: "/game/images/cards/J-diamonds-thumb.png"
@@ -1022,7 +1093,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 12,
+            suitVal: 2,
             imgFull: "/game/images/cards/Q-diamonds.png",
             imgMid: "/game/images/cards/Q-diamonds-mid.png",
             imgThumb: "/game/images/cards/Q-diamonds-thumb.png"
@@ -1034,7 +1105,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 13,
+            suitVal: 2,
             imgFull: "/game/images/cards/K-diamonds.png",
             imgMid: "/game/images/cards/K-diamonds-mid.png",
             imgThumb: "/game/images/cards/K-diamonds-thumb.png"
@@ -1046,7 +1117,7 @@
             qty: 1,
             suit: "Diamonds",
             shortsuit: '♦',
-            suitVal: 14,
+            suitVal: 2,
             imgFull: "/game/images/cards/A-diamonds.png",
             imgMid: "/game/images/cards/A-diamonds-mid.png",
             imgThumb: "/game/images/cards/A-diamonds-thumb.png"
@@ -1058,7 +1129,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 2,
+            suitVal: 3,
             imgFull: "/game/images/cards/2-spades.png",
             imgMid: "/game/images/cards/2-spades-mid.png",
             imgThumb: "/game/images/cards/2-spades-thumb.png"
@@ -1082,7 +1153,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 4,
+            suitVal: 3,
             imgFull: "/game/images/cards/4-spades.png",
             imgMid: "/game/images/cards/4-spades-mid.png",
             imgThumb: "/game/images/cards/4-spades-thumb.png"
@@ -1094,7 +1165,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 5,
+            suitVal: 3,
             imgFull: "/game/images/cards/5-spades.png",
             imgMid: "/game/images/cards/5-spades-mid.png",
             imgThumb: "/game/images/cards/5-spades-thumb.png"
@@ -1106,7 +1177,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 6,
+            suitVal: 3,
             imgFull: "/game/images/cards/6-spades.png",
             imgMid: "/game/images/cards/6-spades-mid.png",
             imgThumb: "/game/images/cards/6-spades-thumb.png"
@@ -1118,7 +1189,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 7,
+            suitVal: 3,
             imgFull: "/game/images/cards/7-spades.png",
             imgMid: "/game/images/cards/7-spades-mid.png",
             imgThumb: "/game/images/cards/7-spades-thumb.png"
@@ -1130,7 +1201,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 8,
+            suitVal: 3,
             imgFull: "/game/images/cards/8-spades.png",
             imgMid: "/game/images/cards/8-spades-mid.png",
             imgThumb: "/game/images/cards/8-spades-thumb.png"
@@ -1142,7 +1213,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 9,
+            suitVal: 3,
             imgFull: "/game/images/cards/9-spades.png",
             imgMid: "/game/images/cards/9-spades-mid.png",
             imgThumb: "/game/images/cards/9-spades-thumb.png"
@@ -1154,7 +1225,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 10,
+            suitVal: 3,
             imgFull: "/game/images/cards/10-spades.png",
             imgMid: "/game/images/cards/10-spades-mid.png",
             imgThumb: "/game/images/cards/10-spades-thumb.png"
@@ -1166,7 +1237,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 11,
+            suitVal: 3,
             imgFull: "/game/images/cards/J-spades.png",
             imgMid: "/game/images/cards/J-spades-mid.png",
             imgThumb: "/game/images/cards/J-spades-thumb.png"
@@ -1178,7 +1249,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 12,
+            suitVal: 3,
             imgFull: "/game/images/cards/Q-spades.png",
             imgMid: "/game/images/cards/Q-spades-mid.png",
             imgThumb: "/game/images/cards/Q-spades-thumb.png"
@@ -1190,7 +1261,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 13,
+            suitVal: 3,
             imgFull: "/game/images/cards/K-spades.png",
             imgMid: "/game/images/cards/K-spades-mid.png",
             imgThumb: "/game/images/cards/K-spades-thumb.png"
@@ -1202,7 +1273,7 @@
             qty: 1,
             suit: "Spades",
             shortsuit: '♠',
-            suitVal: 14,
+            suitVal: 3,
             imgFull: "/game/images/cards/A-spades.png",
             imgMid: "/game/images/cards/A-spades-mid.png",
             imgThumb: "/game/images/cards/A-spades-thumb.png"
@@ -1214,7 +1285,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 2,
+            suitVal: 4,
             imgFull: "/game/images/cards/2-clubs.png",
             imgMid: "/game/images/cards/2-clubs-mid.png",
             imgThumb: "/game/images/cards/2-clubs-thumb.png"
@@ -1226,7 +1297,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 3,
+            suitVal: 4,
             imgFull: "/game/images/cards/3-clubs.png",
             imgMid: "/game/images/cards/3-clubs-mid.png",
             imgThumb: "/game/images/cards/3-clubs-thumb.png"
@@ -1250,7 +1321,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 5,
+            suitVal: 4,
             imgFull: "/game/images/cards/5-clubs.png",
             imgMid: "/game/images/cards/5-clubs-mid.png",
             imgThumb: "/game/images/cards/5-clubs-thumb.png"
@@ -1262,7 +1333,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 6,
+            suitVal: 4,
             imgFull: "/game/images/cards/6-clubs.png",
             imgMid: "/game/images/cards/6-clubs-mid.png",
             imgThumb: "/game/images/cards/6-clubs-thumb.png"
@@ -1274,7 +1345,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 7,
+            suitVal: 4,
             imgFull: "/game/images/cards/7-clubs.png",
             imgMid: "/game/images/cards/7-clubs-mid.png",
             imgThumb: "/game/images/cards/7-clubs-thumb.png"
@@ -1286,7 +1357,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 8,
+            suitVal: 4,
             imgFull: "/game/images/cards/8-clubs.png",
             imgMid: "/game/images/cards/8-clubs-mid.png",
             imgThumb: "/game/images/cards/8-clubs-thumb.png"
@@ -1298,7 +1369,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 9,
+            suitVal: 4,
             imgFull: "/game/images/cards/9-clubs.png",
             imgMid: "/game/images/cards/9-clubs-mid.png",
             imgThumb: "/game/images/cards/9-clubs-thumb.png"
@@ -1310,7 +1381,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 10,
+            suitVal: 4,
             imgFull: "/game/images/cards/10-clubs.png",
             imgMid: "/game/images/cards/10-clubs-mid.png",
             imgThumb: "/game/images/cards/10-clubs-thumb.png"
@@ -1322,7 +1393,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 11,
+            suitVal: 4,
             imgFull: "/game/images/cards/J-clubs.png",
             imgMid: "/game/images/cards/J-clubs-mid.png",
             imgThumb: "/game/images/cards/J-clubs-thumb.png"
@@ -1334,7 +1405,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 12,
+            suitVal: 4,
             imgFull: "/game/images/cards/Q-clubs.png",
             imgMid: "/game/images/cards/Q-clubs-mid.png",
             imgThumb: "/game/images/cards/Q-clubs-thumb.png"
@@ -1346,7 +1417,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 13,
+            suitVal: 4,
             imgFull: "/game/images/cards/K-clubs.png",
             imgMid: "/game/images/cards/K-clubs-mid.png",
             imgThumb: "/game/images/cards/K-clubs-thumb.png"
@@ -1358,7 +1429,7 @@
             qty: 1,
             suit: "Clubs",
             shortsuit: '♣',
-            suitVal: 14,
+            suitVal: 4,
             imgFull: "/game/images/cards/A-clubs.png",
             imgMid: "/game/images/cards/A-clubs-mid.png",
             imgThumb: "/game/images/cards/A-clubs-thumb.png"
