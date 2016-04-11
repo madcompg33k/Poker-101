@@ -5,13 +5,13 @@
         <meta charset="utf-8" />
         <title>Poker 101</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        
+        <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
         <script src="https://use.typekit.net/hiv2jke.js"></script>
         <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
         <script type="text/javascript" src="/Scripts/angular.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
     </head>
     <body>
         <div class="outer-wrapper">

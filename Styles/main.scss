@@ -1,5 +1,5 @@
 ﻿$main-background-color: #fff;
-$font-stack:            Helvetica, sans-serif;
+$font-stack:            "acumin-pro", sans-serif;
 $font-color:            #434343;
 $font-size:             1.2em;
 $background-color-dark: #0f3e0f;
@@ -85,13 +85,13 @@ html {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-style: $font-stack!important;
 }
 
 body {
     background-color: $main-background-color;
     color: $font-color;
     font-size: $font-size;
-    font-family: $font-stack;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -180,12 +180,23 @@ section#main {
             text-align: center;
         }
 
-        p {
-            width: 40%;
+        section {
+            width: 100%;
             margin: 0px auto;
-            padding: 5px 20px;
+            overflow: auto;
+            
+            blockquote {
+                display: inline-block;
+                width: 25%;
+                margin: 10px 4%;
+                padding: 5px 20px;
+                float: left;
+                font-size: 1em;
+                font-weight: 400;
+            }
+            blockquote:last-of-type { padding-bottom: 20px; }
+            blockquote:after{ content: ""; };
         }
-        p:last-of-type { padding-bottom: 20px; }
     }
 
 }

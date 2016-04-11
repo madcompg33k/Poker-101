@@ -45,7 +45,7 @@ header {
         color: #fff;
         font-size: 3em;
         font-weight: bold;
-        text-transform: uppercase;
+        font-variant: small-caps;
 
         a span::first-letter { font-size: $first-letter-size; }
     }
@@ -78,7 +78,7 @@ header {
                     color: $color;
                     font-size: $font-size;
                     font-weight: bold;
-                    text-transform: uppercase;
+                    font-variant: small-caps;
                     text-align: center;
                 }
 

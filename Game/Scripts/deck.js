@@ -22,9 +22,18 @@
             deck = $scope.deck;
             $scope.table = {
                 players: people,
+                dealerSeat: 0,
                 cards: [],
                 shuffledDeck: [],
                 money: 0,
+                smallBlind: {
+                    seat: 8,
+                    amt: 1
+                },
+                bigBlind: {
+                    seat: 7,
+                    amt: 2
+                },
                 chips: [],
                 handHistory: [],
                 winner: {}
@@ -35,14 +44,7 @@
 
             /* Deal the cards to the players */
             this.dealCards = function () {
-                /* Reset board */
-                $scope.table.cards.length = 0;
-                $scope.table.shuffledDeck = shuffle($scope.cards);
-                $scope.table.players = dealCards(table.players)
-
-                for (var p = 0; p < $scope.table.players.length; p++) {
-                    $scope.table.players[p].handRank = null;
-                }
+                table = newHand(table);
             }
             this.dealFlop = function () { table.cards = dealBoard(table.players, table.cards, 3) }
             this.dealTurn = function () { table.cards = dealBoard(table.players, table.cards, 1) }
@@ -54,7 +56,24 @@
                     $scope.table.players[p].handRank = evaluateHand(table.players[p], table.cards);
                 }
 
-                //table.winner = calculateWinner(table.players)
+                table.winner = {
+                    seat: -1,
+                    handRank: 0
+                };
+                var tiedRanks = [];
+                for (var p = 0; p < table.players.length; p++) {
+                    if (table.players[p].handRank > table.winner.handRank) {
+                        table.winner.seat = p;
+                        table.winner.handRank = table.players[p].handRank;
+                    } else if (table.players[p].handRank == table.winner.handrank) {
+                        table.winner.seat = table.players[p].hand[players[p].hand.length - 1].value > table.players[table.winner.seat].hand[players[table.winner.seat].hand.length - 1].value
+                            ? p : table.winner.seat;
+                    }
+                }
+
+                table.players[table.winner.seat].money = parseInt(table.players[table.winner.seat].money, 10) + parseInt(table.money, 10);
+                table.money = parseInt(0, 10);
+
             }
 
         } ])
@@ -73,6 +92,7 @@
                 /* Create an empty player object */
                 this.player = {
                     name: this.player.name,
+                    isDealer: false,
                     money: 200,
                     chips: [
                         {
@@ -136,6 +156,53 @@
             };
         } ])
 
+
+    /* Perform all logic/functionality for dealing a new hand */
+    function newHand(table) {
+        /* Reset board */
+        table.cards.length = 0;
+        table.shuffledDeck = shuffle(cards);
+        table.players = dealCards(table.players);
+        table.winner = {
+            seat: -1,
+            handRank: 0
+        };
+
+        /* Reset each player's hand rank */
+        for (var seat = 0; seat < table.players.length; seat++) {
+            table.players[seat].hand.length = 0;
+            table.players[seat].handRank = null;
+        }
+
+        /* Remove dealer from the previous dealer */
+        table.players[table.dealerSeat].isDealer = false;
+
+        /* Find what seat to change to the new dealer */
+        table.dealerSeat == 0 ? table.dealerSeat = (table.players.length - 1) : table.dealerSeat--;
+        /* Seat the new dealer seat to isDealer = true */
+        table.players[table.dealerSeat].isDealer = true;
+
+        /* Remove small blind from whomever was the previous small blind */
+        table.players[table.smallBlind.seat].isSmallBlind = false;
+        table.smallBlind.seat == 0 ? table.smallBlind.seat = (table.players.length - 1) : table.smallBlind.seat--;
+        /* Set the new small blind seat */
+        table.players[table.smallBlind.seat].isSmallBlind = true;
+
+        /* Remove big blind from whomever was the previous big blind */
+        table.players[table.bigBlind.seat].isBigBlind = false;
+        table.bigBlind.seat == 0 ? table.bigBlind.seat = (table.players.length - 1) : table.bigBlind.seat--;
+        /* Set the new big blind seat */
+        table.players[table.bigBlind.seat].isBigBlind = true;
+
+
+        /* Pay the blinds */
+        table.players[table.smallBlind.seat].money = parseInt(table.players[table.smallBlind.seat].money, 10) - parseInt(table.smallBlind.amt, 10);
+        table.money = parseInt(table.money, 10) + parseInt(table.smallBlind.amt, 10);
+        table.players[table.bigBlind.seat].money = parseInt(table.players[table.bigBlind.seat].money, 10) - parseInt(table.bigBlind.amt, 10);
+        table.money = parseInt(table.money, 10) + parseInt(table.bigBlind.amt, 10);
+
+        return table;
+    }
 
     /* Begin function to randomize/shuffle the "deck" array */
     function shuffle(d) {
@@ -232,15 +299,15 @@
 
     /* Still needs extra logic to hand high card, highest pair(s)/three of a kind, and highest hand for FH vs. FH */
     function evaluateHand(player, cards) {
-        hand = [];
+        //hand = [];
 
         /* Add the player's hole cards and cards from the board to the hand object */
-        hand.push(player.cards[0]);
-        hand.push(player.cards[1]);
-        for (var i = 0; i < cards.length; i++) { hand.push(cards[i]); }
+        player.hand.push(player.cards[0]);
+        player.hand.push(player.cards[1]);
+        for (var i = 0; i < cards.length; i++) { player.hand.push(cards[i]); }
 
         /* Sort hand in order of value, lowest to highest */
-        hand.sort(sort_by('value', false, parseInt));
+        player.hand.sort(sort_by('value', false, parseInt));
 
 
         var straightFlush = false;
@@ -267,10 +334,10 @@
         var z = 0;
 
         /* Iterate through all of the player's cards */
-        for (card = 0; card < hand.length; card++) {
+        for (card = 0; card < player.hand.length; card++) {
 
             /* Check to see which suit this card is, and add to the total number of that suit */
-            switch (hand[card].suit) {
+            switch (player.hand[card].suit) {
                 case 'Hearts':
                     if (++hearts >= 5) { flush = true; }
                     break;
@@ -289,20 +356,20 @@
             if (card >= 1) {
                 /* Set the previous, and last card's indexes */
                 var previousCard = card - 1;
-                var lastCard = hand.length - 1;
+                var lastCard = player.hand.length - 1;
 
-                if ((hand[previousCard].value == 2 && hand[card].value == 3) && hand[lastCard].value == 14) {
+                if ((player.hand[previousCard].value == 2 && player.hand[card].value == 3) && player.hand[lastCard].value == 14) {
                     /* There is a 2, 3, and an ace, so add 1 to cardsToStraight for the Ace */
                     cardsToStraight++;
                 }
 
                 /* Find out how many cards the player has to a straight */
-                if (hand[previousCard].value == (hand[card].value - 1)) {
+                if (player.hand[previousCard].value == (player.hand[card].value - 1)) {
                     /* Add 1 to cards to straight before checking if we have one, and set to true if we do */
                     if (++cardsToStraight >= 5) { straight = true; }
                 }
                 /* This card isn't part of the straight, and it's not a pair for the prior card, so reset the count */
-                else if (hand[previousCard].value != hand[card].value) {
+                else if (player.hand[previousCard].value != player.hand[card].value) {
                     cardsToStraight = 1;
                 }
 
@@ -317,21 +384,21 @@
             var lastMatchingCardPos = -1;
 
 
-            for (card = 1; card < hand.length; card++) {
+            for (card = 1; card < player.hand.length; card++) {
                 /* Set previousCard to the card before the one at the current index */
                 var previousCard = card - 1;
 
-                if (((hand[previousCard].value == 2 && hand[card].value == 3) && hand[lastCard].value == 14) &&
-                    (hand[previousCard].suitVal == hand[card].suitVal && hand[lastCard].suitVal == hand[card].suitVal)) {
+                if (((player.hand[previousCard].value == 2 && player.hand[card].value == 3) && player.hand[lastCard].value == 14) &&
+                    (player.hand[previousCard].suitVal == player.hand[card].suitVal && player.hand[lastCard].suitVal == player.hand[card].suitVal)) {
                     /* There is a suited 2, 3, and an ace, so add 1 to cardsToStraightFlush for the Ace */
                     cardsToStraightFlush++;
                 }
 
                 /* See if the previous card's value is 1 less than the current card */
-                if ((hand[card].value - 1) == hand[previousCard].value) {
+                if ((player.hand[card].value - 1) == player.hand[previousCard].value) {
 
                     /* We have a numerical progression, check if suit matches and if so, add 1 to cardsToStraightFlush */
-                    if (hand[card].suitVal == hand[previousCard].suitVal) {
+                    if (player.hand[card].suitVal == player.hand[previousCard].suitVal) {
                         /* Set the number for the last matching card's index (lastMatchingCardPos) to the current index (card) */
                         lastMatchingCardPos = card;
                         /* We have a suited straight progression, so add 1 to cardsToStraightFlush */
@@ -340,11 +407,11 @@
 
 
                     /* Check to see if this card and the previous is a pair, and if so, check the current card against the last matchingCardPos */
-                } else if (hand[card].value == hand[previousCard].value) {
+                } else if (player.hand[card].value == player.hand[previousCard].value) {
 
                     if (lastMatchingCardPos >= 0 &&                                     /* Make sure there "is" a lastMatchingCardPosition */
-                        ((hand[card].value - 1) == hand[lastMatchingCardPos].value &&   /* Check current card value - 1 against last matching card's value */
-                        hand[card].suitVal == hand[lastMatchingCardPos].suitVal)) {     /* Check current card's suit against last matching card's suit */
+                        ((player.hand[card].value - 1) == player.hand[lastMatchingCardPos].value &&   /* Check current card value - 1 against last matching card's value */
+                        player.hand[card].suitVal == hand[lastMatchingCardPos].suitVal)) {     /* Check current card's suit against last matching card's suit */
 
                         /* The previous card is a pair for this one, AND the card in the last matching index follows the suited straight progression */
 
@@ -377,7 +444,7 @@
         for (var i = 0; i < 4; i++) {
             k = i;
 
-            while (k < i + 3 && hand[k].value == hand[k + 1].value) {
+            while (k < i + 3 && player.hand[k].value == player.hand[k + 1].value) {
                 k++;
 
                 if (k == i + 3) {
@@ -393,7 +460,7 @@
                 k = i;
                 var nextCard = k + 1;
 
-                while (k < i + 2 && hand[k].value == hand[nextCard].value) {
+                while (k < i + 2 && player.hand[k].value == player.hand[nextCard].value) {
                     k++;
                     nextCard = k + 1;
 
@@ -401,13 +468,13 @@
                         three = true;
 
                         if (i == 0) {
-                            if (hand[3].value == hand[4].value || hand[4].value == hand[5].value || hand[5].value == hand[6].value) { full = true; }
+                            if (player.hand[3].value == player.hand[4].value || player.hand[4].value == player.hand[5].value || player.hand[5].value == player.hand[6].value) { full = true; }
                         } else if (i == 1) {
-                            if (hand[4].value == hand[5].value || hand[5].value == hand[6].value) { full = true; }
+                            if (player.hand[4].value == player.hand[5].value || player.hand[5].value == player.hand[6].value) { full = true; }
                         } else if (i == 2) {
-                            if (hand[0].value == hand[1].value || hand[5].value == hand[6].value) { full = true; }
+                            if (player.hand[0].value == player.hand[1].value || player.hand[5].value == player.hand[6].value) { full = true; }
                         } else {
-                            if (hand[0].value == hand[1].value || hand[1].value == hand[2].value) { full = true; }
+                            if (player.hand[0].value == player.hand[1].value || player.hand[1].value == player.hand[2].value) { full = true; }
                         }
                     }
                 }
@@ -425,7 +492,7 @@
 
         /* Check for pairs */
         for (k = 0; k < 6; k++) {
-            if (hand[k].value == hand[k + 1].value) { pairs++; }
+            if (player.hand[k].value == player.hand[k + 1].value) { pairs++; }
         }
 
 
@@ -457,10 +524,6 @@
     }
     /* End function to find out who won */
 
-    function hasPair(cards) {
-
-    }
-
     /* ^^^ ^^^ ^^^ Hand Hierarchy/Winner Code and Logic ^^^ ^^^ ^^^ */
 
 
@@ -471,6 +534,7 @@
     var people = [
             {
                 name: 'Melanie',
+                isDealer: true,
                 money: 200,
                 chips: [
                     {
@@ -514,11 +578,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Alison',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -562,11 +630,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Krish',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -610,11 +682,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Lauren',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -658,11 +734,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Britney',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -706,11 +786,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Vien',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -754,11 +838,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Alex',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -802,11 +890,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Tina',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -850,11 +942,15 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: false,
+                isBigBlind: true,
                 cards: [],
+                hand: [],
                 handRank: 0
             },
             {
                 name: 'Jess',
+                isDealer: false,
                 money: 200,
                 chips: [
                     {
@@ -898,7 +994,10 @@
                         qty: 1
                     }
                 ],
+                isSmallBlind: true,
+                isBigBlind: false,
                 cards: [],
+                hand: [],
                 handRank: 0
             }
     ];

@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8" />
          
+        <script src="https://use.typekit.net/hiv2jke.js"></script>
+        <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
         <script type="text/javascript" src="/Scripts/angular.js"></script>
         <script type="text/javascript" src="/Game/Scripts/deck.js"></script>
 
@@ -80,12 +83,20 @@
                     </button>
 
                     <hr />
+                    <label>Small Blind (Seat {{ table.smallBlind.seat }}): </label>
+                    <input type="text" data-ng-model="table.smallBlind.amt" />
+                    <br />
+                    <br />
+                    <label>Big Blind (Seat {{ table.bigBlind.seat }}): </label>
+                    <input type="text" data-ng-model="table.bigBlind.amt" />
 
-                    <button class="game-play-button" data-ng-click="tableCtrl.dealCards()">
+                    <hr />
+
+                    <button class="game-play-button" data-ng-click="tableCtrl.dealCards()" data-ng-show="table.winner.seat >= 0 || table.players[0].cards.length == 0">
                         Deal Cards
                     </button>
 
-                    <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-hide="table.cards.length || table.players[0].cards.length !== 2">
+                    <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-hide="!table.winner.seat >= 0 && table.cards.length || table.players[0].cards.length !== 2">
                         Deal the Flop!
                     </button>
                             
@@ -97,7 +108,7 @@
                         Deal the River!
                     </button>
                             
-                    <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-hide="table.cards.length !== 5">
+                    <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-hide="table.cards.length !== 5 || table.winner.seat >= 0">
                         Who Won!?
                     </button>
 
@@ -117,8 +128,15 @@
 
                                 <h3 class="player-name">
                                     {{ player.name }}
+
+                                    <span data-ng-show="table.winner.seat === $index" class="winning-player">
+                                        (Winner!)
+                                    </span>
+
                                     <span class="player-money">({{ player.money | currency }})</span>
                                     <span class="hand-rank" data-ng-show="player.handRank">(Hand Rank: {{ player.handRank }})</span>
+                                    <span data-ng-show="player.isSmallBlind">(Small Blind)</span>
+                                    <span data-ng-show="player.isBigBlind">(Big Blind)</span>
                                 </h3>
 
                                 <!-- ul>
@@ -136,6 +154,7 @@
                                     <span data-ng-repeat="card in player.cards">
                                         <img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" />
                                     </span>
+                                    <img class="dealer-button" src="/Game/Images/Chips/dealer-200.png" width="50" height="50" data-ng-show="player.isDealer" />
                                 </div>
 
                             </li>
@@ -146,7 +165,10 @@
                                 </li>
                             </div>
                             
-                            <li id="potSize">Pot Size: {{ table.money | currency }}</li>
+                            <li id="potSize">
+                                <span class="table-money">Pot Size: {{ table.money | currency }}</span>
+                                <span class="table-money">Blinds: {{ table.smallBlind.amt }} / {{ table.bigBlind.amt }}</span>
+                            </li>
                         </ul>
                         
                     </div>
