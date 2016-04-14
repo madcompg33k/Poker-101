@@ -1,0 +1,49 @@
+<aside class="game-options">
+    <form id="addPlayer" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="playerCtrl.addPlayer(game)">
+        <label>New Player: </label>
+        <input type="text" data-ng-model="playerCtrl.player.name" />
+        <input type="submit" value="Add Player" />
+        <br />
+
+        <div id="playerList">
+            <ul>
+                <li data-ng-repeat="player in gameCtrl.players">
+                    {{ player.name }}
+                </li>
+            </ul>
+        </div>
+    </form>
+                    
+    <hr />
+
+    <form class="actions clearfix box" name="playerForm" data-ng-submit="">
+        <label>Small Blind (Seat {{ table.smallBlind.seat + 1 }}): </label>
+        <input type="text" data-ng-model="table.smallBlind.amt" />
+        <br />
+        <br />
+        <label>Big Blind (Seat {{ table.bigBlind.seat + 1 }}): </label>
+        <input type="text" data-ng-model="table.bigBlind.amt" />
+
+        <hr />
+
+        <button class="game-play-button" data-ng-click="tableCtrl.dealCards()" data-ng-show="gameCtrl.players[0].handRank || !gameCtrl.players[0].cards.length">
+            Deal Cards
+        </button>
+
+        <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-show="!table.cards.length && gameCtrl.players[0].cards.length">
+            Deal the Flop!
+        </button>
+                            
+        <button class="game-play-button" data-ng-click="tableCtrl.dealTurn()" data-ng-show="table.cards.length === 3 && gameCtrl.players[0].cards.length">
+            Deal the Turn!
+        </button>
+                            
+        <button class="game-play-button" data-ng-click="tableCtrl.dealRiver()" data-ng-show="table.cards.length === 4 && gameCtrl.players[0].cards.length">
+            Deal the River!
+        </button>
+                            
+        <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-show="table.cards.length === 5 && gameCtrl.players[0].cards.length && !gameCtrl.players[0].handRank">
+            Who Won!?
+        </button>                 
+    </form>
+</aside>
