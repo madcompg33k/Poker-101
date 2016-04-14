@@ -43,17 +43,6 @@ function clearBoard(){
 
     /* Reset other table data */
     table.money = 0;
-    table.winner = {};
-}
-/* End function to clear all cards from game.players and the table */
-
-/* Perform all logic/functionality for dealing a new hand */
-function newHand() {
-    /* Reset board */
-    clearBoard();
-
-    game.players = dealCards(table);
-
     table.winner = {
         seat: -1,
         handRank: 0
@@ -64,35 +53,43 @@ function newHand() {
         game.players[seat].hand.length = 0;
         game.players[seat].handRank = null;
     }
+}
+/* End function to clear all cards from game.players and the table */
 
-    /* Remove dealer from the previous dealer */
-    game.players[table.dealerSeat].isDealer = false;
+/* Perform all logic/functionality for dealing a new hand */
+function newHand() {
+    /* Don't begin a new hand if we only have 1 player */
+    if (game.players.length < 2){
+        game.errorMessage = "You cannot play with only one player.";
+        return;
+    }
+    
+    /* Reset board */
+    clearBoard();
 
-    /* Find what seat to change to the new dealer */
-    table.dealerSeat == 0 ? table.dealerSeat = (game.players.length - 1) : table.dealerSeat--;
-    /* Seat the new dealer seat to isDealer = true */
-    game.players[table.dealerSeat].isDealer = true;
+    /* Move the dealer button and the blinds */
+    if (table.smallBlind.seat == 0 && table.bigBlind.seat == 0 && table.dealer.seat == 0){
+        table.dealer.seat = game.players.length - 1;
+        table.smallBlind.seat = game.players.length - 2;
+        table.bigBlind.seat = (game.players.length - 3) < 0 ? (game.players.length - 3) * 1 : game.players.length - 3;
+    }else {
+        table.dealer.seat = table.dealer.seat == 0 ? game.players.length - 1 : table.dealer.seat - 1;
+        table.smallBlind.seat = table.smallBlind.seat == 0 ? game.players.length - 1 : table.smallBlind.seat - 1;
+        table.bigBlind.seat = table.bigBlind.seat == 0 ? game.players.length - 1 : table.bigBlind.seat - 1;
+    }
 
-    /* Remove small blind from whomever was the previous small blind */
-    //game.players[table.smallBlind.seat].isSmallBlind = false;
-    //table.smallBlind.seat == 0 ? table.smallBlind.seat = (game.players.length - 1) : table.smallBlind.seat--;
-    /* Set the new small blind seat */
-    //game.players[table.smallBlind.seat].isSmallBlind = true;
-
-    /* Remove big blind from whomever was the previous big blind */
-    //game.players[table.bigBlind.seat].isBigBlind = false;
-    //table.bigBlind.seat == 0 ? table.bigBlind.seat = (game.players.length - 1) : table.bigBlind.seat--;
-    /* Set the new big blind seat */
-    //game.players[table.bigBlind.seat].isBigBlind = true;
-
+    game.currentBet = table.smallBlind.amt;
+    game.turn = table.bigBlind.seat == 0 ? game.players.length - 1 : table.bigBlind.seat - 1;
 
     /* Pay the blinds */
-    //game.players[table.smallBlind.seat].money = parseInt(game.players[table.smallBlind.seat].money, 10) - parseInt(table.smallBlind.amt, 10);
-    //table.money = parseInt(table.money, 10) + parseInt(table.smallBlind.amt, 10);
-    //game.players[table.bigBlind.seat].money = parseInt(game.players[table.bigBlind.seat].money, 10) - parseInt(table.bigBlind.amt, 10);
-    //table.money = parseInt(table.money, 10) + parseInt(table.bigBlind.amt, 10);
-
-    return table;
+    game.players[table.smallBlind.seat].money = parseInt(game.players[table.smallBlind.seat].money, 10) - parseInt(table.smallBlind.amt, 10);
+    game.players[table.bigBlind.seat].money = parseInt(game.players[table.bigBlind.seat].money, 10) - parseInt(table.bigBlind.amt, 10);
+    /* Add the blinds to the pot size */
+    table.potSize = parseInt(table.potSize, 10) + parseInt(table.smallBlind.amt, 10);
+    table.potSize = parseInt(table.potSize, 10) + parseInt(table.bigBlind.amt, 10);
+    
+    /* Deal the cards */
+    game.players = dealCards();
 }
 
 
@@ -144,7 +141,6 @@ this.dealBoard = function (qty) {
 };
 /* End function to deal the flop */
 
-
 var sort_by = function (field, reverse, primer) {
     var key = primer ?
         function (x) { return primer(x[field]) } :
@@ -157,9 +153,7 @@ var sort_by = function (field, reverse, primer) {
     }
 }
 
-
 /* !!! !!! !!! Hand Hierarchy/Winner Code and Logic !!! !!! !!! */
-
 /* Still needs extra logic to hand high card, highest pair(s)/three of a kind, and highest hand for FH vs. FH */
 function evaluateHand(player, cards) {
     //hand = [];
@@ -366,7 +360,30 @@ function evaluateHand(player, cards) {
 
 
 /* Begin function to find out who won */
-function calculateWinner(cards) {
+function calculateWinner() {
+    for (var p = 0; p < game.players.length; p++) {
+        game.players[p].handRank = evaluateHand(game.players[p], table.cards);
+    }
+
+    table.winner = {
+        seat: -1,
+        handRank: 0
+    };
+    var tiedRanks = [];
+    for (var p = 0; p < game.players.length; p++) {
+        if (game.players[p].handRank > table.winner.handRank) {
+            table.winner.seat = p;
+            table.winner.handRank = game.players[p].handRank;
+        } else if (game.players[p].handRank == table.winner.handrank) {
+            table.winner.seat = game.players[p].hand[players[p].hand.length - 1].value > game.players[table.winner.seat].hand[game.players[table.winner.seat].hand.length - 1].value
+                ? p : table.winner.seat;
+        }
+    }
+
+    /* Pay the winner */
+    game.players[table.winner.seat].money = parseInt(game.players[table.winner.seat].money, 10) + parseInt(table.potSize, 10);
+    table.potSize = parseInt(0, 10);
+    
     var allHands = {
 
     };

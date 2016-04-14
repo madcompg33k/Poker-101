@@ -1,0 +1,13 @@
+<div id="betOptionsContainer">
+    <h3>Your Turn</h3>
+    <form class="bet-options">
+        <button class="check" data-ng-click="playerChecks(player)">Check</button>
+        <button class="bet bet-double" data-ng-click="playerBets(player, table.bigBlind.amt * 2)">{{ table.bigBlind.amt * 2 }}</button>
+        <button class="bet bet-quadruple" data-ng-click="playerBets(player, table.bigBlind.amt * 4)">{{ table.bigBlind.amt * 4 }}</button>
+        <button class="bet bet-all-in" data-ng-click="playerBets(player, player.money)">{{ player.money }}</button>
+        <button class="bet bet-other" data-ng-click="playerBets(player, player.bet.amt)">
+            <input type="text" data-ng-model="player.bet.amt | currency" /> <label>Other</label>
+        </button>
+        <button class="fold" data-ng-click="playerFolds(player)">Fold</button>
+    </form>
+</div>

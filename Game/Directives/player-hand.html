@@ -15,17 +15,11 @@
 
             <span class="player-money">({{ player.money | currency }})</span>
             <span class="hand-rank" data-ng-show="player.handRank">(Hand Rank: {{ player.handRank }})</span>
-            <span data-ng-show="player.isSmallBlind">(Small Blind)</span>
-            <span data-ng-show="player.isBigBlind">(Big Blind)</span>
+            <span data-ng-show="table.smallBlind.seat === $index">(Small Blind)</span>
+            <span data-ng-show="table.bigBlind.seat === $index">(Big Blind)</span>
         </h3>
 
-        <div class="options" data-ng-show="table.players[0].cards.length == 2">
-            <button class="hand-option-button" data-ng-click="tableCtrl.playerChecks(player)">Check</button>
-            <input type="text" data-ng-model="player.betAmount" />
-            <button class="hand-option-button" data-ng-click="tableCtrl.playerBets(player)">Bet</button>
-            <button class="hand-option-button" data-ng-click="tableCtrl.playerFolds(player)">Fold</button>
-
-        </div>
+        <bet-options data-ng-show="game.turn == $index"></bet-options>
         <!-- ul>
             <li>
                 <b>Money:</b>
@@ -41,7 +35,7 @@
             <span data-ng-repeat="card in player.cards">
                 <img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" />
             </span>
-            <img class="dealer-button" src="/Game/Images/Chips/dealer-200.png" width="50" height="50" data-ng-show="player.isDealer" />
+            <img class="dealer-button" src="/Game/Images/Chips/dealer-200.png" width="50" height="50" data-ng-show="table.dealer.seat === $index" />
         </div>
 
     </li>

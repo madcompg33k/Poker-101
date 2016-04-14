@@ -1,6 +1,8 @@
 $font-stack:            Helvetica, sans-serif;
 $primary-font-color:    #333;
 $font-size:             1em;
+$background-light:      rgba(0, 100, 0, 1); /* #006400 */
+$background-dark:       rgba(15, 62, 15, 1); /* #0f3e0f */
 
 /* (w x h) Thumb - 54x75, Mid - 143x200, Full - 800x1120 */
 $card-width:            143px;
@@ -12,23 +14,30 @@ $player-card-height:    75px;
 
 $options-width:         250px;
 
-$player-width:          ($player-card-width * 2) + 100px;
+$player-width:          ($player-card-width * 2) + 40px;
 $player-height:         75px;
 
+$board-width:           ($card-width * 5) + ($card-margin * 10) + 20px;
+$board-height:          $card-height + ($card-margin * 2);
+
 $table-border-size:     30px;
-$table-width:           ($card-width * 5) + ($player-width * 2);
+$table-width:           $board-width + ($player-width * 2);
 $table-height:          ($card-height * 2) + 150px;
 $table-x-middle:        ($table-width / 2) - $table-border-size;
 $table-y-middle:        ($table-height / 2) - $table-border-size;
 
-$board-width:           ($card-width * 5) + ($card-margin * 10) + 5px;
-$board-height:          $card-height + ($card-margin * 2);
-
-/*$table-width:           $board-width + ($player-width * 2);*/
 
 $mainDiv-width:         $table-width + $options-width + 50px;
 $mainDiv-height:        $table-height + ($player-height * 2);
 
+
+@mixin transparent-background-light($transparency){
+    background-color: rgba(0, 100, 0, $transparency);
+}
+
+@mixin transparent-background-dark($transparency){
+    background-color: rgba(15, 62, 15, $transparency);
+}
 
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius;
@@ -37,9 +46,34 @@ $mainDiv-height:        $table-height + ($player-height * 2);
     border-radius: $radius;
 }
 
+@mixin top-border-radius($radius){
+    /* Border radius for top corners using webkit */
+    -webkit-border-top-left-radius: $radius;
+    -webkit-border-top-right-radius: $radius;
+    /* Border radius for top corners for firefox or other mozilla browsers */
+    -moz-border-radius-topleft: $radius;
+    -moz-border-radius-topright: $radius;
+    /* Border radius for top corners for all other browsers */
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+}
+
+@mixin text-shadow($x, $y, $blur, $color){
+    text-shadow: $x $y $blur $color;
+    -moz-text-shadow: $x $y $blur $color;
+    -webkit-text-shadow: $x $y $blur $color;
+}
+
+@mixin box-shadow($h-distance, $v-distance, $blur, $color) {
+    -webkit-box-shadow: $h-distance $v-distance $blur $color;
+       -moz-box-shadow: $h-distance $v-distance $blur $color;
+            box-shadow: $h-distance $v-distance $blur $color;
+}
+
 
 div#main {
     height: $mainDiv-height;
+    position: relative;
     margin: 30px auto;
 
     h2{
@@ -54,9 +88,9 @@ div#main {
 
     aside.game-options {
         width: $options-width;
-        float: left;
-        clear: none;
-        margin: 0px 1%;
+        position: absolute;
+        top: 50px;
+        left: 1%;
         padding: 10px;
         border-right: dashed #999 3px;
         background-color: rgba(200, 200, 200, 0.3);
@@ -96,11 +130,11 @@ section#table {
     padding: 0px;
     margin: 20px auto;
     margin-top: $player-height;
-    margin-left: $player-width + 50px;
+    margin-left: $player-width + $options-width;
     float: left;
     clear: none;
-    background-color: #006400;
-    border: solid #0f3e0f $table-border-size;
+    background-color: $background-light;
+    border: solid $background-dark $table-border-size;
     @include border-radius(100px);
     
     
@@ -184,6 +218,64 @@ section#table {
             }
         }
 
+        div#betOptionsContainer {
+            @include transparent-background-light(0.9);
+            @include border-radius(5px);
+            @include box-shadow(3px, 3px, 2px, rgba(0, 0, 0, 0.5));
+            width: $player-width + 100px;
+            position: absolute;
+            top: 5px;
+            left: $player-width;
+            border: solid $background-dark 2px;
+            z-index: 1;
+
+            h3 {
+                @include top-border-radius(5px);
+                padding: 2px 10px;
+                color: #fff;
+                font-size: 1.1em;
+                background-color: $background-dark;
+                border-bottom: solid black 2px;
+            }
+        }
+
+        form.bet-options{
+            width: 90%;
+            margin: 10px auto;
+            
+            button {
+                @include transparent-background-dark(0.8);
+                @include border-radius(5px);
+                @include text-shadow(-1px, -1px, 3px, rgba(255, 255, 255, 0.5));
+                display: block;
+                width: 100%;
+                margin: 1px auto;
+                padding: 1px 5px;
+                text-align: center;
+                color: #fff;
+                font-size: 1.1em;
+                font-weight: bold;
+                font-variant: small-caps;
+                border-color: rgba(10, 41, 10, 0.87);
+            }
+
+            button.bet:not(.bet-other) {
+                display: inline-block;
+                width: 32%;
+                font-size: 0.8em;
+            }
+
+            button.bet-other {
+
+                input {
+                    width: 60%;
+                    min-width: 40px;
+                    margin: 0px 5px 0px 0px;
+                }
+            }
+
+        }
+
         div.player-hand { 
             position: absolute;
             
@@ -235,7 +327,7 @@ section#table {
         right: 0px - $player-width - $table-border-size;
 
         /* The player's cards */
-        div {
+        div.player-hand {
             top: 0px;
             left: 0px - ($player-card-width * 2) - $table-border-size - 5px;
         }
@@ -246,7 +338,7 @@ section#table {
         right: $table-x-middle / 6;
 
         /* The player's cards */
-        div { bottom: 0px - $player-card-height - $table-border-size; }
+        div.player-hand { bottom: 0px - $player-card-height - $table-border-size; }
     }
 
     li.seat-5 {
@@ -254,7 +346,7 @@ section#table {
         left: $table-x-middle - ($player-width / 2);
 
         /* The player's cards */
-        div { bottom: 0px - $player-card-height - $table-border-size; }
+        div.player-hand { bottom: 0px - $player-card-height - $table-border-size; }
     }
 
     li.seat-6 {
@@ -263,7 +355,7 @@ section#table {
         text-align: right;
 
         /* The player's cards */
-        div {
+        div.player-hand {
             bottom: 0px - $player-card-height - $table-border-size;
             right: 0px;
         }
@@ -275,7 +367,7 @@ section#table {
         text-align: right;
 
         /* The player's cards */
-        div {
+        div.player-hand {
             top: 0px;
             right: 0px - ($player-card-width * 2) - $table-border-size - 5px;
         }
@@ -287,7 +379,7 @@ section#table {
         text-align: right;
             
         /* The player's cards */
-        div {
+        div.player-hand {
             top: 0px - $player-card-height - $table-border-size;
             right: 0px;
         }
@@ -299,7 +391,7 @@ section#table {
         text-align: right;
 
         /* The player's cards */
-        div {
+        div.player-hand {
             top: 0px - $player-card-height - $table-border-size;
             right: 0px;
         }
