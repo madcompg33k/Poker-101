@@ -53,14 +53,4 @@
         }
     });
 
-    app.directive('betOptions', function () {
-        return {
-            restrict: 'E',
-            templateUrl: './Directives/bet-options.html',
-            controller: function() {
-                
-            },
-            controllerAs: 'betOptions'
-        }
-    });
 })();

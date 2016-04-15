@@ -13,11 +13,10 @@
             { name: "Alex", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
             { name: "Jess", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 }
         ];
+
         $scope.game.deck = allCards;
         game = $scope.game;
 
-        $scope.game.currentBet = 0;
-        $scope.game.turn = 0;
         /*
         $http.get('/Game/Scripts/players.json').success(function (data) {
         game.players = data;

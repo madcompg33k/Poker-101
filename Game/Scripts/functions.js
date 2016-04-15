@@ -18,6 +18,11 @@ function shuffle(d) {
 }
 /* End function to randomize/shuffle the "deck" array */
 
+/* Begin function to check if we need to move to the last player or not */
+function getNextSeat(seat) {
+    return seat == 0 ? game.players.length - 1 : seat - 1;
+}
+
 /* Begin function to clear all cards from game.players and the table */
 function clearBoard(){
     /* Check for any game.players first */
@@ -29,7 +34,7 @@ function clearBoard(){
             else { game.players[p].cards = []; }
             if (game.players[p].hand){ game.players[p].hand.length = 0; }
             else { game.players[p].hand = []; }
-            game.players[p].betAmount = 0;
+            game.players[p].bet.amt = 0;
             game.players[p].handRank = 0;
         }
     }
@@ -42,16 +47,20 @@ function clearBoard(){
     table.shuffledDeck = shuffle(game.deck);
 
     /* Reset other table data */
-    table.money = 0;
+    table.potSize = 0;
     table.winner = {
         seat: -1,
         handRank: 0
     };
+    table.better = {};
+    table.turn = -1;    
+    table.currentBet = parseInt(table.bigBlind.amt, 0);
 
     /* Reset each player's hand rank */
     for (var seat = 0; seat < game.players.length; seat++) {
         game.players[seat].hand.length = 0;
         game.players[seat].handRank = null;
+        game.players[seat].bet.amt = 0;
     }
 }
 /* End function to clear all cards from game.players and the table */
@@ -74,29 +83,35 @@ function newHand() {
         table.bigBlind.seat = (game.players.length - 3) < 0 ? (game.players.length - 3) * 1 : game.players.length - 3;
     }else {
         table.dealer.seat = table.dealer.seat == 0 ? game.players.length - 1 : table.dealer.seat - 1;
-        table.smallBlind.seat = table.smallBlind.seat == 0 ? game.players.length - 1 : table.smallBlind.seat - 1;
-        table.bigBlind.seat = table.bigBlind.seat == 0 ? game.players.length - 1 : table.bigBlind.seat - 1;
+        table.smallBlind.seat = getNextSeat(table.smallBlind.seat);
+        table.bigBlind.seat = getNextSeat(table.bigBlind.seat); 
     }
 
-    game.currentBet = table.smallBlind.amt;
-    game.turn = table.bigBlind.seat == 0 ? game.players.length - 1 : table.bigBlind.seat - 1;
+    table.currentBet = parseInt(table.bigBlind.amt, 0);
+    table.turn = getNextSeat(table.bigBlind.seat);
 
     /* Pay the blinds */
-    game.players[table.smallBlind.seat].money = parseInt(game.players[table.smallBlind.seat].money, 10) - parseInt(table.smallBlind.amt, 10);
-    game.players[table.bigBlind.seat].money = parseInt(game.players[table.bigBlind.seat].money, 10) - parseInt(table.bigBlind.amt, 10);
-    /* Add the blinds to the pot size */
-    table.potSize = parseInt(table.potSize, 10) + parseInt(table.smallBlind.amt, 10);
-    table.potSize = parseInt(table.potSize, 10) + parseInt(table.bigBlind.amt, 10);
+    game.players[table.smallBlind.seat].bet.amt = table.smallBlind.amt;
+    game.players[table.bigBlind.seat].bet.amt = table.bigBlind.amt;
     
     /* Deal the cards */
     game.players = dealCards();
+}
+
+function addMoneyToPot(){
+    for (var seat = 0; seat < game.players.length; seat++){
+        game.players[seat].money -= parseInt(game.players[seat].bet.amt, 10);
+        table.potSize += parseInt(game.players[seat].bet.amt, 10);
+        /* Reset player's bet amount for the next round */
+        game.players[seat].bet.amt = 0;
+    }
 }
 
 
 /* Begin function to deal cards to each player */
 function dealCards() {
     /* Make sure there are game.players first */
-    if (game.players.length){
+    if (game.players.length > 1){
         /* Set initial seat/card values */
         var seat = 0;
         var card = 0;
@@ -126,7 +141,7 @@ function dealCards() {
 
 
 /* Begin function to deal the flop */
-this.dealBoard = function (qty) {
+function dealBoard(qty) {
     /* "Burn" the next card */
     table.shuffledDeck.splice(0, 1);
 
@@ -138,10 +153,17 @@ this.dealBoard = function (qty) {
         table.shuffledDeck.splice(0, 1);
     }
 
+    /* Take money from players and add to the pot */
+    addMoneyToPot();
+
+    /* Reset the current bet */
+    table.better = game.players[getNextSeat(table.dealer.seat)];
+    table.currentBet = parseInt(0, 0);
+    table.turn = getNextSeat(table.dealer.seat);
 };
 /* End function to deal the flop */
 
-var sort_by = function (field, reverse, primer) {
+function sort_by(field, reverse, primer) {
     var key = primer ?
         function (x) { return primer(x[field]) } :
         function (x) { return x[field] };
@@ -159,9 +181,11 @@ function evaluateHand(player, cards) {
     //hand = [];
 
     /* Add the player's hole cards and cards from the board to the hand object */
-    player.hand.push(player.cards[0]);
-    player.hand.push(player.cards[1]);
-    for (var i = 0; i < cards.length; i++) { player.hand.push(cards[i]); }
+    if (player.cards.length) {
+        player.hand.push(player.cards[0]);
+        player.hand.push(player.cards[1]);
+        for (var i = 0; i < cards.length; i++) { player.hand.push(cards[i]); }
+    } else { return; }
 
     /* Sort hand in order of value, lowest to highest */
     player.hand.sort(sort_by('value', false, parseInt));

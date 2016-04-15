@@ -371,6 +371,10 @@ section#table {
             top: 0px;
             right: 0px - ($player-card-width * 2) - $table-border-size - 5px;
         }
+
+        #betOptionsContainer {
+            top: $player-card-height!important;
+        }
     }
 
     li.seat-8 {

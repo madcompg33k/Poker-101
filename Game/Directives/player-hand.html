@@ -14,12 +14,13 @@
             </span>
 
             <span class="player-money">({{ player.money | currency }})</span>
+            <span>Current Bet: {{ player.bet.amt | currency }}</span>
             <span class="hand-rank" data-ng-show="player.handRank">(Hand Rank: {{ player.handRank }})</span>
             <span data-ng-show="table.smallBlind.seat === $index">(Small Blind)</span>
             <span data-ng-show="table.bigBlind.seat === $index">(Big Blind)</span>
         </h3>
 
-        <bet-options data-ng-show="game.turn == $index"></bet-options>
+        <bet-options data-ng-show="table.turn == $index"></bet-options>
         <!-- ul>
             <li>
                 <b>Money:</b>
