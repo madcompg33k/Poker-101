@@ -5,12 +5,32 @@
         <button class="check" data-ng-show="table.currentBet >= 0" data-ng-click="tableCtrl.playerCalls(player)">Call ({{ (table.currentBet - gameCtrl.player.bet.amt) | currency }})</button>
         <div>
             <h5>Bet</h5>
-            <button class="bet bet-half" data-ng-click="tableCtrl.playerBets(player, ((table.potSize + table.currentBet) / 2 < table.bigBlind.amt ? table.bigBlind.amt * 2 : table.potSize / 2))">
-                <!--/*{{ table.potSize / 2 < table.bigBlind.amt ? table.bigBlind.amt * 2 : table.potSize / 2 | currency }}*/ -->
-                {{ (table.potSize + table.currentBet) / 2 < table.bigBlind.amt ? table.bigBlind.amt * 2 : (table.potSize + table.currentBet) / 2 | currency }}
+            <button class="bet bet-half"
+                    data-ng-click="tableCtrl.playerBets(player,
+                    (table.potSize / 2 < table.bigBlind.amt
+                        ? table.currentBet * 2 > player.money ? player.money : table.currentBet * 2
+                        : table.potSize / 2 > player.money ? player.money : table.potSize / 2
+                ))">
+                {{
+                    table.potSize / 2 < table.bigBlind.amt
+                        ? table.currentBet * 2 > player.money ? player.money : table.currentBet * 2
+                        : table.potSize / 2 > player.money ? player.money : table.potSize / 2
+                        | currency
+                }}
+                <!-- Add in handling for current bets being larger than the pot size -->
             </button>
-            <button class="bet bet-pot" data-ng-click="tableCtrl.playerBets(player, ((table.potSize + table.currentBet) < table.bigBlind.amt * 2 ? table.bigBlind.amt * 4 : table.potSize))">
-                {{ (table.potSize + table.currentBet) < table.bigBlind.amt * 2 ? table.bigBlind.amt * 4 : (table.potSize + table.currentBet) | currency }}
+            <button class="bet bet-pot"
+                    data-ng-click="tableCtrl.playerBets(player,
+                    (table.potSize < table.bigBlind.amt
+                        ? table.currentBet * 4 > player.money ? player.money : table.currentBet * 4
+                        : table.potSize > player.money ? player.money : table.potSize
+                ))">
+                {{
+                    table.potSize < table.bigBlind.amt
+                        ? table.currentBet * 4 > player.money ? player.money : table.currentBet * 4
+                        : table.potSize > player.money ? player.money : table.potSize
+                        | currency
+                }}
             </button>
             <button class="bet bet-all-in" data-ng-click="tableCtrl.playerBets(player, player.money)">{{ player.money | currency }}</button>
             <button class="bet bet-other" data-ng-click="tableCtrl.playerBets(player, player.bet.amt)">

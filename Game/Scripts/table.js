@@ -11,8 +11,8 @@
             handHistory: [],
             winner: { seat: -1, handRank: 0 },
             potSize: 0,
-            smallBlind: { amt: 10, seat: 0 },
-            bigBlind: { amt: 20, seat: 0 },
+            smallBlind: { amt: 2, seat: 0 },
+            bigBlind: { amt: 4, seat: 0 },
             currentBet: 0,
             better: {},
             turn: -1
@@ -31,6 +31,7 @@
             table.turn = getNextSeat(table.turn);
             while (!game.players[table.turn].cards.length) { table.turn = getNextSeat(table.turn); }
 
+            /* Doesn't check if table.better has folded before getting back around to them */
             if (game.players[table.turn] == table.better) {
                 if (!table.cards.length) { this.dealFlop(); }
                 else if (table.cards.length == 3) { this.dealTurn(); }

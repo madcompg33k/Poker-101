@@ -34,7 +34,8 @@
 
         <div class="player-hand">
             <span data-ng-repeat="card in player.cards">
-                <img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" />
+                <a-card class="card-thumb"></a-card>
+                <!-- img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" / -->
             </span>
             <img class="dealer-button" src="/Game/Images/Chips/dealer-200.png" width="50" height="50" data-ng-show="table.dealer.seat === $index" />
         </div>

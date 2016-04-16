@@ -157,9 +157,12 @@ function dealBoard(qty) {
     addMoneyToPot();
 
     /* Reset the current bet */
-    table.better = game.players[getNextSeat(table.dealer.seat)];
     table.currentBet = parseInt(0, 0);
     table.turn = getNextSeat(table.dealer.seat);
+    while (!game.players[table.turn].cards.length) {
+        table.turn = getNextSeat(table.turn);
+    }
+    table.better = game.players[table.turn];
 };
 /* End function to deal the flop */
 
@@ -399,7 +402,7 @@ function calculateWinner() {
             table.winner.seat = p;
             table.winner.handRank = game.players[p].handRank;
         } else if (game.players[p].handRank == table.winner.handrank) {
-            table.winner.seat = game.players[p].hand[players[p].hand.length - 1].value > game.players[table.winner.seat].hand[game.players[table.winner.seat].hand.length - 1].value
+            table.winner.seat = game.players[p].hand[game.players[p].hand.length - 1].value > game.players[table.winner.seat].hand[game.players[table.winner.seat].hand.length - 1].value
                 ? p : table.winner.seat;
         }
     }

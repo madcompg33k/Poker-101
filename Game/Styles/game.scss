@@ -70,7 +70,6 @@ $mainDiv-height:        $table-height + ($player-height * 2);
             box-shadow: $h-distance $v-distance $blur $color;
 }
 
-
 div#main {
     height: $mainDiv-height;
     position: relative;
@@ -136,6 +135,7 @@ section#table {
     background-color: $background-light;
     border: solid $background-dark $table-border-size;
     @include border-radius(100px);
+    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.7);
     
     
     
@@ -404,9 +404,9 @@ section#table {
 
 }
 
-
-
 li.player-hand {
     font-size:  1.4em;
 }
 
+
+@import 'card';
