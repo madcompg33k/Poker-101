@@ -250,7 +250,6 @@
         <!-- #End div#rulesGamePlay -->
     </section>
 
-</div> <!-- End of outer-wrapper which opens in header.php -->
 
 <?php 
     include ("/Includes/footer.php");

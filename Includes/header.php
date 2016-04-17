@@ -1,19 +1,27 @@
 <?php require_once ("/Includes/session.php"); ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="game" data-ng-controller="GameController as gameCtrl">
     <head>
         <meta charset="utf-8" />
         <title>Poker 101</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
         <script src="https://use.typekit.net/hiv2jke.js"></script>
         <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
-        <script type="text/javascript" src="/Scripts/angular.min.js"></script>
+        <script type="text/javascript" src="/Scripts/angular.js"></script>
+        <script type="text/javascript" src="/Scripts/angular-sanitize.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/functions.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/game.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/players.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/table.js"></script>
+
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
+        <link rel="stylesheet" type="text/css" href="/Game/Styles/game.css" />
+
     </head>
-    <body>
+    <body data-ng-controller="TableController as tableCtrl">
         <div class="outer-wrapper">
 
             <!-- #Start header -->

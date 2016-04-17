@@ -30,45 +30,10 @@
     .filter('bet', function () {
         return function (player, betAmount) {
             if (!player) { return; }
-
-            /* Check to see if player has enough money first */
-            if (player.money < betAmount) {
-                return player.money;
-            } else {
-                /* Check to see if there's been a bet yet */
-                if (table.currentBet > 0) {
-                    /* Check if the bet desired is less than the big blind or current bet */
-                    if (betAmount < table.bigBlind || betAmount < table.currentBet) {
-                        return table.currentBet > table.bigBlind ? table.currentBet : table.bigBlind;
-                    } else {
-                        return betAmount;
-                    }
-                    /* We have enough money, and currentBet is 0 */
-                } else {
-                    /* Check if the blinds, or the pot is larger */
-                    return
-                    table.bigBlind + table.smallBlind > table.potSize
-                            ? (table.bigBlind + table.smallBlind) > player.money
-                                ? player.money
-                                : table.bigBlind + table.smallBlind
-                            : table.potSize > player.money
-                                ? player.money
-                                : table.potSize;
-                }
-
-            }
-            /*
-            {{
-            table.potSize / 2 < table.bigBlind.amt
-            ? table.currentBet * 2 > player.money ? player.money : table.currentBet * 2
-            : table.potSize / 2 > player.money ? player.money : table.potSize / 2
-            | currency
-            }}
-            <!-- Add in handling for current bets being larger than the pot size -->
-            */
+            return 0;
         };
     })
-    .filter('unsafe', function($sce) { return $sce.trustAsHtml; })
+    .filter('unsafe', function ($sce) { return $sce.trustAsHtml; })
     .directive('aCard', function () {
         return {
             restrict: 'E',

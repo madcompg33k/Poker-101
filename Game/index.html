@@ -92,7 +92,6 @@
             </header>
             <!-- #End header -->
 
-
             <!-- #Start div#main -->
             <div id="main">
                 <h2>Play The Game</h2>
@@ -101,8 +100,13 @@
                 <game-options></game-options>
 
                 <section id="table">
+                    <!-- Create a seat for the dealer, since every table has a dealer -->
+                    <li class="player seat-dealer">
+                        <h3 class="player-name">Dealer</h3>
+                    </li>
+
                     <!-- Display each player's hand -->
-                    <player-hand></player-hand>
+                    <player-info data-ng-repeat="player in gameCtrl.players"></player-info>
 
                     <div id="board">
                         <ul>
@@ -119,19 +123,6 @@
                     
                 </section>
                 <!-- #End section#players -->
-
-                <!-- #Start section#cards -->
-                <!-- section id="cards" class="the-game">
-                    <h2>All Cards (Count: {{ table.shuffledDeck.length }})</h2>
-                    <div>
-                        <ul class="list-group">
-                            <li data-ng-repeat="card in table.shuffledDeck">
-                                <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
-                            </li>
-                        </ul>
-                    </div>
-                </section -->
-                <!-- #End section#cards -->
 
             </div>
             <!-- #End div#main-->

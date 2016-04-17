@@ -28,10 +28,15 @@
 
         /* Player checks, no bet was made, so move to the next player */
         this.playerChecks = function (player) {
+            /* Move to the next seat */
             table.turn = getNextSeat(table.turn);
-            while (!game.players[table.turn].cards.length) { table.turn = getNextSeat(table.turn); }
+            /* Continue moving if the current player has no more money to bet, or has folded, and stop on the original better/player */
+            while (!game.players[table.turn].cards.length ||
+                    (parseInt(game.players[table.turn].money, 10) <= 0
+                    && !game.players[table.turn] == table.better))
+                { table.turn = getNextSeat(table.turn); }
 
-            /* Doesn't check if table.better has folded before getting back around to them */
+            /* Check to see if we've reached the original better/checker */
             if (game.players[table.turn] == table.better) {
                 if (!table.cards.length) { this.dealFlop(); }
                 else if (table.cards.length == 3) { this.dealTurn(); }
@@ -48,8 +53,15 @@
 
             if (!table.better.name) { table.better = player; }
 
+            /* Move to the next seat */
             table.turn = getNextSeat(table.turn);
-            while (!game.players[table.turn].cards.length) { table.turn = getNextSeat(table.turn); }
+            /* Continue moving if the current player has no more money to bet, or has folded, and stop on the original better/player */
+            while (game.players[table.turn].money <= 0
+                    && !game.players[table.turn] == table.better
+                    || !game.players[table.turn].cards.length)
+                { table.turn = getNextSeat(table.turn); }
+
+            /* Check to see if we've reached the original better/checker */
             if (game.players[table.turn] == table.better) {
                 if (!table.cards.length) { this.dealFlop(); }
                 else if (table.cards.length == 3) { this.dealTurn(); }
@@ -72,8 +84,17 @@
             /* Set the player's bet amount to the new accumulated total */
             player.bet.amt = parseInt(amount, 10);
 
+            /* Move to the next seat */
             table.turn = getNextSeat(table.turn);
-            while (!game.players[table.turn].cards.length) { table.turn = getNextSeat(table.turn); }
+            /* Continue moving until we find a player who hasn't folded */
+            //while (!game.players[table.turn].cards.length) { table.turn = getNextSeat(table.turn); }
+            /* Continue moving if the current player has no more money to bet, or has folded, and stop on the original better/player */
+            while (game.players[table.turn].money <= 0
+                    && !game.players[table.turn] == table.better
+                    || !game.players[table.turn].cards.length)
+                { table.turn = getNextSeat(table.turn); }
+
+            /* Check to see if we've reached the original better/checker */
             if (game.players[table.turn] == table.better) {
                 if (!table.cards.length) { this.dealFlop(); }
                 else if (table.cards.length == 3) { this.dealTurn(); }
@@ -84,10 +105,17 @@
 
         /* Player doesn't want to bet and gives up cards */
         this.playerFolds = function (player) {
-            player.cards.splice(0, 2);
+            player.cards.length = 0;
 
+            /* Move to the next seat */
             table.turn = getNextSeat(table.turn);
-            while (!game.players[table.turn].cards.length) { table.turn = getNextSeat(table.turn); }
+            /* Continue moving if the current player has no more money to bet, or has folded, and stop on the original better/player */
+            while (game.players[table.turn].money <= 0
+                    && !game.players[table.turn] == table.better
+                    || !game.players[table.turn].cards.length)
+                { table.turn = getNextSeat(table.turn); }
+
+            /* Check to see if we've reached the original better/checker */
             if (game.players[table.turn] == table.better) {
                 if (!table.cards.length) { this.dealFlop(); }
                 else if (table.cards.length == 3) { this.dealTurn(); }

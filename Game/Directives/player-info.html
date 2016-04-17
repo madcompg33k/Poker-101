@@ -1,10 +1,6 @@
-<ul class="players">
-    <!-- Create a seat for the dealer, since every table has a dealer -->
-    <li class="player seat-dealer">
-        <h3 class="player-name">Dealer</h3>
-    </li>
-
-    <li class="player seat-{{$index + 1}}" data-ng-repeat="player in gameCtrl.players">
+<ul class="players" data-ng-show="player">
+    
+    <li class="player seat-{{$index + 1}}">
 
         <h3 class="player-name">
             {{ player.name }}
@@ -20,7 +16,7 @@
             <span data-ng-show="table.bigBlind.seat === $index">(Big Blind)</span>
         </h3>
 
-        <bet-options data-ng-show="table.turn == $index"></bet-options>
+        <bet-options data-ng-show="table.turn === $index && player.handRank === 0"></bet-options>
         <!-- ul>
             <li>
                 <b>Money:</b>

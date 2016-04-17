@@ -1,6 +1,8 @@
 <?php
 //include ("/Includes/closeDB.php");        
 ?>
+        </div> <!-- End of outer-wrapper which opens in header.php -->
+
         <footer>
             <div class="footer-wrapper">
                 <div class="float-left">

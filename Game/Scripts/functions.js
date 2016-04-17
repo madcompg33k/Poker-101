@@ -56,12 +56,17 @@ function clearBoard(){
     table.turn = -1;    
     table.currentBet = parseInt(table.bigBlind.amt, 0);
 
+    /* Eventually */
+    /* Remove any players who are out of money */
+    //for (var seat = 0; seat < game.players.length; seat++ ){
+    //    if (game.players[seat].money == 0) { game.players[seat] = []; }
+    //}
     /* Reset each player's hand rank */
-    for (var seat = 0; seat < game.players.length; seat++) {
+    /*for (var seat = 0; seat < game.players.length; seat++) {
         game.players[seat].hand.length = 0;
         game.players[seat].handRank = null;
         game.players[seat].bet.amt = 0;
-    }
+    }*/
 }
 /* End function to clear all cards from game.players and the table */
 
@@ -118,9 +123,13 @@ function dealCards() {
 
         /* Iterate through each player */
         for (var i = 0; i < game.players.length * 2; i++) {
-            /* Assign current player's card position in the deck */
-            game.players[seat].cards.push(table.shuffledDeck[0]);
-            table.shuffledDeck.splice(0, 1);
+            /* Check to make sure player has money to play */
+            if (game.players[seat].money > 0){
+                /* Assign current player's card position in the deck */
+                game.players[seat].cards.push(table.shuffledDeck[0]);
+                table.shuffledDeck.splice(0, 1);
+            }
+            
             /* Move to the next player/seat */
             seat++;
             /* Check to see if we've reached the last player */
@@ -398,10 +407,10 @@ function calculateWinner() {
     };
     var tiedRanks = [];
     for (var p = 0; p < game.players.length; p++) {
-        if (game.players[p].handRank > table.winner.handRank) {
+        if (game.players[p].handRank > table.winner.handRank && game.players[p].cards.length) {
             table.winner.seat = p;
             table.winner.handRank = game.players[p].handRank;
-        } else if (game.players[p].handRank == table.winner.handrank) {
+        } else if (game.players[p].handRank == table.winner.handrank && game.players[p].cards.length) {
             table.winner.seat = game.players[p].hand[game.players[p].hand.length - 1].value > game.players[table.winner.seat].hand[game.players[table.winner.seat].hand.length - 1].value
                 ? p : table.winner.seat;
         }

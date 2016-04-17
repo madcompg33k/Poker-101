@@ -42,10 +42,10 @@
         }
     })
 
-    app.directive('playerHand', function () {
+    app.directive('playerInfo', function () {
         return {
             restrict: 'E',
-            templateUrl: './Directives/player-hand.html',
+            templateUrl: './Directives/player-info.html',
             controller: function () {
 
             },
