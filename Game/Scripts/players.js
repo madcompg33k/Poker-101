@@ -1,56 +1,67 @@
 (function () {
-    var app = angular.module('players', []);
-
+    var app = angular.module('players', ['hand'])
     /* Controller for all players */
-    app.controller('PlayersController', function () {
-        /* Initialize Players and assign data to it */
-        this.players = [];
-    });
+        .controller('PlayersController', function () {
+            /* Initialize Players and assign data to it */
+            this.players = [];
+        })
     /* Controller for add/modifying an individual player */
-    app.controller('PlayerController', function () {
-        this.player = {
-            money: 200,
-            chips: [],
-            isDealer: false,
-            isSmallBlind: false,
-            isBigBlind: false,
-            betAmount: 0,
-            cards: [],
-            hand: [],
-            handRank: 0
-        };
+        .controller('PlayerController', function () {
+            this.money = 200;
+            this.chips = [];
+            this.isDealer = false;
+            this.isSmallBlind = false;
+            this.isBigBlind = false;
+            this.betAmount = 0;
+            this.cards = [];
+            this.handRank = 0;
 
-        this.addPlayer = function (game) {
-            /* Add this player to players */
-            game.players.push(this.player);
+            this.addPlayer = function (game) {
+                /* Add this player to players */
+                game.players.push(this.player);
 
-            /* Clear the new player object, since the player is now added to the table */
-            this.player = {};
-        }
-    });
-
-
+                /* Clear the new player object, since the player is now added to the table */
+                this.player = {};
+            }
+        })
     /* Start Directives */
-    app.directive('addPlayer', function () {
-        return {
-            restrict: 'E',
-            templateUrl: './Directives/add-player.html',
-            controller: function () {
+        .directive('format', ['$filter', function ($filter) {
+            return {
+                require: '?ngModel',
+                link: function (scope, elem, attrs, ctrl) {
+                    if (!ctrl) return;
 
-            },
-            controllerAs: 'addPlayer'
-        }
-    })
+                    ctrl.$formatters.unshift(function (a) {
+                        return $filter(attrs.format)(ctrl.$modelValue)
+                    });
 
-    app.directive('playerInfo', function () {
-        return {
-            restrict: 'E',
-            templateUrl: './Directives/player-info.html',
-            controller: function () {
+                    elem.bind('blur', function (event) {
+                        var plainNumber = elem.val().replace(/[^\d|\-+|\.+]/g, '');
+                        elem.val($filter(attrs.format)(plainNumber));
+                    });
+                }
+            };
+        } ])
+        .directive('addPlayer', function () {
+            return {
+                restrict: 'E',
+                templateUrl: './Directives/add-player.html',
+                controller: function () {
 
-            },
-            controllerAs: 'players'
-        }
-    });
+                },
+                controllerAs: 'addPlayer'
+            }
+        })
+
+        .directive('playerInfo', function () {
+            return {
+                restrict: 'E',
+                templateUrl: './Directives/player-info.html',
+                controller: function () {
+
+                },
+                controllerAs: 'players'
+            }
+        });
 
 })();

@@ -1,6 +1,7 @@
 <div id="betOptionsContainer">
     <h3>Your Turn</h3>
     <form class="bet-options">
+        <button data-ng-click="handCtrl.checkHighestPair(player.cards)">Check Highest Pair</button>
         <button class="check" data-ng-show="table.currentBet === 0" data-ng-click="tableCtrl.playerChecks(player)">Check</button>
         <button class="call" data-ng-hide="table.currentBet === 0" data-ng-click="tableCtrl.playerCalls(player)">Call ({{ (table.currentBet - gameCtrl.player.bet.amt) | currency }})</button>
         <button class="fold" data-ng-hide="table.currentBet === 0" data-ng-click="tableCtrl.playerFolds(player)">Fold</button>
@@ -59,9 +60,11 @@
                         | currency
                 }}
             </button>
-            <button class="bet-other" data-ng-click="tableCtrl.playerBets(player, player.bet.amt)">
-                <input type="text" data-ng-model="player.bet.amt" /> <label>Other</label>
-            </button>
+            <div class="bet-other">
+                <input type="text" data-ng-model="player.bet.amt" format="currency" />
+                <button class="bet-other" data-ng-click="tableCtrl.playerBets(player, player.bet.amt)">Other</button>
+            </div>
+            
             <button class="bet-all-in" data-ng-click="tableCtrl.playerBets(player, player.money)">All In ({{ player.money | currency }})</button>
         </div>
     </form>

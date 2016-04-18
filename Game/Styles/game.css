@@ -187,10 +187,39 @@ section#table {
         display: inline-block;
         width: 32%;
         font-size: 1em; }
-      section#table li.player form.bet-options button.bet-other input {
-        width: 60%;
-        min-width: 40px;
-        margin: 0px 5px 0px 0px; }
+      section#table li.player form.bet-options .bet-other {
+        background-color: rgba(15, 62, 15, 0.8);
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        position: relative;
+        margin: 1px auto;
+        padding: 5px 10px;
+        border: solid rgba(10, 41, 10, 0.87) 2px;
+        border-top-color: rgba(255, 255, 255, 0.4);
+        border-right-color: rgba(0, 0, 0, 0.4);
+        border-left-color: rgba(255, 255, 255, 0.4);
+        border-bottom-color: rgba(0, 0, 0, 0.4);
+        box-sizing: border-box; }
+        section#table li.player form.bet-options .bet-other input {
+          width: 72%;
+          min-width: 40px;
+          margin: 0px;
+          box-sizing: border-box; }
+        section#table li.player form.bet-options .bet-other button {
+          display: inline-block;
+          width: 30%;
+          position: absolute;
+          top: 0px;
+          right: 0px;
+          border: none;
+          box-shadow: none;
+          box-sizing: border-box; }
       section#table li.player form.bet-options button.bet-all-in {
         font-weight: bold;
         font-size: 1.5em; }
@@ -213,13 +242,13 @@ section#table {
     bottom: -105px;
     left: 584.5px;
     /* The player's cards */ }
-    section#table li.seat-1 div {
+    section#table li.seat-1 div.player-hand {
       top: -105px; }
   section#table li.seat-2 {
     bottom: -105px;
     right: 140.5px;
     /* The player's cards */ }
-    section#table li.seat-2 div {
+    section#table li.seat-2 div.player-hand {
       top: -105px; }
   section#table li.seat-3 {
     top: 183.75px;

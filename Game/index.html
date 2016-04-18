@@ -14,6 +14,7 @@
         <script type="text/javascript" src="/Game/Scripts/game.js"></script>
         <script type="text/javascript" src="/Game/Scripts/players.js"></script>
         <script type="text/javascript" src="/Game/Scripts/table.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/hand.js"></script>
 
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
@@ -106,7 +107,7 @@
                     </li>
 
                     <!-- Display each player's hand -->
-                    <player-info data-ng-repeat="player in gameCtrl.players"></player-info>
+                    <player-info data-ng-repeat="player in gameCtrl.players" data-ng-controller="HandController as handCtrl"></player-info>
 
                     <div id="board">
                         <ul>

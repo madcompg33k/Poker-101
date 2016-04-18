@@ -273,12 +273,37 @@ section#table {
                 font-size: 1em;
             }
 
-            button.bet-other {
+            .bet-other {
+                @include transparent-background-dark(0.8);
+                @include border-radius(5px);
+                @include box-shadow(2px, 2px, 2px, rgba(0, 0, 0, 0.3));
+                width: 100%;
+                position: relative;
+                margin: 1px auto;
+                padding: 5px 10px;
+                border: solid rgba(10, 41, 10, 0.87) 2px;
+                border-top-color: rgba(255, 255, 255, 0.4);
+                border-right-color: rgba(0, 0, 0, 0.4);
+                border-left-color: rgba(255, 255, 255, 0.4);
+                border-bottom-color: rgba(0, 0, 0, 0.4);
+                box-sizing: border-box;
 
                 input {
-                    width: 60%;
+                    width: 72%;
                     min-width: 40px;
-                    margin: 0px 5px 0px 0px;
+                    margin: 0px;
+                    box-sizing: border-box;
+                }
+
+                button {
+                    display: inline-block;
+                    width: 30%;
+                    position: absolute;
+                    top: 0px;
+                    right: 0px;
+                    border: none;
+                    box-shadow: none;
+                    box-sizing: border-box;
                 }
             }
 
@@ -321,7 +346,7 @@ section#table {
         left: ($table-x-middle - ($player-width / 2)) + $player-width;
 
         /* The player's cards */
-        div { top: 0px - $player-card-height - $table-border-size; }
+        div.player-hand { top: 0px - $player-card-height - $table-border-size; }
     }
 
     li.seat-2 {
@@ -329,7 +354,7 @@ section#table {
         right: ($table-x-middle - ($player-width / 2)) - ($player-width * 2);
             
         /* The player's cards */
-        div { top: 0px - $player-card-height - $table-border-size; }
+        div.player-hand { top: 0px - $player-card-height - $table-border-size; }
     }
 
     li.seat-3 {
