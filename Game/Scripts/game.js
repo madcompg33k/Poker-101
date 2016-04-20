@@ -3,28 +3,68 @@
     /* Controller to handle all functionality of the overall game */
     .controller('GameController', ['$http', '$scope', function ($http, $scope) {
         $scope.game = this;
-        $scope.game.players = [
-            { name: "Melanie", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
-            { name: "Alison", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
-            { name: "Krish", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
-            { name: "Lauren", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
-            { name: "Britney", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
-            { name: "Vien", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
-            { name: "Alex", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 },
-            { name: "Jess", money: 200, chips: [], isDealer: false, isSmallBlind: false, isBigBlind: false, bet: { amt: 0 }, cards: [], hand: [], handRank: 0 }
-        ];
-
         $scope.game.deck = allCards;
-        game = $scope.game;
-
+        $scope.game.players = testPlayers;
+        $scope.errorMessage = "";
         $scope.getNumber = function (num) { return new Array(num); }
+        $scope.handType = {
+            highCard: {
+                rank: 0,
+                name: 'High card'
+            },
+            pair: {
+                rank: 1,
+                name: 'A pair'
+            },
+            twoPair: {
+                rank: 2,
+                name: 'Two pair'
+            },
+            threeOfAKind: {
+                rank: 3,
+                name: 'Three of a kind'
+            },
+            straight: {
+                rank: 4,
+                name: 'Straight'
+            },
+            flush: {
+                rank: 5,
+                name: 'Flush'
+            },
+            fullHouse: {
+                rank: 6,
+                name: 'Full house'
+            },
+            fourOfAKind: {
+                rank: 7,
+                name: 'Four of a kind'
+            },
+            straightFlush: {
+                rank: 8,
+                name: 'Straight flush'
+            }
+        };
+        /* Add DOM element for review in testing environment only */
+        game = $scope.game;
+        
         /*
         $http.get('/Game/Scripts/players.json').success(function (data) {
         game.players = data;
         });
         */
 
-        var errorMessage = "";
+        /* Figure out how to move into players.hand */
+        var learningObject = {
+            handType: $scope.handType
+        };
+        learningObject.handType.cards = [];
+        learningObject.handType.outs = [];
+        learningObject.handType.percentToHand = 0;
+
+        for (var i = 0; i < $scope.game.players.length; i++){
+            $scope.game.players[i].hand.learning = learningObject;
+        }
 
     } ])
     .filter('bet', function () {
@@ -46,6 +86,127 @@
     });
 
 
+    var testPlayers = [
+        {
+            name: "Melanie",
+            seat: 0,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+        },
+        {
+            name: "Alison",
+            seat: 1,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+            handRank: 0
+        },
+        {
+            name: "Krish",
+            seat: 2,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+            handRank: 0
+        },
+        {
+            name: "Lauren",
+            seat: 3,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+            handRank: 0
+        },
+        {
+            name: "Britney",
+            seat: 4,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+            handRank: 0
+        },
+        {
+            name: "Vien",
+            seat: 5,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+            handRank: 0
+        },
+        {
+            name: "Alex",
+            seat: 6,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+            handRank: 0
+        },
+        {
+            name: "Jess",
+            seat: 7,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            cards: [],
+            hand: {
+                cards: []
+            },
+            handRank: 0
+        }
+    ]
 
     /* Begin "cards" array, containing all poker card/deck data */
     var allCards = [

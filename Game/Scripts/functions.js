@@ -157,7 +157,6 @@ function dealBoard(qty) {
     for (var x = 1; x < qty + 1; x++) {
         /* Add the card to the board */
         table.cards.push(table.shuffledDeck[0]);
-
         /* Remove the card from the shuffled deck */
         table.shuffledDeck.splice(0, 1);
     }
@@ -189,216 +188,216 @@ function sort_by(field, reverse, primer) {
 
 /* !!! !!! !!! Hand Hierarchy/Winner Code and Logic !!! !!! !!! */
 /* Still needs extra logic to hand high card, highest pair(s)/three of a kind, and highest hand for FH vs. FH */
-function evaluateHand(player, cards) {
+//function evaluateHand(player, cards) {
     //hand = [];
 
     /* Add the player's hole cards and cards from the board to the hand object */
-    if (player.cards.length) {
-        player.hand.push(player.cards[0]);
-        player.hand.push(player.cards[1]);
-        for (var i = 0; i < cards.length; i++) { player.hand.push(cards[i]); }
-    } else { return; }
+    //if (player.cards.length) {
+    //    player.hand.push(player.cards[0]);
+    //    player.hand.push(player.cards[1]);
+    //    for (var i = 0; i < cards.length; i++) { player.hand.push(cards[i]); }
+    //} else { return; }
 
     /* Sort hand in order of value, lowest to highest */
-    player.hand.sort(sort_by('value', false, parseInt));
+    //player.hand.sort(sort_by('value', false, parseInt));
 
 
-    var straightFlush = false;
-    var four = false;
-    var full = false;
-    var flush = false;
-    var straight = false;
-    var three = false;
-    var pairs = 0;
-    var k = 0;
+    //var straightFlush = false;
+    //var four = false;
+    //var full = false;
+    //var flush = false;
+    //var straight = false;
+    //var three = false;
+    //var pairs = 0;
+    //var k = 0;
 
-    var card = 0;
+    //var card = 0;
 
-    var hearts = 0;
-    var diamonds = 0;
-    var spades = 0;
-    var clubs = 0;
+    //var hearts = 0;
+    //var diamonds = 0;
+    //var spades = 0;
+    //var clubs = 0;
 
     /* Set current cardsToStraight and cardsToStraightFlush as 1, since you're ALWAYS at least 1 card to a straight/straight flush */
-    var cardsToStraight = 1;
-    var cardsToStraightFlush = 1;
+    //var cardsToStraight = 1;
+    //var cardsToStraightFlush = 1;
 
-    var matches = 0;
-    var z = 0;
+    //var matches = 0;
+    //var z = 0;
 
     /* Iterate through all of the player's cards */
-    for (card = 0; card < player.hand.length; card++) {
+    //for (card = 0; card < player.hand.length; card++) {
 
         /* Check to see which suit this card is, and add to the total number of that suit */
-        switch (player.hand[card].suit) {
-            case 'Hearts':
-                if (++hearts >= 5) { flush = true; }
-                break;
-            case 'Diamonds':
-                if (++diamonds >= 5) { flush = true; }
-                break;
-            case 'Spades':
-                if (++spades >= 5) { flush = true; }
-                break;
-            case 'Clubs':
-                if (++clubs >= 5) { flush = true; }
-                break;
-        }
+    //    switch (player.hand[card].suit) {
+    //        case 'Hearts':
+    //            if (++hearts >= 5) { flush = true; }
+    //            break;
+    //        case 'Diamonds':
+    //            if (++diamonds >= 5) { flush = true; }
+    //            break;
+    //        case 'Spades':
+    //            if (++spades >= 5) { flush = true; }
+    //            break;
+    //        case 'Clubs':
+    //            if (++clubs >= 5) { flush = true; }
+    //            break;
+    //    }
 
         /* Don't check previous card against first, since there is no previous card */
-        if (card >= 1) {
+    //    if (card >= 1) {
             /* Set the previous, and last card's indexes */
-            var previousCard = card - 1;
-            var lastCard = player.hand.length - 1;
+    //        var previousCard = card - 1;
+    //        var lastCard = player.hand.length - 1;
 
-            if ((player.hand[previousCard].value == 2 && player.hand[card].value == 3) && player.hand[lastCard].value == 14) {
+    //        if ((player.hand[previousCard].value == 2 && player.hand[card].value == 3) && player.hand[lastCard].value == 14) {
                 /* There is a 2, 3, and an ace, so add 1 to cardsToStraight for the Ace */
-                cardsToStraight++;
-            }
+    //            cardsToStraight++;
+    //        }
 
             /* Find out how many cards the player has to a straight */
-            if (player.hand[previousCard].value == (player.hand[card].value - 1)) {
+    //        if (player.hand[previousCard].value == (player.hand[card].value - 1)) {
                 /* Add 1 to cards to straight before checking if we have one, and set to true if we do */
-                if (++cardsToStraight >= 5) { straight = true; }
-            }
+    //            if (++cardsToStraight >= 5) { straight = true; }
+    //        }
             /* This card isn't part of the straight, and it's not a pair for the prior card, so reset the count */
-            else if (player.hand[previousCard].value != player.hand[card].value) {
-                cardsToStraight = 1;
-            }
+    //        else if (player.hand[previousCard].value != player.hand[card].value) {
+    //            cardsToStraight = 1;
+    //        }
 
 
-        }
+    //    }
 
-    } /* End for loop iterating through current hand */
+    //} /* End for loop iterating through current hand */
 
 
     /* Since we have 7 cards but would only want to use 5, check for straight flush */
-    if (straight && flush) {
-        var lastMatchingCardPos = -1;
+    //if (straight && flush) {
+    //    var lastMatchingCardPos = -1;
 
 
-        for (card = 1; card < player.hand.length; card++) {
+    //    for (card = 1; card < player.hand.length; card++) {
             /* Set previousCard to the card before the one at the current index */
-            var previousCard = card - 1;
+    //        var previousCard = card - 1;
 
-            if (((player.hand[previousCard].value == 2 && player.hand[card].value == 3) && player.hand[lastCard].value == 14) &&
-                (player.hand[previousCard].suitVal == player.hand[card].suitVal && player.hand[lastCard].suitVal == player.hand[card].suitVal)) {
+    //        if (((player.hand[previousCard].value == 2 && player.hand[card].value == 3) && player.hand[lastCard].value == 14) &&
+    //            (player.hand[previousCard].suitVal == player.hand[card].suitVal && player.hand[lastCard].suitVal == player.hand[card].suitVal)) {
                 /* There is a suited 2, 3, and an ace, so add 1 to cardsToStraightFlush for the Ace */
-                cardsToStraightFlush++;
-            }
+    //            cardsToStraightFlush++;
+    //        }
 
             /* See if the previous card's value is 1 less than the current card */
-            if ((player.hand[card].value - 1) == player.hand[previousCard].value) {
+    //        if ((player.hand[card].value - 1) == player.hand[previousCard].value) {
 
                 /* We have a numerical progression, check if suit matches and if so, add 1 to cardsToStraightFlush */
-                if (player.hand[card].suitVal == player.hand[previousCard].suitVal) {
+    //            if (player.hand[card].suitVal == player.hand[previousCard].suitVal) {
                     /* Set the number for the last matching card's index (lastMatchingCardPos) to the current index (card) */
-                    lastMatchingCardPos = card;
+    //                lastMatchingCardPos = card;
                     /* We have a suited straight progression, so add 1 to cardsToStraightFlush */
-                    if (++cardsToStraightFlush >= 5) { straightFlush = true; }
-                }
+    //                if (++cardsToStraightFlush >= 5) { straightFlush = true; }
+    //            }
 
 
                 /* Check to see if this card and the previous is a pair, and if so, check the current card against the last matchingCardPos */
-            } else if (player.hand[card].value == player.hand[previousCard].value) {
+    //        } else if (player.hand[card].value == player.hand[previousCard].value) {
 
-                if (lastMatchingCardPos >= 0 &&                                     /* Make sure there "is" a lastMatchingCardPosition */
-                    ((player.hand[card].value - 1) == player.hand[lastMatchingCardPos].value &&   /* Check current card value - 1 against last matching card's value */
-                    player.hand[card].suitVal == hand[lastMatchingCardPos].suitVal)) {     /* Check current card's suit against last matching card's suit */
+    //            if (lastMatchingCardPos >= 0 &&                                     /* Make sure there "is" a lastMatchingCardPosition */
+    //                ((player.hand[card].value - 1) == player.hand[lastMatchingCardPos].value &&   /* Check current card value - 1 against last matching card's value */
+    //                player.hand[card].suitVal == hand[lastMatchingCardPos].suitVal)) {     /* Check current card's suit against last matching card's suit */
 
                     /* The previous card is a pair for this one, AND the card in the last matching index follows the suited straight progression */
 
 
                     /* Set the number for the last matching card's index (lastMatchingCardPos) to the current index (card) */
-                    lastMatchingCardPos = card;
+    //                lastMatchingCardPos = card;
 
-                    if (++cardsToStraightFlush >= 5) { straightFlush = true; }
+    //                if (++cardsToStraightFlush >= 5) { straightFlush = true; }
 
 
-                } else {
+    //            } else {
                     /* There is no straight progression and the previous card isn't a pair for this one, so reset our variables */
-                    lastMatchingCardPos = -1;
-                    cardsToStraightFlush = 1;
-                }
-            } else {
+    //                lastMatchingCardPos = -1;
+    //                cardsToStraightFlush = 1;
+    //            }
+    //        } else {
                 /* There is no straight progression and the previous card isn't a pair for this one, so reset our variables */
-                lastMatchingCardPos = -1;
-                cardsToStraightFlush = 1;
-            }
+    //            lastMatchingCardPos = -1;
+    //            cardsToStraightFlush = 1;
+    //        }
 
-        } /* End for loop */
-    }
+    //    } /* End for loop */
+    //}
 
 
     /* Check for four of a kind */
     /* Add my altered version of the below four of a kind check */
 
     /* Check for fours */
-    for (var i = 0; i < 4; i++) {
-        k = i;
+    //for (var i = 0; i < 4; i++) {
+    //    k = i;
 
-        while (k < i + 3 && player.hand[k].value == player.hand[k + 1].value) {
-            k++;
+    //    while (k < i + 3 && player.hand[k].value == player.hand[k + 1].value) {
+    //        k++;
 
-            if (k == i + 3) {
-                four = true;
-            }
-        }
-    }
+    //        if (k == i + 3) {
+    //            four = true;
+    //        }
+    //    }
+    //}
 
 
     /* Check for threes and full house */
-    if (!four) {
-        for (var i = 0; i < 5; i++) {
-            k = i;
-            var nextCard = k + 1;
+    //if (!four) {
+    //    for (var i = 0; i < 5; i++) {
+    //        k = i;
+    //        var nextCard = k + 1;
 
-            while (k < i + 2 && player.hand[k].value == player.hand[nextCard].value) {
-                k++;
-                nextCard = k + 1;
+    //        while (k < i + 2 && player.hand[k].value == player.hand[nextCard].value) {
+    //            k++;
+    //            nextCard = k + 1;
 
-                if (k == i + 2) {
-                    three = true;
+    //            if (k == i + 2) {
+    //                three = true;
 
-                    if (i == 0) {
-                        if (player.hand[3].value == player.hand[4].value || player.hand[4].value == player.hand[5].value || player.hand[5].value == player.hand[6].value) { full = true; }
-                    } else if (i == 1) {
-                        if (player.hand[4].value == player.hand[5].value || player.hand[5].value == player.hand[6].value) { full = true; }
-                    } else if (i == 2) {
-                        if (player.hand[0].value == player.hand[1].value || player.hand[5].value == player.hand[6].value) { full = true; }
-                    } else {
-                        if (player.hand[0].value == player.hand[1].value || player.hand[1].value == player.hand[2].value) { full = true; }
-                    }
-                }
-            }
-        }
-    }
+    //                if (i == 0) {
+    //                    if (player.hand[3].value == player.hand[4].value || player.hand[4].value == player.hand[5].value || player.hand[5].value == player.hand[6].value) { full = true; }
+    //                } else if (i == 1) {
+    //                    if (player.hand[4].value == player.hand[5].value || player.hand[5].value == player.hand[6].value) { full = true; }
+    //                } else if (i == 2) {
+    //                    if (player.hand[0].value == player.hand[1].value || player.hand[5].value == player.hand[6].value) { full = true; }
+    //                } else {
+    //                    if (player.hand[0].value == player.hand[1].value || player.hand[1].value == player.hand[2].value) { full = true; }
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     /* If we've found something so far, go ahead and return the hand rank */
-    if (straightFlush) { return 9; }
-    else if (four) { return 8; }
-    else if (full) { return 7; }
-    else if (flush) { return 6; }
-    else if (straight) { return 5; }
-    else if (three) { return 4; }
+    //if (straightFlush) { return 9; }
+    //else if (four) { return 8; }
+    //else if (full) { return 7; }
+    //else if (flush) { return 6; }
+    //else if (straight) { return 5; }
+    //else if (three) { return 4; }
 
 
     /* Check for pairs */
-    for (k = 0; k < 6; k++) {
-        if (player.hand[k].value == player.hand[k + 1].value) { pairs++; }
-    }
+    //for (k = 0; k < 6; k++) {
+    //    if (player.hand[k].value == player.hand[k + 1].value) { pairs++; }
+    //}
 
 
-    if (pairs >= 2) { return 3; }
-    else if (pairs) { return 2; }
-    else { return 1; }
-}
+    //if (pairs >= 2) { return 3; }
+    //else if (pairs) { return 2; }
+    //else { return 1; }
+//}
 
 
 /* Begin function to find out who won */
-function calculateWinner() {
+function calculateWinners() {
     for (var p = 0; p < game.players.length; p++) {
-        game.players[p].handRank = evaluateHand(game.players[p], table.cards);
+        //game.players[p].handRank = evaluateHand(game.players[p], table.cards);
     }
 
     table.winner = {

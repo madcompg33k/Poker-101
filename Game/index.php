@@ -20,15 +20,15 @@
 
                     <div id="board">
                         <ul>
-                            <li class="card" data-ng-repeat="card in table.cards">
+                            <li class="card" data-ng-repeat="card in game.table.cards">
                                 <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
                             </li>
                         </ul>
                     </div>
 
                     <div id="potSize">
-                        <span class="table-money">Pot Size: {{ table.potSize | currency }}</span>
-                        <span class="table-money">Blinds: {{ table.smallBlind.amt }} / {{ table.bigBlind.amt }}</span>
+                        <span class="table-money">Pot Size: {{ game.table.potSize | currency }}</span>
+                        <span class="table-money">Blinds: {{ game.table.smallBlind.amt }} / {{ game.table.bigBlind.amt }}</span>
                     </div>
                     
                 </section>

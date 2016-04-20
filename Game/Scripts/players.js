@@ -1,5 +1,5 @@
 (function () {
-    var app = angular.module('players', ['hand'])
+    var app = angular.module('players', [])
     /* Controller for all players */
         .controller('PlayersController', function () {
             /* Initialize Players and assign data to it */
