@@ -10,7 +10,7 @@
         $scope.handType = {
             highCard: {
                 rank: 0,
-                name: 'High card'
+                name: 'High card',
             },
             pair: {
                 rank: 1,
@@ -47,20 +47,11 @@
         };
         /* Add DOM element for review in testing environment only */
         game = $scope.game;
-        
-        /*
-        $http.get('/Game/Scripts/players.json').success(function (data) {
-        game.players = data;
-        });
-        */
 
         /* Figure out how to move into players.hand */
         var learningObject = {
-            handType: $scope.handType
+            handType: $scope.handType,
         };
-        learningObject.handType.cards = [];
-        learningObject.handType.outs = [];
-        learningObject.handType.percentToHand = 0;
 
         for (var i = 0; i < $scope.game.players.length; i++){
             $scope.game.players[i].hand.learning = learningObject;
@@ -98,7 +89,8 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
+                cards: [],
+                handType: {}
             },
         },
         {
@@ -112,9 +104,9 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
-            },
-            handRank: 0
+                cards: [],
+                handType: {}
+            }
         },
         {
             name: "Krish",
@@ -127,9 +119,9 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
-            },
-            handRank: 0
+                cards: [],
+                handType: {}
+            }
         },
         {
             name: "Lauren",
@@ -142,9 +134,9 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
-            },
-            handRank: 0
+                cards: [],
+                handType: {}
+            }
         },
         {
             name: "Britney",
@@ -157,9 +149,9 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
-            },
-            handRank: 0
+                cards: [],
+                handType: {}
+            }
         },
         {
             name: "Vien",
@@ -172,9 +164,9 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
-            },
-            handRank: 0
+                cards: [],
+                handType: {}
+            }
         },
         {
             name: "Alex",
@@ -187,9 +179,9 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
-            },
-            handRank: 0
+                cards: [],
+                handType: {}
+            }
         },
         {
             name: "Jess",
@@ -202,9 +194,9 @@
             bet: { amt: 0 },
             cards: [],
             hand: {
-                cards: []
-            },
-            handRank: 0
+                cards: [],
+                handType: {}
+            }
         }
     ]
 

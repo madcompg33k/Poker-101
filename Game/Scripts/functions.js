@@ -30,12 +30,9 @@ function clearBoard(){
         /* Clear all player cards, if they have any */
         for (p = 0; p < game.players.length; p++) {
             /* Clear player hand data */
-            if (game.players[p].cards){ game.players[p].cards.length = 0; }
-            else { game.players[p].cards = []; }
-            if (game.players[p].hand){ game.players[p].hand.length = 0; }
-            else { game.players[p].hand = []; }
+            game.players[p].hand.cards = [];
+            game.players[p].hand.handType = {};
             game.players[p].bet.amt = 0;
-            game.players[p].handRank = 0;
         }
     }
 
@@ -126,7 +123,7 @@ function dealCards() {
             /* Check to make sure player has money to play */
             if (game.players[seat].money > 0){
                 /* Assign current player's card position in the deck */
-                game.players[seat].cards.push(table.shuffledDeck[0]);
+                game.players[seat].hand.cards.push(table.shuffledDeck[0]);
                 table.shuffledDeck.splice(0, 1);
             }
             
@@ -167,7 +164,7 @@ function dealBoard(qty) {
     /* Reset the current bet */
     table.currentBet = parseInt(0, 0);
     table.turn = getNextSeat(table.dealer.seat);
-    while (!game.players[table.turn].cards.length) {
+    while (!game.players[table.turn].hand.cards.length) {
         table.turn = getNextSeat(table.turn);
     }
     table.better = game.players[table.turn];

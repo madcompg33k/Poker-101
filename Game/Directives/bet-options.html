@@ -1,7 +1,9 @@
 <div id="betOptionsContainer">
     <h3>Your Turn</h3>
     <form class="bet-options">
-        <button class="check" data-ng-show="table.currentBet === 0" data-ng-click="tableCtrl.playerBetAction('Check', player, 0)">Check</button>
+        <button class="check" data-ng-show="table.currentBet === 0" data-ng-click="tableCtrl.playerBetAction('Check', player, 0)">
+            Check
+        </button>
         <button class="call" data-ng-hide="table.currentBet === 0" data-ng-click="tableCtrl.playerBetAction('Call', player, table.currentBet)">
             Call
             {{ player.bet.amt > 0 && player.bet.amt < table.currentBet ? "+(" : "("

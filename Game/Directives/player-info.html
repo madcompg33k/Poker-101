@@ -4,7 +4,6 @@
 
         <h3 class="player-name">
             {{ player.name }}
-
             <span data-ng-show="table.winner.seat === $index" class="winning-player">
                 (Winner!)
             </span>
@@ -15,8 +14,11 @@
             <span data-ng-show="table.smallBlind.seat === $index">(Small Blind)</span>
             <span data-ng-show="table.bigBlind.seat === $index">(Big Blind)</span>
         </h3>
+        <small>Player Hand: {{ player.hand.handType.name }}</small>
+        <br />
+        <small>Hand Rank: {{ player.hand.handType.rank }}</small>
 
-        <bet-options data-ng-show="table.turn === $index && player.handRank === 0"></bet-options>
+        <bet-options data-ng-show="table.turn === $index && !player.hand.handRank"></bet-options>
         <!-- ul>
             <li>
                 <b>Money:</b>
@@ -29,7 +31,7 @@
         </ul -->
 
         <div class="player-hand">
-            <span data-ng-repeat="card in player.cards">
+            <span data-ng-repeat="card in player.hand.cards">
                 <a-card class="card-thumb"></a-card>
                 <!-- img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" / -->
             </span>

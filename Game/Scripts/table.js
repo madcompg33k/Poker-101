@@ -21,19 +21,19 @@
         table = $scope.table;
 
         /* Deal the cards to the players */
-        this.dealCards = function () { newHand(); }
+        this.dealCards = function () { newHand(); dealBoard(5); }
         this.dealCardsToTable = function () {
             switch (table.cards.length) {
                 case 0: dealBoard(3);
-                        break;
+                    break;
                 case 3: dealBoard(1);
-                        break;
+                    break;
                 case 4: dealBoard(1);
-                        break;
+                    break;
                 default: this.calculateWinner(game.players);
-                        table.turn = -1;
-                        console.log(table.turn);
-                        break;
+                    table.turn = -1;
+                    console.log(table.turn);
+                    break;
             }
 
         }
@@ -48,7 +48,7 @@
                     table.better = player;
                     break;
                 case 'Fold':
-                    player.cards.length = 0;
+                    player.hand.cards.length = 0;
                     break;
             }
             /* Set bet.amt to amount player bet */
@@ -63,7 +63,7 @@
             /* Move to the next seat */
             table.turn = getNextSeat(table.turn);
             /* Continue moving if the current player has no more money to bet, or has folded, and stop on the original better/player */
-            while (!game.players[table.turn].cards.length ||
+            while (!game.players[table.turn].hand.cards.length ||
                     (parseInt(game.players[table.turn].money, 10) <= 0
                     && !game.players[table.turn] == table.better))
             { table.turn = getNextSeat(table.turn); }
@@ -77,40 +77,48 @@
         this.calculateWinner = function (players) {
             var winner = {};
 
-            for (var seat = 0; seat < game.players.length; seat++) {
-                var hand = [];
+            for (var seat = 0; seat < players.length; seat++) {
+                /* Don't bother evaluating players with no cards */
+                if (players[seat].hand.cards.length) {
+                    var hand = {};
+                    hand.cards = [];
+                    hand.handType = { cards: [] };
 
-                /* Add the player's hole cards and cards from the board to the hand object */
-                if (game.players[seat].cards.length) {
-                    hand.push(game.players[seat].cards[0]);
-                    hand.push(game.players[seat].cards[1]);
-                    for (var i = 0; i < table.cards.length; i++) { hand.push(table.cards[i]); }
+                    /* Add the player's hole cards and cards from the board to the hand object */
+                    hand.cards.push(players[seat].hand.cards[0]);
+                    hand.cards.push(players[seat].hand.cards[1]);
+                    for (var i = 0; i < table.cards.length; i++) { hand.cards.push(table.cards[i]); }
                 }
 
                 /* Sort hand in order of value, lowest to highest */
-                hand.sort(sort_by('value', false, parseInt));
+                hand.cards.sort(sort_by('value', false, parseInt));
 
-                this.evalCurrentHand(hand);
+                players[seat].hand.handType = this.evalCurrentHand(hand);
             }
 
             return winner;
         };
 
-        this.calculateCardsEstimatePercentage = function (outs, cardsToCome) {
-            return (outs.length * 2) * cardsToCome;
-        };
+        this.evalCurrentHand = function (hand) {
+            var pairedCards = [];
 
-        this.calculateCardsActualPercentage = function (outs, cardsToCome) {
-            return (outs.length * (100 / 52)) * cardsToCome;
-        };
+            hand = this.checkHighestPair(hand);
 
-        this.calculateCardsToCome = function () {
-            return 5 - table.cards.length;
-        };
+            if (hand.handType.rank <= 3) {
+                hand = this.checkFlush(hand);
+            }
 
-        this.evalCurrentHand = function (cards) {
+            //handType.cards = result;
             console.log("Test");
+            return hand.handType;
         };
+
+        /* Remove a card from the players hand */
+        /* (Used to bring a player's representative hand from 7 to 5) */
+        this.trimHand = function (hand, card) {
+            /* Remove the card from the shuffled deck */
+            hand.splice(card.$index, 1);
+        }
 
         /* (Function) checkHighestCards(Array) */
         /* Send a hand to this function to determine the highest card in the hand */
@@ -127,37 +135,145 @@
         /* Return the card value of the hand's highest pair */
         this.checkHighestPair = function (hand) {
             var pairedCards = [];
+            /* Iterate through all cards */
+            for (var card = 0; card < hand.cards.length - 1; card++) {
+                var i = card;
 
-            for (var card = 0; card < hand.length - 1; card++) {
-                var i = 0;
+                /* Iterate through all cards beyond this one (card) */
+                while (i++ < hand.cards.length - 1) {
+                    var alreadyAdded = false;
 
-                while (i++ < hand.length - 1) {
-                    /* Check if we've already found it before first */
-                    if (pairedCards.length) {
-                        /* Iterate through previously found pairs and add if match is found */
-                        angular.forEach(pairedCards, function (value, key) {
-                            pairedCards[key].count = hand[i].value == pairedCards[key].cardValue ? pairedCards[key].count + 1 : pairedCards[key].count;
-                        });
-                    }
+                    /* Check for a match */
+                    if (hand.cards[card].value == hand.cards[i].value) {
 
-                    /* We haven't seen this card before, see if it's in the deck */
-                    else {
-                        /* Check for a match */
-                        if (hand[card].value == hand[i].value) {
-                            pairedCards.push({ cardValue: hand[card].value, count: 2 });
+                        /* See if we've already found any other pairs and if it matches */
+                        for (var c = 0; c < pairedCards.length; c++) {
+                            /* Iterate through all pairedCards to make sure we haven't already added this card in the past */
+                            for (var csuit = 0; csuit < pairedCards[c].cards.length; csuit++) {
+                                if (hand.cards[i].suit == pairedCards[c].cards[csuit].suit) { alreadyAdded = true; }
+                            }
+
+                            /* Check for a match with any previous found pairs */
+                            if (hand.cards[card].value == pairedCards[c].cardValue && !alreadyAdded) {
+                                pairedCards[c].count++;
+                                pairedCards[c].cards.push(hand.cards[i]);
+                            } else if (!alreadyAdded) {
+                                /* We have found a prior pair but this is a different card, so add it */
+                                pairedCards.push(
+                                {
+                                    cards: [
+                                        hand.cards[card],
+                                        hand.cards[i]
+                                    ],
+                                    cardValue: hand.cards[card].value,
+                                    count: 2
+                                });
+                                c++; /* Add to c so we don't iterate through again since we just added 1 to pairedCards.length */
+                            }
                         }
 
-                    }
+                        if (!pairedCards.length) {
+                            /* We found a match, but have no prior pairs, so add to pairedCards */
+                            pairedCards.push(
+                            {
+                                cards: [
+                                    hand.cards[card],
+                                    hand.cards[i]
+                                ],
+                                cardValue: hand.cards[card].value,
+                                count: 2
+                            });
+                        }
+                    } /* End check to see if we found a match */
+
                 } /* End while loop */
 
             } /* End for loop */
 
             if (pairedCards.length) {
-                for (var i = 0; i < pairedCards.length; i++)
-                    console.write("Paired Card Value: " + pairedCards[i].cardValue + ". Paired Cards Count: " + pairedCards[i].count)
+                if (pairedCards[0].count >= 4) { hand.handType = $scope.handType.fourOfAKind; }
+                if (pairedCards.length >= 2 && !hand.handType) { 
+                    var three = false; 
+
+                    for (var i = 0; i < pairedCards.length; i++) {
+                        if (pairedCards[i].count == 3) { hand.handType = i >= 1 ? $scope.handType.fullHouse : $scope.handType.threeOfAKind; }
+                        else { hand.handType = hand.handType ? hand.handType == $scope.handType.threeOfAKind ? $scope.handType.fullHouse : $scope.handType.twoPair : $scope.handType.twoPair; }
+                    }
+
+                    /* This will still return full house even for two pair */
+                    //hand.handType = hand.handType.length ? $scope.handType.fullHouse : $scope.handType.twoPair; }
+                } else if (!hand.handType ) {
+                    hand.handType = pairedCards[0].count == 3 ? $scope.handType.threeOfAKind : $scope.handType.pair;
+                }
+
+                for (var i = 0; i < pairedCards.length; i++) {
+                    if (pairedCards[i].count >= 4) { hand.handType = $scope.handType.fourOfAKind; }
+                    else if (pairedCards[i].count == 3) {
+                        if (pairedCards.length >= 2) { hand.handType = $scope.handType.fullHouse; }
+                        else { hand.handType = $scope.handType.threeOfAKind; }
+                    }
+                    else if (pairedCards.length >= 2) { hand.handType = $scope.handType.twoPair; }
+                    else if (!hand.handType.length) { hand.handType = $scope.handType.pair; }
+
+                    //angular.forEach(pairedCards[i].cards, function (value, key) {
+                    //    hand.handType.cards.push(cards[key].card);
+                    //});
+                }
+                hand.handType.cards = [];
+                /* Maybe I can just do: hand.handtype.cards = pairedCards, or some variation of? */
+                for (var i = 0; i < pairedCards.length; i++) {
+                    hand.handType.cards.push(pairedCards[i].cards);
+                }
+
+            } else { hand.handType = $scope.handType.highCard; }
+
+            /* Trim hand to 5 cards */
+            /* 4 of a kind - while (hand.cards[i].value != pairedCards[loc_of_4_of_a_kind]) { if (!high_off_card) { trim_card; } */
+            /* Consider not trimming until later, in order to compare all handTypes that show up to determine the highest hand first */
+
+            return hand;
+        };
+
+        this.checkFlush = function (hand) {
+            var flushCards = {
+                hearts:     { cards: [], count: 0, name: 'hearts' },
+                diamonds:   { cards: [], count: 0, name: 'diamonds' },
+                spades:     { cards: [], count: 0, name: 'spades' },
+                clubs:      { cards: [], count: 0, name: 'clubs' },
+            };
+            var hasFlush = {};
+
+
+            for (var card = 0; card < hand.cards.length; card++) {
+                switch (hand.cards[card].suit) {
+                    case 'hearts':
+                        flushCards.hearts.cards.push(hand.cards[card]);
+                        if (++flushCards.hearts.count >= 5) { hasFlush = flushCards.hearts; }
+                        break;
+                    case 'diamonds':
+                        flushCards.diamonds.cards.push(hand.cards[card]);
+                        if (++flushCards.diamonds.count >= 5) { hasFlush = flushCards.diamonds; }
+                        break;
+                    case 'spades':
+                        flushCards.spades.cards.push(hand.cards[card]);
+                        if (++flushCards.spades.count >= 5) { hasFlush = flushCards.spades; }
+                        break;
+                    case 'clubs':
+                        flushCards.clubs.cards.push(hand.cards[card]);
+                        if (++flushCards.clubs.count >= 5) { hasFlush = flushCards.clubs; }
+                        break;
+                    default:
+                        return hand;
+                }
+            }
+            
+            if (hasFlush.cards){
+                hand.handType = $scope.handType.flush;
+                hand.handType.cards = [];
+                hand.handType.cards.push(hasFlush.cards);
             }
 
-            return pairedCards;
+            return hand;
         };
 
         /* Return the percentage the player currently has to getting a flush */
@@ -200,6 +316,18 @@
             else { return 0; }
         };
 
+        this.calculateCardsEstimatePercentage = function (outs, cardsToCome) {
+            return (outs.length * 2) * cardsToCome;
+        };
+
+        this.calculateCardsActualPercentage = function (outs, cardsToCome) {
+            return (outs.length * (100 / 52)) * cardsToCome;
+        };
+
+        this.calculateCardsToCome = function () {
+            return 5 - table.cards.length;
+        };
+
     } ])
     /* Start Directives */
     .directive('gameOptions', function () {
@@ -221,5 +349,5 @@
             },
             controllerAs: 'betOptions'
         }
-    })
+    });
 })();
