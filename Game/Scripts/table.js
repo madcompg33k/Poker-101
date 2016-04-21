@@ -82,7 +82,6 @@
                 if (players[seat].hand.cards.length) {
                     var hand = {};
                     hand.cards = [];
-                    hand.handType = { cards: [] };
 
                     /* Add the player's hole cards and cards from the board to the hand object */
                     hand.cards.push(players[seat].hand.cards[0]);
@@ -105,11 +104,10 @@
             hand = this.checkHighestPair(hand);
 
             if (hand.handType.rank <= 3) {
+                hand = this.checkStraight(hand);
                 hand = this.checkFlush(hand);
             }
 
-            //handType.cards = result;
-            console.log("Test");
             return hand.handType;
         };
 
@@ -136,7 +134,7 @@
         this.checkHighestPair = function (hand) {
             var pairedCards = [];
             /* Iterate through all cards */
-            for (var card = 0; card < hand.cards.length - 1; card++) {
+            for (var card = 0; card < hand.cards.length; card++) {
                 var i = card;
 
                 /* Iterate through all cards beyond this one (card) */
@@ -193,39 +191,38 @@
             if (pairedCards.length) {
                 if (pairedCards[0].count >= 4) { hand.handType = $scope.handType.fourOfAKind; }
                 if (pairedCards.length >= 2 && !hand.handType) { 
-                    var three = false; 
 
                     for (var i = 0; i < pairedCards.length; i++) {
-                        if (pairedCards[i].count == 3) { hand.handType = i >= 1 ? $scope.handType.fullHouse : $scope.handType.threeOfAKind; }
-                        else { hand.handType = hand.handType ? hand.handType == $scope.handType.threeOfAKind ? $scope.handType.fullHouse : $scope.handType.twoPair : $scope.handType.twoPair; }
+                        if (pairedCards[i].count == 3) {
+                            hand.handType = i >= 1
+                                ? $scope.handType.fullHouse
+                                : $scope.handType.threeOfAKind;
+                        }
+                        else {
+                            hand.handType = !hand.handType
+                                ? $scope.handType.twoPair
+                                : hand.handType.rank == 3 /* .rank 3 is threeOfAKind */
+                                    ? $scope.handType.fullHouse
+                                    : $scope.handType.twoPair;
+                        }
                     }
 
-                    /* This will still return full house even for two pair */
-                    //hand.handType = hand.handType.length ? $scope.handType.fullHouse : $scope.handType.twoPair; }
+                    
                 } else if (!hand.handType ) {
-                    hand.handType = pairedCards[0].count == 3 ? $scope.handType.threeOfAKind : $scope.handType.pair;
+                    hand.handType = pairedCards[0].count == 3
+                        ? $scope.handType.threeOfAKind
+                        : $scope.handType.pair;
                 }
-
-                for (var i = 0; i < pairedCards.length; i++) {
-                    if (pairedCards[i].count >= 4) { hand.handType = $scope.handType.fourOfAKind; }
-                    else if (pairedCards[i].count == 3) {
-                        if (pairedCards.length >= 2) { hand.handType = $scope.handType.fullHouse; }
-                        else { hand.handType = $scope.handType.threeOfAKind; }
-                    }
-                    else if (pairedCards.length >= 2) { hand.handType = $scope.handType.twoPair; }
-                    else if (!hand.handType.length) { hand.handType = $scope.handType.pair; }
-
-                    //angular.forEach(pairedCards[i].cards, function (value, key) {
-                    //    hand.handType.cards.push(cards[key].card);
-                    //});
-                }
+                
                 hand.handType.cards = [];
-                /* Maybe I can just do: hand.handtype.cards = pairedCards, or some variation of? */
                 for (var i = 0; i < pairedCards.length; i++) {
                     hand.handType.cards.push(pairedCards[i].cards);
                 }
 
-            } else { hand.handType = $scope.handType.highCard; }
+            } else {
+                hand.handType = $scope.handType.highCard;
+                hand.handType.name = hand.cards[hand.cards.length - 1].name + " high";
+            }
 
             /* Trim hand to 5 cards */
             /* 4 of a kind - while (hand.cards[i].value != pairedCards[loc_of_4_of_a_kind]) { if (!high_off_card) { trim_card; } */
@@ -273,6 +270,45 @@
                 hand.handType.cards.push(hasFlush.cards);
             }
 
+            return hand;
+        };
+
+        this.checkStraight = function (hand) {
+            var straightCards = [];
+            var suited = false;
+
+            for (var card = 0; card < hand.cards.length; card++){
+                if (straightCards.length) {
+                    if (hand.cards[card].value == straightCards[straightCards.length - 1].value + 1) {
+                        /* Check to see if the straight stays suited */
+                        suited = hand.cards[card].suit == straightCards[straightCards.length - 1].suit ? true : false;
+                        /* This card is 1 more than the previous */
+                        straightCards.push(hand.cards[card]);
+
+                        /* Add handling to check for an A-5 combo */
+                    }
+                    else if (straightCards.length < 5){
+                        /* Check to see if the last card is a pair for this one */
+                        if (hand.cards[card].value == straightCards[straightCards.length - 1].value){
+                            continue;
+
+                            /* Add handling for checking suited if the previous 2+ cards were a pair */
+                        }
+                        /* The last card isn't a pair or one lower than this card, so empty the array object */
+                        else { straightCards.length = []; }
+                    }
+                }
+                else { straightCards.push(hand.cards[card]); }
+            }
+
+            if (straightCards.length >= 5) {
+                if (!hand.handtype || (hand.handType.rank < 4)){
+                    hand.handType.cards = [];
+                    hand.handType.cards.push(straightCards);
+                    hand.handType = $scope.handType.straight;
+                }
+            }
+            
             return hand;
         };
 
