@@ -6,8 +6,8 @@
         <title>Poker 101</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <script src="https://use.typekit.net/hiv2jke.js"></script>
-        <script>try{Typekit.load({ async: true });}catch(e){}</script>
+        <!-- script src="https://use.typekit.net/hiv2jke.js"></script>
+        <script>try{Typekit.load({ async: true });}catch(e){}</script -->
 
         <script type="text/javascript" src="/Scripts/angular.js"></script>
         <script type="text/javascript" src="/Scripts/angular-sanitize.js"></script>

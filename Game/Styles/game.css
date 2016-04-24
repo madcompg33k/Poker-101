@@ -1,8 +1,10 @@
 /* #006400 */
 /* #0f3e0f */
 /* (w x h) Thumb - 54x75, Mid - 143x200, Full - 800x1120 */
+@font-face {
+  font-family: "Acumin Pro"; }
 div#main {
-  height: 700px;
+  height: 780px;
   position: relative;
   margin: 30px auto; }
   div#main h2 {
@@ -46,13 +48,13 @@ div#main {
 
 section#table {
   display: block;
-  width: 1081px;
+  width: 1151px;
   height: 550px;
   position: relative;
   padding: 0px;
   margin: 20px auto;
-  margin-top: 75px;
-  margin-left: 398px;
+  margin-top: 115px;
+  margin-left: 433px;
   float: left;
   clear: none;
   background-color: darkgreen;
@@ -85,10 +87,10 @@ section#table {
           width: 143px;
           height: 200px; }
   section#table div#potSize {
-    width: 148px;
+    width: 183px;
     position: absolute;
     bottom: 0px;
-    left: 436.5px;
+    left: 454px;
     text-align: center;
     list-style: none; }
     section#table div#potSize span {
@@ -103,8 +105,8 @@ section#table {
     content: ")"; }
   section#table li.player {
     display: inline-block;
-    width: 148px;
-    height: 75px;
+    width: 183px;
+    height: 115px;
     position: absolute;
     margin: 0px;
     padding: 0px 10px;
@@ -132,10 +134,10 @@ section#table {
       -webkit-box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
       box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
-      width: 248px;
+      width: 233px;
       position: absolute;
       top: 5px;
-      left: 148px;
+      left: 183px;
       border: solid #0f3e0f 2px;
       z-index: 1; }
       section#table li.player div#betOptionsContainer h3 {
@@ -230,8 +232,8 @@ section#table {
         top: 0px;
         left: -50px; }
   section#table li.seat-dealer {
-    bottom: -105px;
-    left: 436.5px;
+    bottom: -145px;
+    left: 454px;
     padding-top: 10px;
     font-variant: small-caps;
     text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
@@ -239,39 +241,39 @@ section#table {
     border: inset #0f3e0f 5px;
     border-top: none; }
   section#table li.seat-1 {
-    bottom: -105px;
-    left: 584.5px;
+    bottom: -145px;
+    left: 637px;
     /* The player's cards */ }
     section#table li.seat-1 div.player-hand {
       top: -105px; }
   section#table li.seat-2 {
-    bottom: -105px;
-    right: 140.5px;
+    bottom: -145px;
+    right: 88px;
     /* The player's cards */ }
     section#table li.seat-2 div.player-hand {
       top: -105px; }
   section#table li.seat-3 {
     top: 183.75px;
-    right: -178px;
+    right: -213px;
     /* The player's cards */ }
     section#table li.seat-3 div.player-hand {
       top: 0px;
       left: -143px; }
   section#table li.seat-4 {
-    top: -105px;
-    right: 85.08333px;
+    top: -145px;
+    right: 90.91667px;
     /* The player's cards */ }
     section#table li.seat-4 div.player-hand {
       bottom: -105px; }
   section#table li.seat-5 {
-    top: -105px;
-    left: 436.5px;
+    top: -145px;
+    left: 454px;
     /* The player's cards */ }
     section#table li.seat-5 div.player-hand {
       bottom: -105px; }
   section#table li.seat-6 {
-    top: -105px;
-    left: 85.08333px;
+    top: -145px;
+    left: 90.91667px;
     text-align: right;
     /* The player's cards */ }
     section#table li.seat-6 div.player-hand {
@@ -279,7 +281,7 @@ section#table {
       right: 0px; }
   section#table li.seat-7 {
     top: 183.75px;
-    left: -178px;
+    left: -213px;
     text-align: right;
     /* The player's cards */ }
     section#table li.seat-7 div.player-hand {
@@ -288,16 +290,16 @@ section#table {
     section#table li.seat-7 #betOptionsContainer {
       top: 75px !important; }
   section#table li.seat-8 {
-    bottom: -105px;
-    left: 140.5px;
+    bottom: -145px;
+    left: 88px;
     text-align: right;
     /* The player's cards */ }
     section#table li.seat-8 div.player-hand {
       top: -105px;
       right: 0px; }
   section#table li.seat-9 {
-    bottom: -105px;
-    left: 288.5px;
+    bottom: -145px;
+    left: 271px;
     text-align: right;
     /* The player's cards */ }
     section#table li.seat-9 div.player-hand {

@@ -1,4 +1,4 @@
-$font-stack:            Helvetica, sans-serif;
+$font-stack:            "Acumin Pro";
 $primary-font-color:    #333;
 $font-size:             1em;
 $background-light:      rgba(0, 100, 0, 1); /* #006400 */
@@ -14,8 +14,8 @@ $player-card-height:    75px;
 
 $options-width:         250px;
 
-$player-width:          ($player-card-width * 2) + 40px;
-$player-height:         75px;
+$player-width:          ($player-card-width * 2) + 75px;
+$player-height:         115px;
 
 $board-width:           ($card-width * 5) + ($card-margin * 10) + 20px;
 $board-height:          $card-height + ($card-margin * 2);
@@ -68,6 +68,10 @@ $mainDiv-height:        $table-height + ($player-height * 2);
     -webkit-box-shadow: $h-distance $v-distance $blur $color;
        -moz-box-shadow: $h-distance $v-distance $blur $color;
             box-shadow: $h-distance $v-distance $blur $color;
+}
+
+@font-face {
+    font-family: "Acumin Pro";
 }
 
 div#main {
@@ -222,7 +226,7 @@ section#table {
             @include transparent-background-light(0.9);
             @include border-radius(5px);
             @include box-shadow(3px, 3px, 2px, rgba(0, 0, 0, 0.5));
-            width: $player-width + 100px;
+            width: $player-width + 50px;
             position: absolute;
             top: 5px;
             left: $player-width;

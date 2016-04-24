@@ -1,11 +1,24 @@
 /* #Start Header CSS */
 $nav-links-width:       150px;
-$font-stack:            "Segoe UI", Helvetica, sans-serif;
+$font-stack:            "Acumin Pro", "Segoe UI", Helvetica, sans-serif;
+$header-font-stack:     "Sorts Mill Goudy";
 $font-size:             1.5em;
 $first-letter-size:     1.5em;
 $color:                 #eee;
 $background-color-dark: #0f3e0f;
 $background-color-light:#006400;
+
+@mixin bottom-border-radius($radius){
+    /* Border radius for bottom corners using webkit */
+    -webkit-border-bottom-right-radius: $radius;
+    -webkit-border-bottom-left-radius: $radius;
+    /* Border radius for bottom corners for firefox or other mozilla browsers */
+    -moz-border-radius-bottomright: $radius;
+    -moz-border-radius-bottomleft: $radius;
+    /* Border radius for bottom corners for all other browsers */
+    border-bottom-right-radius: $radius;
+    border-bottom-left-radius: $radius;    
+}
 
 @mixin box-shadow($h-distance, $v-distance, $blur, $color) {
     -webkit-box-shadow: $h-distance $v-distance $blur $color;
@@ -38,12 +51,13 @@ header {
     padding: 0px;
 
     div.site-title{
-        @include text-shadow(2px, 2px, 2px, #999);
+        @include text-shadow(3px, 3px, 3px, rgba(220, 220, 220, 0.7));
         display: block;
         padding: 10px 30px;
         background-color: $background-color-light;
         color: #fff;
-        font-size: 3em;
+        font-family: $header-font-stack;
+        font-size: 4.5em;
         font-weight: bold;
         font-variant: small-caps;
 
@@ -82,7 +96,13 @@ header {
                     text-align: center;
                 }
 
-                a:hover { background-color: $background-color-light; }
+                a:hover {
+                    @include bottom-border-radius(10px);
+                    @include bottom-box-shadow(12px, 6px, -6px, rgba(20, 20, 20, 0.6));
+                    border: solid rgba(0, 0, 0, 0.6) 1px;
+                    border-top: none;
+                    background-color: $background-color-light;
+                }
             }
             li:last-child{ border-right: none; }
             

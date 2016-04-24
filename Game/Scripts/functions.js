@@ -30,8 +30,8 @@ function clearBoard(){
         /* Clear all player cards, if they have any */
         for (p = 0; p < game.players.length; p++) {
             /* Clear player hand data */
-            game.players[p].hand.cards = [];
-            game.players[p].hand.handType = {};
+            game.players[p].holeCards = [];
+            game.players[p].handType = {};
             game.players[p].bet.amt = 0;
         }
     }
@@ -45,25 +45,13 @@ function clearBoard(){
 
     /* Reset other table data */
     table.potSize = 0;
-    table.winner = {
-        seat: -1,
-        handRank: 0
-    };
+    table.winner = [];
     table.better = {};
     table.turn = -1;    
     table.currentBet = parseInt(table.bigBlind.amt, 0);
 
     /* Eventually */
     /* Remove any players who are out of money */
-    //for (var seat = 0; seat < game.players.length; seat++ ){
-    //    if (game.players[seat].money == 0) { game.players[seat] = []; }
-    //}
-    /* Reset each player's hand rank */
-    /*for (var seat = 0; seat < game.players.length; seat++) {
-        game.players[seat].hand.length = 0;
-        game.players[seat].handRank = null;
-        game.players[seat].bet.amt = 0;
-    }*/
 }
 /* End function to clear all cards from game.players and the table */
 
@@ -123,7 +111,7 @@ function dealCards() {
             /* Check to make sure player has money to play */
             if (game.players[seat].money > 0){
                 /* Assign current player's card position in the deck */
-                game.players[seat].hand.cards.push(table.shuffledDeck[0]);
+                game.players[seat].holeCards.push(table.shuffledDeck[0]);
                 table.shuffledDeck.splice(0, 1);
             }
             
@@ -164,7 +152,7 @@ function dealBoard(qty) {
     /* Reset the current bet */
     table.currentBet = parseInt(0, 0);
     table.turn = getNextSeat(table.dealer.seat);
-    while (!game.players[table.turn].hand.cards.length) {
+    while (!game.players[table.turn].holeCards.length) {
         table.turn = getNextSeat(table.turn);
     }
     table.better = game.players[table.turn];
@@ -392,6 +380,7 @@ function sort_by(field, reverse, primer) {
 
 
 /* Begin function to find out who won */
+/*
 function calculateWinners() {
     for (var p = 0; p < game.players.length; p++) {
         //game.players[p].handRank = evaluateHand(game.players[p], table.cards);
@@ -412,7 +401,7 @@ function calculateWinners() {
         }
     }
 
-    /* Pay the winner */
+    //Pay the winner
     game.players[table.winner.seat].money = parseInt(game.players[table.winner.seat].money, 10) + parseInt(table.potSize, 10);
     table.potSize = parseInt(0, 10);
     
@@ -434,6 +423,7 @@ function calculateWinners() {
         }
     ];
 }
+*/
 /* End function to find out who won */
 
 /* ^^^ ^^^ ^^^ Hand Hierarchy/Winner Code and Logic ^^^ ^^^ ^^^ */

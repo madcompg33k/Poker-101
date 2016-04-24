@@ -46,16 +46,17 @@
             }
         };
         /* Add DOM element for review in testing environment only */
-        game = $scope.game;
+        //game = $scope.game;
+        //handType = $scope.handType;
 
-        /* Figure out how to move into players.hand */
-        var learningObject = {
-            handType: $scope.handType,
-        };
+        /* Add later */
+        //var learningObject = {
+        //    handType: $scope.handType,
+        //};
 
-        for (var i = 0; i < $scope.game.players.length; i++){
-            $scope.game.players[i].hand.learning = learningObject;
-        }
+        //for (var i = 0; i < $scope.game.players.length; i++){
+        //    $scope.game.players[i].hand.learning = learningObject;
+        //}
 
     } ])
     .filter('bet', function () {
@@ -87,11 +88,7 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            },
+            holeCards: []
         },
         {
             name: "Alison",
@@ -102,11 +99,7 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            }
+            holeCards: []
         },
         {
             name: "Krish",
@@ -117,11 +110,7 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            }
+            holeCards: []
         },
         {
             name: "Lauren",
@@ -132,11 +121,7 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            }
+            holeCards: []
         },
         {
             name: "Britney",
@@ -147,11 +132,7 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            }
+            holeCards: []
         },
         {
             name: "Vien",
@@ -162,11 +143,7 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            }
+            holeCards: []
         },
         {
             name: "Alex",
@@ -177,11 +154,7 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            }
+            holeCards: []
         },
         {
             name: "Jess",
@@ -192,17 +165,14 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            cards: [],
-            hand: {
-                cards: [],
-                handType: {}
-            }
+            holeCards: []
         }
     ]
 
     /* Begin "cards" array, containing all poker card/deck data */
     var allCards = [
         {
+            cardID: 0,
             value: 2,
             name: 'Two',
             shortname: "2",
@@ -217,6 +187,7 @@
             imgThumb: "/game/images/cards/2-hearts-thumb.png"
         },
         {
+            cardID: 1,
             value: 3,
             name: 'Three',
             shortname: "3",
@@ -231,6 +202,7 @@
             imgThumb: "/game/images/cards/3-hearts-thumb.png"
         },
         {
+            cardID: 2,
             value: 4,
             name: 'Four',
             shortname: "4",
@@ -245,6 +217,7 @@
             imgThumb: "/game/images/cards/4-hearts-thumb.png"
         },
         {
+            cardID: 3,
             value: 5,
             name: 'Five',
             shortname: "5",
@@ -259,6 +232,7 @@
             imgThumb: "/game/images/cards/5-hearts-thumb.png"
         },
         {
+            cardID: 4,
             value: 6,
             name: 'Six',
             shortname: "6",
@@ -273,6 +247,7 @@
             imgThumb: "/game/images/cards/6-hearts-thumb.png"
         },
         {
+            cardID: 5,
             value: 7,
             name: 'Seven',
             shortname: "7",
@@ -287,6 +262,7 @@
             imgThumb: "/game/images/cards/7-hearts-thumb.png"
         },
         {
+            cardID: 6,
             value: 8,
             name: 'Eight',
             shortname: "8",
@@ -301,6 +277,7 @@
             imgThumb: "/game/images/cards/8-hearts-thumb.png"
         },
         {
+            cardID: 7,
             value: 9,
             name: 'Nine',
             shortname: "9",
@@ -315,6 +292,7 @@
             imgThumb: "/game/images/cards/9-hearts-thumb.png"
         },
         {
+            cardID: 8,
             value: 10,
             name: 'Ten',
             shortname: "10",
@@ -329,6 +307,7 @@
             imgThumb: "/game/images/cards/10-hearts-thumb.png"
         },
         {
+            cardID: 9,
             value: 11,
             name: 'Jack',
             shortname: "J",
@@ -343,6 +322,7 @@
             imgThumb: "/game/images/cards/J-hearts-thumb.png"
         },
         {
+            cardID: 10,
             value: 12,
             name: 'Queen',
             shortname: "Q",
@@ -357,6 +337,7 @@
             imgThumb: "/game/images/cards/Q-hearts-thumb.png"
         },
         {
+            cardID: 11,
             value: 13,
             name: 'King',
             shortname: "K",
@@ -371,6 +352,7 @@
             imgThumb: "/game/images/cards/K-hearts-thumb.png"
         },
         {
+            cardID: 12,
             value: 14,
             name: 'Ace',
             shortname: "A",
@@ -385,6 +367,7 @@
             imgThumb: "/game/images/cards/A-hearts-thumb.png"
         },
         {
+            cardID: 13,
             value: 2,
             name: 'Two',
             shortname: "2",
@@ -399,6 +382,7 @@
             imgThumb: "/game/images/cards/2-diamonds-thumb.png"
         },
         {
+            cardID: 14,
             value: 3,
             name: 'Three',
             shortname: "3",
@@ -413,6 +397,7 @@
             imgThumb: "/game/images/cards/3-diamonds-thumb.png"
         },
         {
+            cardID: 15,
             value: 4,
             name: 'Four',
             shortname: "4",
@@ -427,6 +412,7 @@
             imgThumb: "/game/images/cards/4-diamonds-thumb.png"
         },
         {
+            cardID: 16,
             value: 5,
             name: 'Five',
             shortname: "5",
@@ -441,6 +427,7 @@
             imgThumb: "/game/images/cards/5-diamonds-thumb.png"
         },
         {
+            cardID: 17,
             value: 6,
             name: 'Six',
             shortname: "6",
@@ -455,6 +442,7 @@
             imgThumb: "/game/images/cards/6-diamonds-thumb.png"
         },
         {
+            cardID: 18,
             value: 7,
             name: 'Seven',
             shortname: "7",
@@ -469,6 +457,7 @@
             imgThumb: "/game/images/cards/7-diamonds-thumb.png"
         },
         {
+            cardID: 19,
             value: 8,
             name: 'Eight',
             shortname: "8",
@@ -483,6 +472,7 @@
             imgThumb: "/game/images/cards/8-diamonds-thumb.png"
         },
         {
+            cardID: 20,
             value: 9,
             name: 'Nine',
             shortname: "9",
@@ -497,6 +487,7 @@
             imgThumb: "/game/images/cards/9-diamonds-thumb.png"
         },
         {
+            cardID: 21,
             value: 10,
             name: 'Ten',
             shortname: "10",
@@ -511,6 +502,7 @@
             imgThumb: "/game/images/cards/10-diamonds-thumb.png"
         },
         {
+            cardID: 22,
             value: 11,
             name: 'Jack',
             shortname: "J",
@@ -525,6 +517,7 @@
             imgThumb: "/game/images/cards/J-diamonds-thumb.png"
         },
         {
+            cardID: 23,
             value: 12,
             name: 'Queen',
             shortname: "Q",
@@ -539,6 +532,7 @@
             imgThumb: "/game/images/cards/Q-diamonds-thumb.png"
         },
         {
+            cardID: 24,
             value: 13,
             name: 'King',
             shortname: "K",
@@ -553,6 +547,7 @@
             imgThumb: "/game/images/cards/K-diamonds-thumb.png"
         },
         {
+            cardID: 25,
             value: 14,
             name: 'Ace',
             shortname: "A",
@@ -567,6 +562,7 @@
             imgThumb: "/game/images/cards/A-diamonds-thumb.png"
         },
         {
+            cardID: 26,
             value: 2,
             name: 'Two',
             shortname: "2",
@@ -581,6 +577,7 @@
             imgThumb: "/game/images/cards/2-spades-thumb.png"
         },
         {
+            cardID: 27,
             value: 3,
             name: 'Three',
             shortname: "3",
@@ -595,6 +592,7 @@
             imgThumb: "/game/images/cards/3-spades-thumb.png"
         },
         {
+            cardID: 28,
             value: 4,
             name: 'Four',
             shortname: "4",
@@ -609,6 +607,7 @@
             imgThumb: "/game/images/cards/4-spades-thumb.png"
         },
         {
+            cardID: 29,
             value: 5,
             name: 'Five',
             shortname: "5",
@@ -623,6 +622,7 @@
             imgThumb: "/game/images/cards/5-spades-thumb.png"
         },
         {
+            cardID: 30,
             value: 6,
             name: 'Six',
             shortname: "6",
@@ -637,6 +637,7 @@
             imgThumb: "/game/images/cards/6-spades-thumb.png"
         },
         {
+            cardID: 31,
             value: 7,
             name: 'Seven',
             shortname: "7",
@@ -651,6 +652,7 @@
             imgThumb: "/game/images/cards/7-spades-thumb.png"
         },
         {
+            cardID: 32,
             value: 8,
             name: 'Eight',
             shortname: "8",
@@ -665,6 +667,7 @@
             imgThumb: "/game/images/cards/8-spades-thumb.png"
         },
         {
+            cardID: 33,
             value: 9,
             name: 'Nine',
             shortname: "9",
@@ -679,6 +682,7 @@
             imgThumb: "/game/images/cards/9-spades-thumb.png"
         },
         {
+            cardID: 34,
             value: 10,
             name: 'Ten',
             shortname: "10",
@@ -693,6 +697,7 @@
             imgThumb: "/game/images/cards/10-spades-thumb.png"
         },
         {
+            cardID: 35,
             value: 11,
             name: 'Jack',
             shortname: "J",
@@ -707,6 +712,7 @@
             imgThumb: "/game/images/cards/J-spades-thumb.png"
         },
         {
+            cardID: 36,
             value: 12,
             name: 'Queen',
             shortname: "Q",
@@ -721,6 +727,7 @@
             imgThumb: "/game/images/cards/Q-spades-thumb.png"
         },
         {
+            cardID: 37,
             value: 13,
             name: 'King',
             shortname: "K",
@@ -735,6 +742,7 @@
             imgThumb: "/game/images/cards/K-spades-thumb.png"
         },
         {
+            cardID: 38,
             value: 14,
             name: 'Ace',
             shortname: "A",
@@ -749,6 +757,7 @@
             imgThumb: "/game/images/cards/A-spades-thumb.png"
         },
         {
+            cardID: 39,
             value: 2,
             name: 'Two',
             shortname: "2",
@@ -763,6 +772,7 @@
             imgThumb: "/game/images/cards/2-clubs-thumb.png"
         },
         {
+            cardID: 40,
             value: 3,
             name: 'Three',
             shortname: "3",
@@ -777,6 +787,7 @@
             imgThumb: "/game/images/cards/3-clubs-thumb.png"
         },
         {
+            cardID: 41,
             value: 4,
             name: 'Four',
             shortname: "4",
@@ -791,6 +802,7 @@
             imgThumb: "/game/images/cards/4-clubs-thumb.png"
         },
         {
+            cardID: 42,
             value: 5,
             name: 'Five',
             shortname: "5",
@@ -805,6 +817,7 @@
             imgThumb: "/game/images/cards/5-clubs-thumb.png"
         },
         {
+            cardID: 43,
             value: 6,
             name: 'Six',
             shortname: "6",
@@ -819,6 +832,7 @@
             imgThumb: "/game/images/cards/6-clubs-thumb.png"
         },
         {
+            cardID: 44,
             value: 7,
             name: 'Seven',
             shortname: "7",
@@ -833,6 +847,7 @@
             imgThumb: "/game/images/cards/7-clubs-thumb.png"
         },
         {
+            cardID: 45,
             value: 8,
             name: 'Eight',
             shortname: "8",
@@ -847,6 +862,7 @@
             imgThumb: "/game/images/cards/8-clubs-thumb.png"
         },
         {
+            cardID: 46,
             value: 9,
             name: 'Nine',
             shortname: "9",
@@ -861,6 +877,7 @@
             imgThumb: "/game/images/cards/9-clubs-thumb.png"
         },
         {
+            cardID: 47,
             value: 10,
             name: 'Ten',
             shortname: "10",
@@ -875,6 +892,7 @@
             imgThumb: "/game/images/cards/10-clubs-thumb.png"
         },
         {
+            cardID: 48,
             value: 11,
             name: 'Jack',
             shortname: "J",
@@ -889,6 +907,7 @@
             imgThumb: "/game/images/cards/J-clubs-thumb.png"
         },
         {
+            cardID: 49,
             value: 12,
             name: 'Queen',
             shortname: "Q",
@@ -903,6 +922,7 @@
             imgThumb: "/game/images/cards/Q-clubs-thumb.png"
         },
         {
+            cardID: 50,
             value: 13,
             name: 'King',
             shortname: "K",
@@ -917,6 +937,7 @@
             imgThumb: "/game/images/cards/K-clubs-thumb.png"
         },
         {
+            cardID: 51,
             value: 14,
             name: 'Ace',
             shortname: "A",

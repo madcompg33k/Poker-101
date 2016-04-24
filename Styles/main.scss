@@ -1,5 +1,5 @@
 ﻿$main-background-color: #fff;
-$font-stack:            "acumin-pro", sans-serif;
+$font-stack:            "Acumin Pro", sans-serif;
 $font-color:            #434343;
 $font-size:             1.2em;
 $background-color-dark: #0f3e0f;
@@ -85,12 +85,12 @@ html {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-style: $font-stack!important;
 }
 
 body {
     background-color: $main-background-color;
     color: $font-color;
+    font-family: $font-stack;
     font-size: $font-size;
     margin: 0;
     padding: 0;
@@ -191,7 +191,7 @@ section#main {
                 margin: 10px 4%;
                 padding: 5px 20px;
                 float: left;
-                font-size: 1em;
+                
                 font-weight: 400;
             }
             blockquote:last-of-type { padding-bottom: 20px; }

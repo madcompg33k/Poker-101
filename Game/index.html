@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8" />
          
-        <script src="https://use.typekit.net/hiv2jke.js"></script>
-        <script>try{Typekit.load({ async: true });}catch(e){}</script>
+        <!-- script src="https://use.typekit.net/hiv2jke.js"></script>
+        <script>try{Typekit.load({ async: true });}catch(e){}</script -->
 
         <script type="text/javascript" src="/Scripts/angular.js"></script>
         <script type="text/javascript" src="/Scripts/angular-sanitize.js"></script>
@@ -117,6 +117,10 @@
                     </div>
 
                     <div id="potSize">
+                        <ul class="alert" data-ng-show="table.winner.length" style="color: #fff; font-weight: bold; font-size: 1.3em; text-align: left; list-style: none;">
+                            <li>Winner{{ table.winner.length > 1 ? 's' : '' }}:</li>
+                            <li data-ng-repeat="winner in table.winner">{{ winner.name }} <small>({{ winner.handType.name }})</small></li>
+                        </ul>
                         <span class="table-money">Pot Size: {{ table.potSize | currency }}</span>
                         <span class="table-money">Blinds: {{ table.smallBlind.amt }} / {{ table.bigBlind.amt }}</span>
                     </div>
