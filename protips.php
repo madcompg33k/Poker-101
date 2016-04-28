@@ -1,16 +1,17 @@
     <?php 
         //require_once ("Includes/simplecms-config.php"); 
         //require_once  ("Includes/connectDB.php");
-        include("/Includes/header.php");         
+        include("/Includes/header.php");
+        $currentPage = "Tips";
      ?>
 
 
-    <section id="main">
-        <h2 class="page-header">Texas Hold'em - Pro Tips</h2>
+    <section id="main" class="col-md-8 col-md-offset-2">
+        <h1 class="page-header">Texas Hold'em - Pro Tips</h1>
 
         <!-- #Start div#tipsCalculatingOdds -->
-        <div id="tipsCalculatingOdds" class="pro-tips">
-            <h4>Your hand</h4>
+        <div id="tipsCalculatingOdds" class="details">
+            <h3>Your hand</h3>
 
             <p>
                 To determine the percentage of you hitting your hand, you must first know what hand you're going for. While you could calculate the odds
@@ -33,7 +34,7 @@
 
             <ul>
                 <li>
-                    <h5>Calculating Odds/Percentages</h5>
+                    <h4>Calculating Odds/Percentages</h4>
                     <p>
                         You can actually calculate what the approximate percentage is of "hitting" your goal hand as you play, it's much easier than you may think.
                     </p>
@@ -44,7 +45,7 @@
                     </p>
                 </li>
                 <li>
-                    <h5>"Outs"</h5>
+                    <h4>"Outs"</h4>
                     <p>
                         Outs is a term which refers to the various cards that "could" be dealt which would give us our desired hand. If say, we are four cards to
                         a flush, leaving only one needed, then there are "potentially" (assumed to be) 9 other cards of that suit that would give us our flush (as
@@ -59,7 +60,7 @@
                     </p>
                 </li>
                 <li>
-                    <h5>Finding the odds</h5>
+                    <h4>Finding the odds</h4>
                     <p>
                         Once we know what hand we are going for, and we know what our "outs" are, AND since we now know the rough percentage of hitting a specific,
                         single card in the deck, we can calculate a rough estimate of hitting our hand.
@@ -86,11 +87,11 @@
         <!-- #End div#tipsCalculatingOdds -->
 
         <!-- #Start section#tipsValueBetting -->
-        <div id="tipsValueBetting" class="pro-tips">
-            <h4>"Value" Betting</h4>
+        <div id="tipsValueBetting" class="details">
+            <h3>"Value" Betting</h3>
             <ul>
                 <li>
-                    <h5>What is a "value" bet?</h5>
+                    <h4>What is a "value" bet?</h4>
                     <p>
                         A value bet is a bet made by a player who wants it to be called (as opposed to a bluff or protection bet), in an
                         attempt to increase the pot size to increase the amount of money won in the hand.
@@ -98,7 +99,7 @@
                     </p>
                 </li>
                 <li>
-                    <h5>How do I value bet?</h5>
+                    <h4>How do I value bet?</h4>
                     <p>
                         This can be the tricky part sometimes. The goal is to increase the "value" of the pot by keeping opponents with weaker
                         cards in the hand. Too much, and you scare them off, and too little, and you've lost potential money that could have been
@@ -116,11 +117,11 @@
         <!-- #End div#tipsValueBetting -->
 
         <!-- #Start div#tipsControlPotSize -->
-        <div id="tipsControlPotSize" class="pro-tips">
-            <h4>"Controlling" the Pot Size</h4>
+        <div id="tipsControlPotSize" class="details">
+            <h3>"Controlling" the Pot Size</h3>
             <ul>
                 <li>
-                    <h5>Betting</h5>
+                    <h4>Betting</h4>
                     <p>
                         Sometimes when you bet, just as mentioned in the "value betting" section, you may want to limit how much you put in. This
                         could be for various reasons, such as increasing the "value" of the pot by keeping other players in and not scaring them off.
@@ -130,7 +131,7 @@
                 </li>
 
                 <li>
-                    <h5>"Control" the pot</h5>
+                    <h4>"Control" the pot</h4>
                     <p>
                         Sometimes when you bet, especially with certain opponents, the bet size can get out of hand very quickly. You may raise a reasonable
                         amount, and then suddenly another player re-raises a large amount. Be catious in these situations, especially if it is early in the
@@ -141,7 +142,7 @@
                 </li>
 
                 <li>
-                    <h5>"Buying" information</h5>
+                    <h4>"Buying" information</h4>
                     <p>
                         Another key point in controlling pot size is that sometimes it can be worth staying in a hand, even if you know you will lose, simply
                         to see what your opponent has. I refer to this as "paying for information", or "buying" information on your opponent. Knowing the cards

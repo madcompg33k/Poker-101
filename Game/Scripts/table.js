@@ -2,9 +2,10 @@
     var app = angular.module('table', [])
 
     /* Controller for all players */
-    .controller('TableController', ['$scope', '$timeout', function ($scope, $timeout) {
+    .controller('TableController', ['$scope', '$timeout', '$interval', function ($scope, $timeout, $interval) {
         /* Declare/Initialize table */
         $scope.table = {
+            tableDeck: "default",
             shuffledDeck: [],
             cards: [], /* The board (e.g. the flop, turn, and river */
             dealer: { seat: 0 },
@@ -16,12 +17,12 @@
             currentBet: 0,
             better: {},
             turn: -1
-        }
+        };
 
         table = $scope.table;
 
         /* Deal the cards to the players */
-        this.dealCards = function () { newHand(); }
+        this.dealCards = function () { newHand(); };
         this.dealCardsToTable = function () {
             switch (table.cards.length) {
                 case 0: 
@@ -50,7 +51,7 @@
                         break;
             }
 
-        }
+        };
 
         this.playerBetAction = function (action, player, amount) {
             switch (action) {
@@ -72,7 +73,7 @@
             /* Move to the next active player */
             this.moveSeat(player);
 
-        }
+        };
 
         this.moveSeat = function (player) {
             /* Move to the next seat */
@@ -86,11 +87,15 @@
             if (game.players[table.turn] == table.better) {
                 this.dealCardsToTable();
             }
+
+            /*if (game.players[table.turn].playerType == "npc") {
+                $timeout(this.playerBetAction('Call', game.players[table.turn], table.currentBet), 5000);
+            }*/
         };
 
         this.pause = function () {
             console.log("Timeout occured");
-        }
+        };
 
         /* Find the winner! */
         this.calculateWinner = function (players) {
@@ -98,6 +103,9 @@
             var winner = [];
             /* Iterate through each player */
             for (var seat = 0; seat < players.length; seat++) {
+                /* Skip player if they have no cards */
+                if (!players[seat].holeCards.length) { continue; }
+
                 /* Check if winner is currently blank */
                 if (winner.length) {
                     /* There is a previously set winner, see if the current player's hand is better */
@@ -141,10 +149,8 @@
             player.handType = this.evalCurrentHand(hand);
 
             return hand.handType;
-        }
+        };
         
-                    
-
         this.evalCurrentHand = function (hand) {
             hand = this.getPairs(hand);
             /* Check for straight (or straight flush) if we haven't already found better */
@@ -159,7 +165,6 @@
             return hand.handType;
         };
 
-
         /* (Function) checkHighestCards(Array) */
         /* Send a hand to this function to determine the highest card in the hand */
         /* (Useful for "card" high, straights, flushes, and straight flushes) */
@@ -171,7 +176,7 @@
             }
         };
 
-        /* (Function) checkHighestPair(Array) */
+        /* (Function) getPairs(Array) */
         /* Return the card value of the hand's highest pair */
         this.getPairs = function (hand) {
             var pairedCards = [];
@@ -451,58 +456,6 @@
             }
             
             return hand;
-        };
-
-        /* Return the percentage the player currently has to getting a flush */
-        this.getPercentageToFlush = function (hand) {
-            var worthChecking = {};
-            var suits = [
-                {
-                    suit: 'hearts',
-                    count: 0,
-                    percentToFlush: 0
-                },
-                {
-                    suit: 'diamonds',
-                    count: 0,
-                    percentToFlush: 0
-                },
-                {
-                    suit: 'spades',
-                    count: 0,
-                    percentToFlush: 0
-                },
-                {
-                    suit: 'clubs',
-                    count: 0,
-                    percentToFlush: 0
-                }
-            ];
-
-            for (var card = 0; card < hand.length; card++) {
-                suits[hand[card].suitVal - 1].count++;
-                if (suits[hand[card].suitVal - 1].count >= 3) {
-                    worthChecking.threeToFlush = true;
-                    worthChecking.suit = hand[card].suitVal - 1;
-                }
-            }
-
-            if (worthChecking.length) {
-                return hand.calculateCardsEstimatePercentage((13 - suits[worthChecking.suit].length), calculateCardsToCome());
-            }
-            else { return 0; }
-        };
-
-        this.calculateCardsEstimatePercentage = function (outs, cardsToCome) {
-            return (outs.length * 2) * cardsToCome;
-        };
-
-        this.calculateCardsActualPercentage = function (outs, cardsToCome) {
-            return (outs.length * (100 / 52)) * cardsToCome;
-        };
-
-        this.calculateCardsToCome = function () {
-            return 5 - table.cards.length;
         };
 
     } ])

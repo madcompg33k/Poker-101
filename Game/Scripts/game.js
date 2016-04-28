@@ -3,14 +3,19 @@
     /* Controller to handle all functionality of the overall game */
     .controller('GameController', ['$http', '$scope', function ($http, $scope) {
         $scope.game = this;
-        $scope.game.deck = allCards;
+        $scope.game.deck = {
+            cards: allCards,
+            imgPath: "/Game/Images/decks/",
+            basePercentPerCard: (100 / 52),
+            estPercentPerCard: (100 / 50)
+        }
         $scope.game.players = testPlayers;
         $scope.errorMessage = "";
         $scope.getNumber = function (num) { return new Array(num); }
         $scope.handType = {
             highCard: {
                 rank: 0,
-                name: 'High card',
+                name: 'High card'
             },
             pair: {
                 rank: 1,
@@ -46,18 +51,73 @@
             }
         };
         /* Add DOM element for review in testing environment only */
-        //game = $scope.game;
-        //handType = $scope.handType;
+        game = $scope.game;
+        handType = $scope.handType;
 
         /* Add later */
-        //var learningObject = {
-        //    handType: $scope.handType,
-        //};
+        /*
+        var learningObject = {
+            cards: [],
+            highCard: {
+                outs: [],
+                rank: 0,
+                name: 'High card',
+                percentToHand: 0
+            },
+            pair: {
+                outs: [],
+                rank: 1,
+                name: 'A pair',
+                percentToHand: 0
+            },
+            twoPair: {
+                outs: [],
+                rank: 2,
+                name: 'Two pair',
+                percentToHand: 0
+            },
+            threeOfAKind: {
+                outs: [],
+                rank: 3,
+                name: 'Three of a kind',
+                percentToHand: 0
+            },
+            straight: {
+                outs: [],
+                rank: 4,
+                name: 'Straight',
+                percentToHand: 0
+            },
+            flush: {
+                outs: [],
+                rank: 5,
+                name: 'Flush',
+                percentToHand: 0
+            },
+            fullHouse: {
+                outs: [],
+                rank: 6,
+                name: 'Full house',
+                percentToHand: 0
+            },
+            fourOfAKind: {
+                outs: [],
+                rank: 7,
+                name: 'Four of a kind',
+                percentToHand: 0
+            },
+            straightFlush: {
+                outs: [],
+                rank: 8,
+                name: 'Straight flush',
+                percentToHand: 0
+            }
+        };
 
-        //for (var i = 0; i < $scope.game.players.length; i++){
-        //    $scope.game.players[i].hand.learning = learningObject;
-        //}
-
+        for (var i = 0; i < $scope.game.players.length; i++) {
+            $scope.game.players[i].learning = angular.copy(learningObject);
+        }
+        */
     } ])
     .filter('bet', function () {
         return function (player, betAmount) {
@@ -80,7 +140,7 @@
 
     var testPlayers = [
         {
-            name: "Melanie",
+            name: "Player 1",
             seat: 0,
             money: 200,
             chips: [],
@@ -88,10 +148,11 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "pc"
         },
         {
-            name: "Alison",
+            name: "Melanie",
             seat: 1,
             money: 200,
             chips: [],
@@ -99,10 +160,11 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "npc"
         },
         {
-            name: "Krish",
+            name: "Alison",
             seat: 2,
             money: 200,
             chips: [],
@@ -110,10 +172,11 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "npc"
         },
         {
-            name: "Lauren",
+            name: "Krish",
             seat: 3,
             money: 200,
             chips: [],
@@ -121,10 +184,11 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "npc"
         },
         {
-            name: "Britney",
+            name: "Lauren",
             seat: 4,
             money: 200,
             chips: [],
@@ -132,10 +196,11 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "npc"
         },
         {
-            name: "Vien",
+            name: "Britney",
             seat: 5,
             money: 200,
             chips: [],
@@ -143,10 +208,11 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "npc"
         },
         {
-            name: "Alex",
+            name: "Vien",
             seat: 6,
             money: 200,
             chips: [],
@@ -154,10 +220,11 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "npc"
         },
         {
-            name: "Jess",
+            name: "Alex",
             seat: 7,
             money: 200,
             chips: [],
@@ -165,7 +232,20 @@
             isSmallBlind: false,
             isBigBlind: false,
             bet: { amt: 0 },
-            holeCards: []
+            holeCards: [],
+            playerType: "npc"
+        },
+        {
+            name: "Jess",
+            seat: 8,
+            money: 200,
+            chips: [],
+            isDealer: false,
+            isSmallBlind: false,
+            isBigBlind: false,
+            bet: { amt: 0 },
+            holeCards: [],
+            playerType: "npc"
         }
     ]
 
@@ -182,9 +262,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/2-hearts.png",
-            imgMid: "/game/images/cards/2-hearts-mid.png",
-            imgThumb: "/game/images/cards/2-hearts-thumb.png"
+            imgFull: "2-hearts.png",
+            imgMid: "2-hearts-mid.png",
+            imgThumb: "2-hearts-thumb.png"
         },
         {
             cardID: 1,
@@ -197,9 +277,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/3-hearts.png",
-            imgMid: "/game/images/cards/3-hearts-mid.png",
-            imgThumb: "/game/images/cards/3-hearts-thumb.png"
+            imgFull: "3-hearts.png",
+            imgMid: "3-hearts-mid.png",
+            imgThumb: "3-hearts-thumb.png"
         },
         {
             cardID: 2,
@@ -212,9 +292,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/4-hearts.png",
-            imgMid: "/game/images/cards/4-hearts-mid.png",
-            imgThumb: "/game/images/cards/4-hearts-thumb.png"
+            imgFull: "4-hearts.png",
+            imgMid: "4-hearts-mid.png",
+            imgThumb: "4-hearts-thumb.png"
         },
         {
             cardID: 3,
@@ -227,9 +307,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/5-hearts.png",
-            imgMid: "/game/images/cards/5-hearts-mid.png",
-            imgThumb: "/game/images/cards/5-hearts-thumb.png"
+            imgFull: "5-hearts.png",
+            imgMid: "5-hearts-mid.png",
+            imgThumb: "5-hearts-thumb.png"
         },
         {
             cardID: 4,
@@ -242,9 +322,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/6-hearts.png",
-            imgMid: "/game/images/cards/6-hearts-mid.png",
-            imgThumb: "/game/images/cards/6-hearts-thumb.png"
+            imgFull: "6-hearts.png",
+            imgMid: "6-hearts-mid.png",
+            imgThumb: "6-hearts-thumb.png"
         },
         {
             cardID: 5,
@@ -257,9 +337,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/7-hearts.png",
-            imgMid: "/game/images/cards/7-hearts-mid.png",
-            imgThumb: "/game/images/cards/7-hearts-thumb.png"
+            imgFull: "7-hearts.png",
+            imgMid: "7-hearts-mid.png",
+            imgThumb: "7-hearts-thumb.png"
         },
         {
             cardID: 6,
@@ -272,9 +352,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/8-hearts.png",
-            imgMid: "/game/images/cards/8-hearts-mid.png",
-            imgThumb: "/game/images/cards/8-hearts-thumb.png"
+            imgFull: "8-hearts.png",
+            imgMid: "8-hearts-mid.png",
+            imgThumb: "8-hearts-thumb.png"
         },
         {
             cardID: 7,
@@ -287,9 +367,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/9-hearts.png",
-            imgMid: "/game/images/cards/9-hearts-mid.png",
-            imgThumb: "/game/images/cards/9-hearts-thumb.png"
+            imgFull: "9-hearts.png",
+            imgMid: "9-hearts-mid.png",
+            imgThumb: "9-hearts-thumb.png"
         },
         {
             cardID: 8,
@@ -302,9 +382,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/10-hearts.png",
-            imgMid: "/game/images/cards/10-hearts-mid.png",
-            imgThumb: "/game/images/cards/10-hearts-thumb.png"
+            imgFull: "10-hearts.png",
+            imgMid: "10-hearts-mid.png",
+            imgThumb: "10-hearts-thumb.png"
         },
         {
             cardID: 9,
@@ -317,9 +397,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/J-hearts.png",
-            imgMid: "/game/images/cards/J-hearts-mid.png",
-            imgThumb: "/game/images/cards/J-hearts-thumb.png"
+            imgFull: "J-hearts.png",
+            imgMid: "J-hearts-mid.png",
+            imgThumb: "J-hearts-thumb.png"
         },
         {
             cardID: 10,
@@ -332,9 +412,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/Q-hearts.png",
-            imgMid: "/game/images/cards/Q-hearts-mid.png",
-            imgThumb: "/game/images/cards/Q-hearts-thumb.png"
+            imgFull: "Q-hearts.png",
+            imgMid: "Q-hearts-mid.png",
+            imgThumb: "Q-hearts-thumb.png"
         },
         {
             cardID: 11,
@@ -347,9 +427,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/K-hearts.png",
-            imgMid: "/game/images/cards/K-hearts-mid.png",
-            imgThumb: "/game/images/cards/K-hearts-thumb.png"
+            imgFull: "K-hearts.png",
+            imgMid: "K-hearts-mid.png",
+            imgThumb: "K-hearts-thumb.png"
         },
         {
             cardID: 12,
@@ -362,9 +442,9 @@
             suitSVG: "<svg class='icon icon-heart'><use xlink:href='#icon-heart'></use></svg>",
             suitColor: 'red',
             suitVal: 1,
-            imgFull: "/game/images/cards/A-hearts.png",
-            imgMid: "/game/images/cards/A-hearts-mid.png",
-            imgThumb: "/game/images/cards/A-hearts-thumb.png"
+            imgFull: "A-hearts.png",
+            imgMid: "A-hearts-mid.png",
+            imgThumb: "A-hearts-thumb.png"
         },
         {
             cardID: 13,
@@ -377,9 +457,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/2-diamonds.png",
-            imgMid: "/game/images/cards/2-diamonds-mid.png",
-            imgThumb: "/game/images/cards/2-diamonds-thumb.png"
+            imgFull: "2-diamonds.png",
+            imgMid: "2-diamonds-mid.png",
+            imgThumb: "2-diamonds-thumb.png"
         },
         {
             cardID: 14,
@@ -392,9 +472,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/3-diamonds.png",
-            imgMid: "/game/images/cards/3-diamonds-mid.png",
-            imgThumb: "/game/images/cards/3-diamonds-thumb.png"
+            imgFull: "3-diamonds.png",
+            imgMid: "3-diamonds-mid.png",
+            imgThumb: "3-diamonds-thumb.png"
         },
         {
             cardID: 15,
@@ -407,9 +487,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/4-diamonds.png",
-            imgMid: "/game/images/cards/4-diamonds-mid.png",
-            imgThumb: "/game/images/cards/4-diamonds-thumb.png"
+            imgFull: "4-diamonds.png",
+            imgMid: "4-diamonds-mid.png",
+            imgThumb: "4-diamonds-thumb.png"
         },
         {
             cardID: 16,
@@ -422,9 +502,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/5-diamonds.png",
-            imgMid: "/game/images/cards/5-diamonds-mid.png",
-            imgThumb: "/game/images/cards/5-diamonds-thumb.png"
+            imgFull: "5-diamonds.png",
+            imgMid: "5-diamonds-mid.png",
+            imgThumb: "5-diamonds-thumb.png"
         },
         {
             cardID: 17,
@@ -437,9 +517,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/6-diamonds.png",
-            imgMid: "/game/images/cards/6-diamonds-mid.png",
-            imgThumb: "/game/images/cards/6-diamonds-thumb.png"
+            imgFull: "6-diamonds.png",
+            imgMid: "6-diamonds-mid.png",
+            imgThumb: "6-diamonds-thumb.png"
         },
         {
             cardID: 18,
@@ -452,9 +532,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/7-diamonds.png",
-            imgMid: "/game/images/cards/7-diamonds-mid.png",
-            imgThumb: "/game/images/cards/7-diamonds-thumb.png"
+            imgFull: "7-diamonds.png",
+            imgMid: "7-diamonds-mid.png",
+            imgThumb: "7-diamonds-thumb.png"
         },
         {
             cardID: 19,
@@ -467,9 +547,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/8-diamonds.png",
-            imgMid: "/game/images/cards/8-diamonds-mid.png",
-            imgThumb: "/game/images/cards/8-diamonds-thumb.png"
+            imgFull: "8-diamonds.png",
+            imgMid: "8-diamonds-mid.png",
+            imgThumb: "8-diamonds-thumb.png"
         },
         {
             cardID: 20,
@@ -482,9 +562,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/9-diamonds.png",
-            imgMid: "/game/images/cards/9-diamonds-mid.png",
-            imgThumb: "/game/images/cards/9-diamonds-thumb.png"
+            imgFull: "9-diamonds.png",
+            imgMid: "9-diamonds-mid.png",
+            imgThumb: "9-diamonds-thumb.png"
         },
         {
             cardID: 21,
@@ -497,9 +577,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/10-diamonds.png",
-            imgMid: "/game/images/cards/10-diamonds-mid.png",
-            imgThumb: "/game/images/cards/10-diamonds-thumb.png"
+            imgFull: "10-diamonds.png",
+            imgMid: "10-diamonds-mid.png",
+            imgThumb: "10-diamonds-thumb.png"
         },
         {
             cardID: 22,
@@ -512,9 +592,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/J-diamonds.png",
-            imgMid: "/game/images/cards/J-diamonds-mid.png",
-            imgThumb: "/game/images/cards/J-diamonds-thumb.png"
+            imgFull: "J-diamonds.png",
+            imgMid: "J-diamonds-mid.png",
+            imgThumb: "J-diamonds-thumb.png"
         },
         {
             cardID: 23,
@@ -527,9 +607,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/Q-diamonds.png",
-            imgMid: "/game/images/cards/Q-diamonds-mid.png",
-            imgThumb: "/game/images/cards/Q-diamonds-thumb.png"
+            imgFull: "Q-diamonds.png",
+            imgMid: "Q-diamonds-mid.png",
+            imgThumb: "Q-diamonds-thumb.png"
         },
         {
             cardID: 24,
@@ -542,9 +622,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/K-diamonds.png",
-            imgMid: "/game/images/cards/K-diamonds-mid.png",
-            imgThumb: "/game/images/cards/K-diamonds-thumb.png"
+            imgFull: "K-diamonds.png",
+            imgMid: "K-diamonds-mid.png",
+            imgThumb: "K-diamonds-thumb.png"
         },
         {
             cardID: 25,
@@ -557,9 +637,9 @@
             suitSVG: "<svg class='icon icon-diamonds'><use xlink:href='#icon-diamonds'></use></svg>",
             suitColor: 'red',
             suitVal: 2,
-            imgFull: "/game/images/cards/A-diamonds.png",
-            imgMid: "/game/images/cards/A-diamonds-mid.png",
-            imgThumb: "/game/images/cards/A-diamonds-thumb.png"
+            imgFull: "A-diamonds.png",
+            imgMid: "A-diamonds-mid.png",
+            imgThumb: "A-diamonds-thumb.png"
         },
         {
             cardID: 26,
@@ -572,9 +652,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/2-spades.png",
-            imgMid: "/game/images/cards/2-spades-mid.png",
-            imgThumb: "/game/images/cards/2-spades-thumb.png"
+            imgFull: "2-spades.png",
+            imgMid: "2-spades-mid.png",
+            imgThumb: "2-spades-thumb.png"
         },
         {
             cardID: 27,
@@ -587,9 +667,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/3-spades.png",
-            imgMid: "/game/images/cards/3-spades-mid.png",
-            imgThumb: "/game/images/cards/3-spades-thumb.png"
+            imgFull: "3-spades.png",
+            imgMid: "3-spades-mid.png",
+            imgThumb: "3-spades-thumb.png"
         },
         {
             cardID: 28,
@@ -602,9 +682,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/4-spades.png",
-            imgMid: "/game/images/cards/4-spades-mid.png",
-            imgThumb: "/game/images/cards/4-spades-thumb.png"
+            imgFull: "4-spades.png",
+            imgMid: "4-spades-mid.png",
+            imgThumb: "4-spades-thumb.png"
         },
         {
             cardID: 29,
@@ -617,9 +697,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/5-spades.png",
-            imgMid: "/game/images/cards/5-spades-mid.png",
-            imgThumb: "/game/images/cards/5-spades-thumb.png"
+            imgFull: "5-spades.png",
+            imgMid: "5-spades-mid.png",
+            imgThumb: "5-spades-thumb.png"
         },
         {
             cardID: 30,
@@ -632,9 +712,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/6-spades.png",
-            imgMid: "/game/images/cards/6-spades-mid.png",
-            imgThumb: "/game/images/cards/6-spades-thumb.png"
+            imgFull: "6-spades.png",
+            imgMid: "6-spades-mid.png",
+            imgThumb: "6-spades-thumb.png"
         },
         {
             cardID: 31,
@@ -647,9 +727,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/7-spades.png",
-            imgMid: "/game/images/cards/7-spades-mid.png",
-            imgThumb: "/game/images/cards/7-spades-thumb.png"
+            imgFull: "7-spades.png",
+            imgMid: "7-spades-mid.png",
+            imgThumb: "7-spades-thumb.png"
         },
         {
             cardID: 32,
@@ -662,9 +742,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/8-spades.png",
-            imgMid: "/game/images/cards/8-spades-mid.png",
-            imgThumb: "/game/images/cards/8-spades-thumb.png"
+            imgFull: "8-spades.png",
+            imgMid: "8-spades-mid.png",
+            imgThumb: "8-spades-thumb.png"
         },
         {
             cardID: 33,
@@ -677,9 +757,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/9-spades.png",
-            imgMid: "/game/images/cards/9-spades-mid.png",
-            imgThumb: "/game/images/cards/9-spades-thumb.png"
+            imgFull: "9-spades.png",
+            imgMid: "9-spades-mid.png",
+            imgThumb: "9-spades-thumb.png"
         },
         {
             cardID: 34,
@@ -692,9 +772,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/10-spades.png",
-            imgMid: "/game/images/cards/10-spades-mid.png",
-            imgThumb: "/game/images/cards/10-spades-thumb.png"
+            imgFull: "10-spades.png",
+            imgMid: "10-spades-mid.png",
+            imgThumb: "10-spades-thumb.png"
         },
         {
             cardID: 35,
@@ -707,9 +787,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/J-spades.png",
-            imgMid: "/game/images/cards/J-spades-mid.png",
-            imgThumb: "/game/images/cards/J-spades-thumb.png"
+            imgFull: "J-spades.png",
+            imgMid: "J-spades-mid.png",
+            imgThumb: "J-spades-thumb.png"
         },
         {
             cardID: 36,
@@ -722,9 +802,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/Q-spades.png",
-            imgMid: "/game/images/cards/Q-spades-mid.png",
-            imgThumb: "/game/images/cards/Q-spades-thumb.png"
+            imgFull: "Q-spades.png",
+            imgMid: "Q-spades-mid.png",
+            imgThumb: "Q-spades-thumb.png"
         },
         {
             cardID: 37,
@@ -737,9 +817,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/K-spades.png",
-            imgMid: "/game/images/cards/K-spades-mid.png",
-            imgThumb: "/game/images/cards/K-spades-thumb.png"
+            imgFull: "K-spades.png",
+            imgMid: "K-spades-mid.png",
+            imgThumb: "K-spades-thumb.png"
         },
         {
             cardID: 38,
@@ -752,9 +832,9 @@
             suitSVG: "<svg class='icon icon-spades'><use xlink:href='#icon-spades'></use></svg>",
             suitColor: 'black',
             suitVal: 3,
-            imgFull: "/game/images/cards/A-spades.png",
-            imgMid: "/game/images/cards/A-spades-mid.png",
-            imgThumb: "/game/images/cards/A-spades-thumb.png"
+            imgFull: "A-spades.png",
+            imgMid: "A-spades-mid.png",
+            imgThumb: "A-spades-thumb.png"
         },
         {
             cardID: 39,
@@ -767,9 +847,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/2-clubs.png",
-            imgMid: "/game/images/cards/2-clubs-mid.png",
-            imgThumb: "/game/images/cards/2-clubs-thumb.png"
+            imgFull: "2-clubs.png",
+            imgMid: "2-clubs-mid.png",
+            imgThumb: "2-clubs-thumb.png"
         },
         {
             cardID: 40,
@@ -782,9 +862,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/3-clubs.png",
-            imgMid: "/game/images/cards/3-clubs-mid.png",
-            imgThumb: "/game/images/cards/3-clubs-thumb.png"
+            imgFull: "3-clubs.png",
+            imgMid: "3-clubs-mid.png",
+            imgThumb: "3-clubs-thumb.png"
         },
         {
             cardID: 41,
@@ -797,9 +877,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/4-clubs.png",
-            imgMid: "/game/images/cards/4-clubs-mid.png",
-            imgThumb: "/game/images/cards/4-clubs-thumb.png"
+            imgFull: "4-clubs.png",
+            imgMid: "4-clubs-mid.png",
+            imgThumb: "4-clubs-thumb.png"
         },
         {
             cardID: 42,
@@ -812,9 +892,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/5-clubs.png",
-            imgMid: "/game/images/cards/5-clubs-mid.png",
-            imgThumb: "/game/images/cards/5-clubs-thumb.png"
+            imgFull: "5-clubs.png",
+            imgMid: "5-clubs-mid.png",
+            imgThumb: "5-clubs-thumb.png"
         },
         {
             cardID: 43,
@@ -827,9 +907,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/6-clubs.png",
-            imgMid: "/game/images/cards/6-clubs-mid.png",
-            imgThumb: "/game/images/cards/6-clubs-thumb.png"
+            imgFull: "6-clubs.png",
+            imgMid: "6-clubs-mid.png",
+            imgThumb: "6-clubs-thumb.png"
         },
         {
             cardID: 44,
@@ -842,9 +922,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/7-clubs.png",
-            imgMid: "/game/images/cards/7-clubs-mid.png",
-            imgThumb: "/game/images/cards/7-clubs-thumb.png"
+            imgFull: "7-clubs.png",
+            imgMid: "7-clubs-mid.png",
+            imgThumb: "7-clubs-thumb.png"
         },
         {
             cardID: 45,
@@ -857,9 +937,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/8-clubs.png",
-            imgMid: "/game/images/cards/8-clubs-mid.png",
-            imgThumb: "/game/images/cards/8-clubs-thumb.png"
+            imgFull: "8-clubs.png",
+            imgMid: "8-clubs-mid.png",
+            imgThumb: "8-clubs-thumb.png"
         },
         {
             cardID: 46,
@@ -872,9 +952,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/9-clubs.png",
-            imgMid: "/game/images/cards/9-clubs-mid.png",
-            imgThumb: "/game/images/cards/9-clubs-thumb.png"
+            imgFull: "9-clubs.png",
+            imgMid: "9-clubs-mid.png",
+            imgThumb: "9-clubs-thumb.png"
         },
         {
             cardID: 47,
@@ -887,9 +967,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/10-clubs.png",
-            imgMid: "/game/images/cards/10-clubs-mid.png",
-            imgThumb: "/game/images/cards/10-clubs-thumb.png"
+            imgFull: "10-clubs.png",
+            imgMid: "10-clubs-mid.png",
+            imgThumb: "10-clubs-thumb.png"
         },
         {
             cardID: 48,
@@ -902,9 +982,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/J-clubs.png",
-            imgMid: "/game/images/cards/J-clubs-mid.png",
-            imgThumb: "/game/images/cards/J-clubs-thumb.png"
+            imgFull: "J-clubs.png",
+            imgMid: "J-clubs-mid.png",
+            imgThumb: "J-clubs-thumb.png"
         },
         {
             cardID: 49,
@@ -917,9 +997,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/Q-clubs.png",
-            imgMid: "/game/images/cards/Q-clubs-mid.png",
-            imgThumb: "/game/images/cards/Q-clubs-thumb.png"
+            imgFull: "Q-clubs.png",
+            imgMid: "Q-clubs-mid.png",
+            imgThumb: "Q-clubs-thumb.png"
         },
         {
             cardID: 50,
@@ -932,9 +1012,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/K-clubs.png",
-            imgMid: "/game/images/cards/K-clubs-mid.png",
-            imgThumb: "/game/images/cards/K-clubs-thumb.png"
+            imgFull: "K-clubs.png",
+            imgMid: "K-clubs-mid.png",
+            imgThumb: "K-clubs-thumb.png"
         },
         {
             cardID: 51,
@@ -947,9 +1027,9 @@
             suitSVG: "<svg class='icon icon-clubs'><use xlink:href='#icon-clubs'></use></svg>",
             suitColor: 'black',
             suitVal: 4,
-            imgFull: "/game/images/cards/A-clubs.png",
-            imgMid: "/game/images/cards/A-clubs-mid.png",
-            imgThumb: "/game/images/cards/A-clubs-thumb.png"
+            imgFull: "A-clubs.png",
+            imgMid: "A-clubs-mid.png",
+            imgThumb: "A-clubs-thumb.png"
         }
     ];
     /* End "cards" array, containing all poker card/deck data */

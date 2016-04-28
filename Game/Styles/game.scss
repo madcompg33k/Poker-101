@@ -1,6 +1,14 @@
+$card-size-modifier: 1;
+@media all and (max-width: 4000px) { $card-size-modifier: 2; }
+@media all and (max-width: 1920px) { $card-size-modifier: 1; }
+@media all and (max-width: 720px) { $card-size-modifier: .5; }
+@media all and (max-width: 640px) { $card-size-modifier: .3; }
+@media all and (max-width: 480px) { $card-size-modifier: .2; }
+@media all and (max-width: 320px) { $card-size-modifier: .1; }
+
 $font-stack:            "Acumin Pro";
 $primary-font-color:    #333;
-$font-size:             1em;
+$font-size:             16px;
 $background-light:      rgba(0, 100, 0, 1); /* #006400 */
 $background-dark:       rgba(15, 62, 15, 1); /* #0f3e0f */
 
@@ -77,7 +85,7 @@ $mainDiv-height:        $table-height + ($player-height * 2);
 div#main {
     height: $mainDiv-height;
     position: relative;
-    margin: 30px auto;
+    margin: 10px auto;
 
     h2{
         width: 98%;
@@ -92,8 +100,8 @@ div#main {
     aside.game-options {
         width: $options-width;
         position: absolute;
-        top: 35px;
-        left: 1%;
+        top: 50px;
+        left: 1.5%;
         padding: 10px;
         border-right: dashed #999 3px;
         background-color: rgba(200, 200, 200, 0.3);
@@ -114,7 +122,7 @@ div#main {
             margin: 3px auto;
             border-width: 3px;
             @include border-radius(10px);
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: bold;
             text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
         }
@@ -161,11 +169,14 @@ section#table {
                 height: $card-height;
                 margin: $card-margin;
                 padding: 0px;
+                list-style: none;
         
-                img {
+                img.graphical-card {
                     width: $card-width;
                     height: $card-height;
                 }
+
+                /*.svg-card { display: none; }*/
 
             }
         }
@@ -187,6 +198,14 @@ section#table {
             font-weight: bold;
             font-style: italic;
         }
+
+        .table-winner {
+            color: #fff;
+            font-weight: bold;
+            font-size: .8em;
+            text-align: left;
+            list-style: none;
+        }
     }
 
     div#potSize span:before{ content: "("; }
@@ -206,7 +225,18 @@ section#table {
             font-weight: bold;
             margin: 0px;
             padding: 0px;
-                
+            
+            span.npc:before {
+                font-family: FontAwesome;
+                content: "\f108";
+            }
+
+            span:first-of-type {
+                font-size: 1em;
+                font-weight: bold;
+                font-style: none;
+            }
+
             span {
                 display: block;
                 font-size: .6em;
@@ -230,6 +260,8 @@ section#table {
             position: absolute;
             top: 5px;
             left: $player-width;
+            margin: 0px;
+            padding: 0px;
             border: solid $background-dark 2px;
             z-index: 1;
 
@@ -237,7 +269,7 @@ section#table {
                 @include top-border-radius(5px);
                 padding: 2px 10px;
                 color: #fff;
-                font-size: 1.1em;
+                font-size: .8em;
                 background-color: $background-dark;
                 border-bottom: solid black 2px;
             }
@@ -265,16 +297,16 @@ section#table {
                 padding: 1px 5px;
                 text-align: center;
                 color: #fff;
-                font-size: 1.1em;
+                font-size: .8em;
                 font-weight: 700;
                 font-variant: small-caps;
                 border-color: rgba(10, 41, 10, 0.87);
+                box-sizing: border-box;
             }
 
             button.bet {
                 display: inline-block;
-                width: 32%;
-                font-size: 1em;
+                width: 33%;
             }
 
             .bet-other {
@@ -311,7 +343,7 @@ section#table {
                 }
             }
 
-            button.bet-all-in { font-weight: bold; font-size: 1.5em; }
+            button.bet-all-in { font-weight: bold; font-size: 1.2em; }
 
         }
 
@@ -447,5 +479,45 @@ li.player-hand {
     font-size:  1.4em;
 }
 
+div.player-handtype {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 0px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    border: solid black 2px;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
+    z-index: 1;
 
+    span {
+         display: inline-block;
+         margin: 2px 10px;
+         font-size: .9em;
+         text-align: left;
+    }
+
+    span:first-of-type {
+        display: block;
+        width: 100%;
+        margin: 0px;
+        padding: 2px 10px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        background-color: $background-light;
+        border-bottom: solid black 1px;
+        font-size: 1em;
+        font-weight: bold;
+        color: #fff;
+        text-align: left;
+    }
+}
 @import 'card';
+
+
+/* @media */
+@media all and (max-width: 4000px) { img.graphical-card { display: inline-block; } .svg-card { display: none; } }
+@media all and (max-width: 1920px) { img.graphical-card { display: inline-block; } .svg-card { display: none; } }
+@media all and (max-width: 1152px) { img.graphical-card { display: none; } .svg-card { display: inline-block; } }
+@media all and (max-width: 720px) { img.graphical-card { display: none; } .svg-card { display: inline-block; } }
