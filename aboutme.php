@@ -1,17 +1,16 @@
     <?php
         //require_once ("Includes/simplecms-config.php"); 
         //require_once  ("Includes/connectDB.php");
-        $currentPage = "About";
         include("/Includes/header.php");         
      ?>
 
 
-    <section id="main" class="col-md-8 col-md-offset-2">
-        <h1 class="page-header">About Me</h1>
+    <section id="main">
+        <h2 class="page-header">About Me</h2>
 
         <!-- #Start div#tipsCalculatingOdds -->
-        <div id="aboutHistory" class="details">
-            <h3>My History With Poker</h3>
+        <div id="aboutHistory" class="about-me">
+            <h4>My History With Poker</h4>
 
             <p>
                 My first experience with poker was when I was much younger. My family would rent a beach house in Edisto Island, SC for a week
@@ -42,8 +41,8 @@
         <!-- #End div#tipsCalculatingOdds -->
 
         <!-- #Start div#aboutCasino -->
-        <div id="aboutCasino" class="details">
-            <h3>My First Time in a Casino</h3>
+        <div id="aboutCasino" class="about-me">
+            <h4>My First Time in a Casino</h4>
 
             <p>
                 I will never forget my first time in a casino. I had been playing in small, local games off and on for years and had always

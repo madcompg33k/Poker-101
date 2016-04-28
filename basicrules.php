@@ -1,17 +1,16 @@
     <?php 
         //require_once ("Includes/simplecms-config.php"); 
         //require_once  ("Includes/connectDB.php");
-        $currentPage = "Rules";
-        include("Includes/header.php");         
+        include("/Includes/header.php");         
      ?>
 
 
-    <section id="main" class="col-md-8 col-md-offset-2">
-        <h1 class="page-header">Basic Rules of Texas Hold'em</h1>
+    <section id="main">
+        <h2 class="page-header">Basic Rules of Texas Hold'em</h2>
 
         <!-- #Start div#rulesCardValue -->
-        <div id="rulesCardValue" class="details">
-            <h3>List of card values (Highest to Lowest)</h3>
+        <div id="rulesCardValue" class="rules">
+            <h4>List of card values (Highest to Lowest)</h4>
             <ul>
                 <li>Ace (A)</li>
                 <li>King (K)</li>
@@ -36,11 +35,11 @@
         <!-- #End div#rulesCardValue -->
 
         <!-- #Start div#rulesPokerHands -->
-        <div id="rulesPokerHands" class="details">
-            <h3>List of Poker Hands (Highest to Lowest)</h3>
+        <div id="rulesPokerHands" class="rules">
+            <h4>List of Poker Hands (Highest to Lowest)</h4>
             <ul>
                 <li>
-                    <h4>Straight flush</h4>
+                    <h5>Straight flush</h5>
                     <p>
                         A straight flush is when you have 5 suited cards, in order of one another.
                         <span class="note">(e.g. 3, 4, 5, 6, and 7 of spades)</span>
@@ -48,26 +47,26 @@
                     </p>
                 </li>
                 <li>
-                    <h4>Four of a kind</h4>
+                    <h5>Four of a kind</h5>
                     <p>
                         Four of the same number or face card.
                         <span class="note">(e.g. four queens, or four threes)</span>
                     </p>
                 <li>
-                    <h4>Full house</h4>
+                    <h5>Full house</h5>
                     <p>
                         Three of the same number or face card alongside another, distinct two that match.
                         <span class="note">(e.g. three 8s, and a pair of 2s)</span>
                     </p>
                 </li>
                 <li>
-                    <h4>Flush</h4>
+                    <h5>Flush</h5>
                     <p>
                         Five cards of the same suit.
                     </p>
                 </li>
                 <li>
-                    <h4>Straight</h4>
+                    <h5>Straight</h5>
                     <p>
                         Five cards in order of one another.
                         <span class="note">(e.g. 3, 4, 5, 6, and 7, not suited)</span>
@@ -75,28 +74,28 @@
                     </p>
                 </li>
                 <li>
-                    <h4>Three of a kind</h4>
+                    <h5>Three of a kind</h5>
                     <p>
                         Three of the same number or face card.
                         <span class="note">(e.g. three 8s)</span>
                     </p>
                 </li>
                 <li>
-                    <h4>Two pair</h4>
+                    <h5>Two pair</h5>
                     <p>
                         Two seperate sets of two cards of the same number or face card that match.
                         <span class="note">(e.g. two 8s, and two 2s)</span>
                     </p>
                 </li>
                 <li>
-                    <h4>Pair</h4>
+                    <h5>Pair</h5>
                     <p>
                         Two of the same number or face card.
                         <span class="note">(e.g. two kings)</span>
                     </p>
                 </li>
                 <li>
-                    <h4>High card</h4>
+                    <h5>High card</h5>
                     <p>
                         Having the highest card face value when nobody else has a higher face card value, or a pair or higher.
                         <span class="note">(e.g. holding an ace when nobody else has a pair or better, and no ace)</span>
@@ -108,12 +107,12 @@
         <!-- #End div#rulesPokerHands -->
 
         <!-- #Start div#ruleGamePlay -->
-        <div id="rulesGamePlay" class="details">
-            <h3>Gameplay</h3>
+        <div id="rulesGamePlay" class="rules">
+            <h4>Gameplay</h4>
 
             <ul>
                 <li>
-                    <h4>Concept</h4>
+                    <h5>Concept</h5>
                     <p>
                         Texas Hold'em is a form of poker in which each player has two "hole" cards that is unique to them, as well as 5 communal cards shared by the
                         entire table. A player's hand is determined by combining any 5 cards between the two. Players place bets during each "round" of play (pre-flop,
@@ -123,7 +122,7 @@
                 </li>
 
                 <li>
-                    <h4>The Dealer "Button"</h4>
+                    <h5>The Dealer "Button"</h5>
                     <p>
                         The dealer "button" is a chip (or some other item) which indicates who is the "dealer" for the current hand (even if that person didn't necessarily "deal" the
                         cards themself). This "button" determines who must pay the small and big blind, as well as play order. After each hand is played, the "button" moves to the player
@@ -132,7 +131,7 @@
                 </li>
 
                 <li>
-                    <h4>Small Blind</h4>
+                    <h5>Small Blind</h5>
                     <p>
                         The small blind is typically half of the minimum bet, and is always paid by the person to the immediate left of the dealer.
                         <span class="note">(e.g. if you are playing a $1/$2 game, $2 would be the initial minimum bet, and $1 would be the small blind)</span>
@@ -140,7 +139,7 @@
                 </li>
 
                 <li>
-                    <h4>Big Blind</h4>
+                    <h5>Big Blind</h5>
                     <p>
                         The big blind is equal to the minimum initial bet required to stay in, and is always paid by the person two seats to the left of the dealer, or one seat left of the small blind.
                         <span class="note">(e.g. if you are playing a $1/$2 game, $2 would be the big blind)</span>
@@ -148,7 +147,7 @@
                 </li>
 
                 <li>
-                    <h4>Ante</h4>
+                    <h5>Ante</h5>
                     <p>
                         Sometimes a game can have (or eventually have, as the bets grow, like in a tournament) what is known as an "Ante". An ante is a minimum bet for everyone to put in, in order to play
                         the hand. This is in addition to the blinds, and everyone who wishes to play in the hand must pay it.
@@ -157,7 +156,7 @@
                 </li>
 
                 <li>
-                    <h4>The "Hole" Cards</h4>
+                    <h5>The "Hole" Cards</h5>
                     <p>
                         Once all blinds and antes have been paid, the dealer than deals cards around the table, one at a time, starting with the player to the immediate left of the big blind,
                         going around until all players have two cards.
@@ -165,7 +164,7 @@
                 </li>
 
                 <li>
-                    <h4>Order of Play (Pre-Flop)</h4>
+                    <h5>Order of Play (Pre-Flop)</h5>
                     <p>
                         The first player to act is the player to the immediate left of the payer of the big blind. This player must choose to fold, if he or she doesn't like their hole cards,
                         call, which means to put in the minimum bet to stay in (the equivelant of the big blind), or to raise, which must be at least equivelant to twice the amount of the big blind.
@@ -185,34 +184,34 @@
                 </li>
 
                 <li>
-                    <h4>Folding</h4>
+                    <h5>Folding</h5>
                     <p>
                         To relinquish any chips/money you have previously bet, and push your hole cards, typically face down, towards the center of
                         the table signifying that you are done with the current hand.
                     </p>
                 </li>
                 <li>
-                    <h4>Checking</h4>
+                    <h5>Checking</h5>
                     <p>
                         To already have the same amount of any previous bet on the table (e.g. the big blind, or no bet having been made post-flop),
                         and to signify that you do not wish to raise the bet any further.
                     </p>
                 </li>
                 <li>
-                    <h4>Calling</h4>
+                    <h5>Calling</h5>
                     <p>
                         To place the same amount of chips/money on the table equivalent to any previous bet or big blind (whichever is higher).
                     </p>
                 </li>
                 <li>
-                    <h4>Raising</h4>
+                    <h5>Raising</h5>
                     <p>
                         To increase the bet amount from the previous one or minimum/big blind, or to bet in the case of there being no prior bet post-flop.
                     </p>
                 </li>
 
                 <li>
-                    <h4>The "Flop"</h4>
+                    <h5>The "Flop"</h5>
                     <p>
                         Once all initial bets have been settled and everyone has either matched their bet, or folded, all chips are moved to the center, or the "pot", and the dealer then "burns" a card
                         (by placing the top card off to the side, face-down), and then deals three cards in the center of the table, face-up. Then, another round of betting begins, starting with the
@@ -222,7 +221,7 @@
                 </li>
 
                 <li>
-                    <h4>The "Turn"</h4>
+                    <h5>The "Turn"</h5>
                     <p>
                         Once everyone has either folded or matched the current bet after the flop has been dealt, the dealer then "burns" another card and places one more card out (usually to the
                         right of the flop) which is known as the "turn". Another round of betting begins, exactly in the same manner as before.
@@ -230,7 +229,7 @@
                 </li>
                 
                 <li>
-                    <h4>The "River"</h4>
+                    <h5>The "River"</h5>
                     <p>
                         Once everyone has folded or matched the bet, the dealer then "burns" one more card, and deals a final card (usually to the right of the "turn" card), which is known as
                         the "river". A final round of betting begins exactly as before, until everyone has either folded or matched the bet, at which point you move to the "showdown".
@@ -238,7 +237,7 @@
                 </li>
 
                 <li>
-                    <h4>The "Showdown"</h4>
+                    <h5>The "Showdown"</h5>
                     <p>
                         Once all bets have been placed and everyone who did not match the bet or check has folded, hole cards are then revealed to determine who wins the "pot". Based on the hierarchy of
                         hands, the winner is the person with the highest rated hand based on five of any combination of cards from their hole cards or the communal cards on the table. In the case of a

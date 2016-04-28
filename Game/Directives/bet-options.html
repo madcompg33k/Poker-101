@@ -1,4 +1,4 @@
-<div id="betOptionsContainer" class="col-md-1">
+<div id="betOptionsContainer">
     <h3>Your Turn</h3>
     <form class="bet-options">
         <button class="check" data-ng-show="table.currentBet === 0" data-ng-click="tableCtrl.playerBetAction('Check', player, 0)">
@@ -16,7 +16,7 @@
         
         <div>
             <h5>Bets</h5>
-            <button class="bet bet-minimum col-md-4"
+            <button class="bet bet-minimum"
                     data-ng-click="tableCtrl.playerBetAction('Raise', player, (
                         table.currentBet < table.bigBlind.amt
                             ? table.bigBlind.amt > player.money ? player.money : table.bigBlind.amt
@@ -34,7 +34,7 @@
                 }}
                 <!-- Add in handling for current bets being larger than the pot size -->
             </button>
-            <button class="bet bet-half col-md-4"
+            <button class="bet bet-half"
                     data-ng-click="tableCtrl.playerBetAction('Raise', player, (
                         table.potSize / 2 > table.currentBet * 2
                             ? table.potSize / 2 > player.money ? player.money : table.potSize / 2
@@ -51,7 +51,7 @@
                         | currency
                 }}
             </button>
-            <button class="bet bet-pot col-md-4"
+            <button class="bet bet-pot"
                     data-ng-click="tableCtrl.playerBetAction('Raise', player, (
                         table.potSize > table.currentBet * 2.5
                             ? table.potSize > player.money ? player.money : table.potSize
@@ -68,12 +68,12 @@
                         | currency
                 }}
             </button>
-            <div class="bet-other col-md-12">
+            <div class="bet-other">
                 <input type="text" data-ng-model="player.bet.amt" format="currency" />
                 <button class="bet-other" data-ng-click="tableCtrl.playerBetAction('Raise', player, player.bet.amt)">Other</button>
             </div>
             
-            <button class="bet-all-in col-md-12" data-ng-click="tableCtrl.playerBetAction('Raise', player, player.money)">All In ({{ player.money | currency }})</button>
+            <button class="bet-all-in" data-ng-click="tableCtrl.playerBets('Raise', player, player.money)">All In ({{ player.money | currency }})</button>
         </div>
     </form>
 </div>

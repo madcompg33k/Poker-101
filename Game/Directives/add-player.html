@@ -1,6 +1,7 @@
-<form id="addPlayer" data-ng-controller="PlayerController as playerCtrl">
-    <label>Your Name: </label>
-    <input type="text" data-ng-model="game.players[0].name" />
+<form id="addPlayer" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="playerCtrl.addPlayer(game)">
+    <label>New Player: </label>
+    <input type="text" data-ng-model="playerCtrl.player.name" />
+    <input type="submit" value="Add Player" />
     <br />
 
     <div id="playerList">
