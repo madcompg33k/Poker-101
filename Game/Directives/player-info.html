@@ -1,9 +1,12 @@
-<ul class="players" data-ng-show="player">
-    
-    <li class="player seat-{{$index + 1}}">
+<ul class="players">
+    <!-- Create a seat for the dealer, since every table has a dealer -->
+    <li class="player seat-dealer">
+        <h3 class="player-name">Dealer</h3>
+    </li>
+    <li data-ng-repeat="player in gameCtrl.players" class="player seat-{{$index + 1}}">
 
         <h3 class="player-name">
-            {{ player.name }}
+            <span data-ng-class="player.playerType"> {{ player.name }}</span>
 
             <span class="player-money">({{ player.money | currency }})</span>
             <span>Current Bet: {{ player.bet.amt | currency }}</span>
@@ -13,7 +16,7 @@
             <span data-ng-show="table.bigBlind.seat === $index">(Big Blind)</span>
         </h3>
 
-        <bet-options data-ng-show="table.turn === $index && !player.hand.handRank"></bet-options>
+        <bet-options data-ng-show="table.turn === $index && !player.handType.rank"></bet-options>
         <!-- ul>
             <li>
                 <b>Money:</b>
@@ -27,22 +30,14 @@
 
         <div class="player-hand">
             <span data-ng-repeat="card in player.holeCards">
-                <a-card class="card-thumb"></a-card>
+                <a-card class="player-card"></a-card>
                 <!-- img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" / -->
             </span>
             <img class="dealer-button" src="/Game/Images/Chips/dealer-200.png" width="50" height="50" data-ng-show="table.dealer.seat === $index" />
         </div>
-        <div data-ng-show="player.handType.cards"
-        style="width: 100%; position: absolute; top: 0px; left: 0px; padding: 0px; background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; border: solid black 2px; box-shadow: 2px 2px 2px rgba(0,0,0,0.4); z-index: 1;">
-            <span
-            style="display: block; width: 100%; margin: 0px; padding: 2px 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: rgba(186, 25, 25, 0.9); border-bottom: solid black 1px;
-                  text-align: left; color:  #fff; font-weight: bold; font-size: 1.15em;">
-                {{ player.name }} - {{ player.handType.name }}
-            </span>
-            <br />
-            <span style="display: inline-block; margin: 2px 10px; text-align: left;" data-ng-repeat="card in player.handType.cards">
-                <b>{{ $index + 1 }}: {{ card.name }} of {{ card.suit }}</b>
-            </span>
+        <div class="player-handtype" data-ng-show="player.handType.cards">
+            <span> {{ player.name }} {{ player.handType.name }} </span>
+            <span data-ng-repeat="card in player.handType.cards"> {{ $index + 1 }}: {{ card.name }} of {{ card.suit }}</span>
         </div>
 
     </li>

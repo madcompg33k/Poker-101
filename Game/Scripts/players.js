@@ -7,14 +7,16 @@
         })
     /* Controller for add/modifying an individual player */
         .controller('PlayerController', function () {
-            this.money = 200;
-            this.chips = [];
-            this.isDealer = false;
-            this.isSmallBlind = false;
-            this.isBigBlind = false;
-            this.betAmount = 0;
-            this.cards = [];
-            this.handRank = 0;
+            this.player = {
+                seat: 0,
+                money: 200,
+                chips: [],
+                isDealer: false,
+                isSmallBlind: false,
+                isBigBlind: false,
+                bet: { amt: 0 },
+                holeCards: []
+            };
 
             this.addPlayer = function (game) {
                 /* Add this player to players */

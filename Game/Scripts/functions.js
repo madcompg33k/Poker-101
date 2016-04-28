@@ -41,7 +41,7 @@ function clearBoard(){
 
     /* Reset the shuffled deck */
     if (table.shuffledDeck) { table.shuffledDeck.length = 0; }
-    table.shuffledDeck = shuffle(game.deck);
+    table.shuffledDeck = shuffle(game.deck.cards);
 
     /* Reset other table data */
     table.potSize = 0;
@@ -68,9 +68,12 @@ function newHand() {
 
     /* Move the dealer button and the blinds */
     if (table.smallBlind.seat == 0 && table.bigBlind.seat == 0 && table.dealer.seat == 0){
-        table.dealer.seat = game.players.length - 1;
-        table.smallBlind.seat = game.players.length - 2;
-        table.bigBlind.seat = (game.players.length - 3) < 0 ? (game.players.length - 3) * 1 : game.players.length - 3;
+        //table.dealer.seat = game.players.length - 1;
+        table.dealer.seat = game.players[3].seat;
+        //table.smallBlind.seat = game.players.length - 2;
+        table.smallBlind.seat = game.players[2].seat;
+        //table.bigBlind.seat = (game.players.length - 3) < 0 ? (game.players.length - 3) * 1 : game.players.length - 3;
+        table.bigBlind.seat = game.players[1].seat;
     }else {
         table.dealer.seat = table.dealer.seat == 0 ? game.players.length - 1 : table.dealer.seat - 1;
         table.smallBlind.seat = getNextSeat(table.smallBlind.seat);
