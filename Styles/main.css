@@ -24,6 +24,8 @@ div#myNavbar {
 }
 
 svg.logo {
+    width: 100px;
+    height: 100px;
     position: absolute;
     top: 5px;
     left: 5px;
@@ -126,8 +128,8 @@ section#main {
 @media screen and (max-width: 1024px) {
     .body:before { background-image: url("/Images/front-1024l.jpg"); }
     .page-header { font-size: 3.5em; }
-    svg.logo { width: 75px; height: 75px; top: 0px; left: 5px; }
-    div#myNavbar { margin-left: 75px; }
+    svg.logo { width: 50px; height: 50px; top: 0px; left: 5px; }
+    div#myNavbar { margin-left: 50px; }
     .front-content blockquote { margin-bottom: 0px; font-size: 1.3em; }
     .front-content blockquote:last-child { margin-bottom: 20px; }
 }

@@ -11,7 +11,6 @@
     <script type="text/javascript" src="/Scripts/jquery-2.2.3.js"></script>
     <script type="text/javascript" src="/Scripts/bootstrap.js"></script>
     <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/Scripts/svgxuse.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.css" />
     <!-- link rel="stylesheet" type="text/css" href="Styles/bootstrap.min.css" / -->
     <link rel="stylesheet" type="text/css" href="/Styles/bootstrap-theme.css" />

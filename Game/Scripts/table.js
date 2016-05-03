@@ -22,26 +22,29 @@
         table = $scope.table;
 
         /* Deal the cards to the players */
-        this.dealCards = function () { newHand(); };
+        this.dealCards = function () { newHand(); this.checkForNPC($scope.game.players[table.turn]); };
         this.dealCardsToTable = function () {
             switch (table.cards.length) {
                 case 0: 
                         dealBoard(3);
+                        $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
                         break;
                 case 3: 
                         dealBoard(1);
+                        $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
                         break;
                 case 4: 
                         dealBoard(1);
+                        $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
                         break;
                default: 
-                        for (var seat = 0; seat < game.players.length; seat++){
+                        for (var seat = 0; seat < $scope.game.players.length; seat++){
                             /* Don't bother evaluating players with no cards */
                             if (game.players[seat].holeCards.length) {
-                                game.players[seat].handType = this.evaluatePlayerHands(game.players[seat]);
+                                game.players[seat].handType = this.evaluatePlayerHands($scope.game.players[seat]);
                             }
                         }
-                        table.winner = this.calculateWinner(game.players);
+                        table.winner = this.calculateWinner($scope.game.players);
                         /* Pay the winner(s) */
                         for (var i = 0; i < table.winner.length; i++){
                             table.winner[i].money = parseInt(table.winner[i].money, 10) + (parseInt(table.potSize, 10) / parseInt(table.winner.length, 10));
@@ -68,12 +71,155 @@
                     break;
             }
             /* Set bet.amt to amount player bet */
-            player.bet.amt = parseInt(amount, 10);
+            player.bet.amt = amount > player.money ? player.money : amount;
 
             /* Move to the next active player */
             this.moveSeat(player);
-
+            if (table.turn != -1){ 
+                $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
+            }
         };
+
+        this.checkForNPC = function (player) {
+            
+            /* First, check if player is npc */
+            if (player.playerType == "npc") {
+
+                /* Get all cards the player is using */
+                var cards = angular.copy(player.holeCards);
+                for (var card = 0; card < table.cards.length; card++) { cards.push(angular.copy(table.cards[card])); }
+                /* Sort the cards by value (ascending) */
+                cards.sort(sort_by('value', false, parseInt));
+
+                var playerAction = { action: 'Call', bet: 0 };
+                var multiplier = 0;
+                var pairedCards = this.getPairedCards(cards);
+                var straightCards = this.getStraightCards(cards);
+                var flushCards = this.getFlushCards(cards);
+
+                /* Check for a straight flush or four of a kind */
+                if (flushCards.straightFlush || pairedCards.handType == $scope.handType.fourOfAKind) { multiplier = 10; }
+                /* Check for a full house */
+                else if (pairedCards.handType == $scope.handType.fullHouse){ multiplier = 10; }
+                /* Check for a flush */
+                else if (flushCards.hasFlush) {
+                    if (flushCards.cards[flushCards.cards.length - 1].value >= 13) { multiplier = 6; }
+                    else { multiplier = 4; }
+                }
+                /* Check if player has a 35% or more chance to a flush */
+                else if (flushCards.percentage && flushCards.percentage >= 35) { multiplier = 3; }
+                /* Check if player has a 18% or more chance to a flush */
+                else if (flushCards.percentage && flushCards.percentage >= 18) { multiplier = 2; }
+                else if (straightCards.hasStraight) { multiplier = 4; }
+                else if (straightCards.percentage > 35) { multiplier = 3; }
+                else if (straightCards.percentage > 18) { multiplier = 2; }
+                else if (pairedCards.handType == $scope.handType.threeOfAKind) {
+                    /* Check for three aces */
+                    if (pairedCards.pairs[0].cardValue == 14) { multiplier = 6; }
+                    /* Check for three jacks or higher */
+                    else if (pairedCards.pairs[0].cardValue >= 11) { multiplier = 4; }
+                    /* All other sets */
+                    else { multiplier = 3; }
+                }
+                /* Check for two pair */
+                else if (pairedCards.handType == $scope.handType.twoPair) { multiplier = 2; }
+                /* Check to see if player has a pair */
+                else if (pairedCards.pairs.length && pairedCards.handType.rank < 3) {
+                    /* Placeholder for highest valued pair */
+                    var highestValue = 0;
+                    var cardRank = 1;
+                    /* Find the highest pair */
+                    for (var pair = 0; pair < pairedCards.pairs.length; pair++) {
+                        if (pairedCards.pairs[pair].cardValue > highestValue) { highestValue = pairedCards.pairs[pair].cardValue; }
+                    }
+
+                    /* See how the pair compares to the other cards on the table */
+                    for (var card = 0; card < cards.length; card++) {
+                        if (cards[card].value > highestValue) { cardRank--; }
+                    }
+                    /* Highest pair is at least a king */
+                    if (highestValue >= 13) { multiplier = cardRank == 1 ? 6 : cardRank <= 2 ? 4 : 1; }
+                    /* Pair is at least a jack or higher */
+                    else if (highestValue >= 11) { multiplier = cardRank == 1 ? 4 : cardRank <= 2 ? 2 : 1; }
+                    /* Pair is lower than a jack */
+                    else { multiplier = cardRank == 1 ? 2 : 1; }
+
+                }
+                /* Check for all potential hands and act accordingly */
+                else {
+                    /* No cards on table yet, so working with just the player's hole cards */
+                    if (table.cards.length <= 3) {
+                        /* Ace-King or Ace-Queen */
+                        if (cards[cards.length - 1].value == 14
+                          && (cards[cards.length - 2].value == 13 || cards[cards.length - 2].value == 12) ){
+                              /* Check if suited */
+                              if (cards[cards.length - 1].suit == cards[cards.length - 2].suit) {
+                                  multiplier = 2;
+                                }
+                              else { multiplier = 1 };
+                        } 
+                        /* King-Queen or King-Jack */
+                        else if (cards[cards.length - 1].value == 13
+                          && (cards[cards.length - 2].value == 12 || cards[cards.length - 2].value == 11) ){
+                              /* Check if suited */
+                              if (cards[cards.length - 1].suit == cards[cards.length - 2].suit) { multiplier = 2; }
+                              else { multiplier = 1 };
+                        } 
+                        else if (cards[1].value <= cards[0].value + 4) {
+                            multiplier = 1;
+                            /* Check if suited */
+                            if (cards[0].suit == cards[1].suit) { multiplier = 2; }
+                        }
+                        else if (table.cards.length == 0 && cards[0].suit == cards[1].suit){
+                            multiplier = 1;
+                        } else { multiplier = 0; }
+
+                    }
+                    /* Check against number of cards on table / thus percentage */
+                    else { 
+                        if (cards[cards.length - 1].value >= 13 && cards[cards.length - 2].value >= 12) {
+                            multiplier = 1;
+                        } else { multiplier = 0; }
+                    }
+
+
+                     /* Add check for Ace-King */
+                }
+
+                /* Check if player has already bet in this round to prevent a continuous loop of betting */
+                if (player.bet.amt > 0) { multiplier = 1; }
+                /* Calculate player's action based on the multiplier */
+                playerAction = this.playerAction(multiplier, player);
+                /* If the npc calls, but there is no bet, check instead */
+                if (table.currentBet == 0 && (playerAction.action == 'Call' || playerAction.action == 'Fold')) { playerAction.action = 'Check'; }
+
+                this.playerBetAction(playerAction.action, player, playerAction.bet);
+            } /* Player is not npc, so let the player take his/her turn */
+
+        }
+
+        this.playerAction = function (multiplier, player) {
+            var playerAction = {};
+            
+            /* Get player bet amount */
+            if (table.currentBet <= table.bigBlind.amt * multiplier && playerAction.action != 'Fold'){
+                playerAction.bet = table.bigBlind.amt * multiplier;
+            }
+            else if (table.currentBet <= table.bigBlind.amt * (multiplier * multiplier)){
+                playerAction.bet = table.currentBet;
+            } else {
+                playerAction.action = 'Fold';
+                playerAction.bet = 0;
+            }
+
+
+            if (table.cards.length) { playerAction.bet = multiplier > 1 ? playerAction.bet / 2 : playerAction.bet; }
+            
+            /* Set player action */
+            playerAction.action = playerAction.bet == 0 ? 'Fold' : playerAction.bet > table.currentBet ? 'Raise' : 'Call';
+            
+            return playerAction;
+        }
 
         this.moveSeat = function (player) {
             /* Move to the next seat */
@@ -87,10 +233,6 @@
             if (game.players[table.turn] == table.better) {
                 this.dealCardsToTable();
             }
-
-            /*if (game.players[table.turn].playerType == "npc") {
-                $timeout(this.playerBetAction('Call', game.players[table.turn], table.currentBet), 5000);
-            }*/
         };
 
         this.pause = function () {
@@ -165,6 +307,158 @@
             return hand.handType;
         };
 
+
+
+        /* Find cards towards flush (newer, used for during play evaluation) */
+        this.getFlushCards = function (hand) {
+            var flushCards = {
+                hearts:     { cards: [], count: 0, name: 'hearts', percentage: 0 },
+                diamonds:   { cards: [], count: 0, name: 'diamonds', percentage: 0 },
+                spades:     { cards: [], count: 0, name: 'spades', percentage: 0 },
+                clubs:      { cards: [], count: 0, name: 'clubs', percentage: 0 }
+            };
+            /* Iterate through the hand and add to each suit accordingly */
+            for (var card = 0; card < hand.length; card++) {
+                switch (hand[card].suit) {
+                    case 'hearts':
+                        flushCards.hearts.cards.push(hand[card]);
+                        if (++flushCards.hearts.count >= 5) { flushCards.cards = flushCards.hearts.cards; }
+                        break;
+                    case 'diamonds':
+                        flushCards.diamonds.cards.push(hand[card]);
+                        if (++flushCards.diamonds.count >= 5) { flushCards.cards = flushCards.diamonds.cards; }
+                        break;
+                    case 'spades':
+                        flushCards.spades.cards.push(hand[card]);
+                        if (++flushCards.spades.count >= 5) { flushCards.cards = flushCards.spades.cards; }
+                        break;
+                    case 'clubs':
+                        flushCards.clubs.cards.push(hand[card]);
+                        if (++flushCards.clubs.count >= 5) { flushCards.cards = flushCards.clubs.cards; }
+                        break;
+                    default:
+                        return flushCards;
+                }
+            }
+
+            /* Player has a flush */
+            if (flushCards.cards) {
+                var straightFlushCount = 0;
+                flushCards.hasFlush = true;
+
+                /* Check for straight flush */
+                for (var card = 1; card < flushCards.cards.length; card++) {
+                    var lastCard = card - 1;
+                    if (flushCards.cards[card].value == flushCards.cards[lastCard].value + 1) { straightFlushCount++; }
+                }
+                if (straightFlushCount >= 5) { flushCards.straightFlush = true; }
+            } 
+            /* Player does not have a flush, so get percentage chance to obtaining one */
+            else {
+
+                for (var key in flushCards) { if (flushCards.hasOwnProperty(key)) {
+                    if (flushCards[key].count >= 3) {
+                        /* Check to see if there are enough cards left to be dealt to make the hand */
+                        if ((5 - table.cards.length) <= (5 - flushCards[key].count)) {
+                            flushCards.percentage = ((13 - flushCards[key].count) * (100 / 52)) * ((5 - table.cards.length) / (5 - flushCards[key].count));
+                        }
+                        
+                    }
+                } }
+
+            }
+
+            /* Return the newly sorted (by suit) cards that includes count */
+            return flushCards;
+        }
+
+        this.getStraightCards = function(hand) {
+            var straightCards = {
+                cards: []
+            };
+
+            /* Add the first card to the potential straight */
+            straightCards.cards.push(hand[0]);
+
+            for (var card = 1; card < hand.length; card++) {
+                if (hand[card].value == straightCards.cards[straightCards.cards.length - 1].value + 1) {
+                    straightCards.cards.push(hand[card]);
+
+                    /* Check to see if player has a straight, and set if so */
+                    if (straightCards.cards.length >= 5) {
+                        straightCards.hasStraight = true;
+                        straightCards.highCard = straightCards.cards[straightCards.cards.length - 1].value;
+                    }
+
+                } else {
+                    if (!straightCards.hasStraight && straightCards.cards.length >= 3 && straightCards.count < straightCards.cards.length) {
+                        /* We have at least 3 to a straight, so set a percentage and high card before resetting */
+                        straightCards.percentage = (((5 - straightCards.cards.length) * 4) * (100 / 52)) * ((5 - table.cards.length) / (5 - straightCards.cards.length));
+                        straightCards.highCard = straightCards.cards[straightCards.cards.length - 1].value;
+                        straightCards.count = straightCards.cards.length;
+                    }
+                        /* Reset straightCards and add the current card */
+                        straightCards.cards.length = 0;
+                        straightCards.cards.push(hand[card]);
+                }
+            }
+
+            return straightCards;
+        }
+
+
+        this.getPairedCards = function (hand) {
+            var pairedCards = { pairs: [], handType: {} };
+
+            /* Iterate through all cards */
+            for (var card = 1; card < hand.length; card++) {
+                var matchFound = false;
+                var lastCard = card - 1;
+
+                /* Check current card against any previous pairs */
+                for (var i = 0; i < pairedCards.length; i++){
+                    if (hand[card].value == pairedCards.pairs[i].cardValue) {
+                        pairedCards.pairs[i].count++;
+                        matchFound = true;
+                    }
+                }
+                /* This card doesn't match any previous pairs, check against the last card */
+                if (!matchFound && hand[card].value == hand[lastCard].value) {
+                    /* We've found a new pair */
+                    pairedCards.pairs.push({
+                        cardValue: hand[card].value,
+                        count: 2
+                    });
+                }
+            }
+
+            /* Find what kind of hand/how many pairs we ended up with */
+            if (pairedCards.pairs.length == 3) {
+
+                if (pairedCards.pairs[0].count >= 3 || pairedCards.pairs[1].count >= 3 || pairedCards.pairs[2].count >= 3){
+                    pairedCards.handType = angular.copy($scope.handType.fullHouse);
+                } else { pairedCards.handType = angular.copy($scope.handType.twoPair); }
+
+            } else if (pairedCards.pairs.length == 2) {
+
+                if (pairedCards.pairs[0].count >= 4 || pairedCards.pairs[1].count >= 4) { pairedCards.handType = angular.copy($scope.handType.fourOfAKind);}
+                else if (pairedCards.pairs[0].count >= 3 || pairedCards.pairs[1].count >= 3) { pairedCards.handType = angular.copy($scope.handType.fullHouse); }
+                else { pairedCards.handType = angular.copy($scope.handType.twoPair); }
+
+            } else if (pairedCards.pairs.length){
+
+                if (pairedCards.pairs[0].count >= 4) { pairedCards.handType = angular.copy($scope.handType.fourOfAKind); }
+                else if (pairedCards.pairs[0].count >= 3) { pairedCards.handType = angular.copy($scope.handType.threeOfAKind); }
+                else { pairedCards.handType = angular.copy($scope.handType.pair); }
+
+            } else { pairedCards.handType = angular.copy($scope.handType.highCard); }
+
+
+            return pairedCards;
+        };
+
+
+
         /* (Function) checkHighestCards(Array) */
         /* Send a hand to this function to determine the highest card in the hand */
         /* (Useful for "card" high, straights, flushes, and straight flushes) */
@@ -178,6 +472,8 @@
 
         /* (Function) getPairs(Array) */
         /* Return the card value of the hand's highest pair */
+        /* Eventually make more modular/reusable */
+        /* (Maybe return the hand object but with additional info like flush = true/highCard = cardID) */
         this.getPairs = function (hand) {
             var pairedCards = [];
 
@@ -310,6 +606,9 @@
             return hand;
         };
 
+        /* Check for a flush */
+        /* Eventually make more modular/reusable */
+        /* (Maybe return the hand object but with additional info like flush = true/highCard = cardID) */
         this.checkFlush = function (hand) {
             var flushCards = {
                 hearts:     { cards: [], count: 0, name: 'hearts' },
@@ -354,6 +653,9 @@
             return hand;
         };
 
+        /* Check for a straight */
+        /* Eventually make more modular/reusable */
+        /* (Maybe return the hand object but with additional info like flush = true/highCard = cardID) */
         this.checkStraight = function (hand) {
             var straightCards = [];
             var suited = false;

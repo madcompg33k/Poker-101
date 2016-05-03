@@ -33,6 +33,7 @@ function clearBoard(){
             game.players[p].holeCards = [];
             game.players[p].handType = {};
             game.players[p].bet.amt = 0;
+            game.players[p].hasBet = false;
         }
     }
 
@@ -90,16 +91,6 @@ function newHand() {
     /* Deal the cards */
     game.players = dealCards();
 }
-
-function addMoneyToPot(){
-    for (var seat = 0; seat < game.players.length; seat++){
-        game.players[seat].money -= parseInt(game.players[seat].bet.amt, 10);
-        table.potSize += parseInt(game.players[seat].bet.amt, 10);
-        /* Reset player's bet amount for the next round */
-        game.players[seat].bet.amt = 0;
-    }
-}
-
 
 /* Begin function to deal cards to each player */
 function dealCards() {
@@ -161,6 +152,17 @@ function dealBoard(qty) {
     table.better = game.players[table.turn];
 };
 /* End function to deal the flop */
+
+
+function addMoneyToPot(){
+    for (var seat = 0; seat < game.players.length; seat++){
+        game.players[seat].money -= parseInt(game.players[seat].bet.amt, 10);
+        table.potSize += parseInt(game.players[seat].bet.amt, 10);
+        /* Reset player's bet amount for the next round */
+        game.players[seat].bet.amt = 0;
+    }
+}
+
 
 function sort_by(field, reverse, primer) {
     var key = primer ?

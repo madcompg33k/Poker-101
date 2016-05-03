@@ -22,3 +22,5 @@
 /bin
 /Game/Scripts/old-script-snippets.js
 /node_modules
+/Gruntfile.js
+/package.json
