@@ -1,0 +1,205 @@
+$card-width:            150px;
+$card-height:           200px;
+$card-bg-color:         rgba(230, 250, 230, 1.0);
+$suit-size:             75px;
+
+$card-size-modifier:    .3;
+$card-micro-modifier:   .1;
+$card-small-modifier:   .2;
+$card-thumb-modifier:   .3;
+$card-mid-modifier:     .5;
+$card-full-modifier:    1;
+$card-4k-modifier:      2;
+
+$global-themes:
+    ( '.player-card': ('size-modifier': .3),
+      '.table-card': ('size-modifier': 1)
+    );
+
+$current-theme: null; // don't touch, this is only used by the themer mixin
+
+@mixin themer($themes: $global-themes) {
+    @each $selector, $theme in $themes {
+        $current-theme: $theme !global;
+        #{$selector} {
+            @content;
+        }
+    }
+}
+
+@function theme-value($property, $theme: $current-theme) {
+    @return map-get($theme, $property);
+}
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+.red {
+    color: #f00;
+    fill: #f00;
+}
+
+.black {
+    color: #000;
+    fill: #000;
+}
+
+/* Begin regular expressions */
+
+@include themer {
+
+div.svg-card {
+    @include border-radius(5px);
+    display: inline-block;
+    width: $card-width * theme-value('size-modifier');
+    height: $card-height * theme-value('size-modifier');
+    border: solid black 1;
+    margin: 2px;
+    padding: ($card-height * theme-value('size-modifier')) * 0.05;
+    box-sizing: border-box;
+    clear: none;
+    background-color: $card-bg-color;
+
+    .inner-border {
+        @include border-radius(5px);
+        width: 100%; /*($card-width * $card-size-modifier);*/
+        height: 100%; /*($card-height * $card-size-modifier);*/
+        margin: 0px;
+        padding: 2px;
+        padding-top: 10%;
+        border: solid black 2px;
+        box-sizing: border-box;
+
+        div:first-of-type { line-height: 90%; }
+        div {
+            margin: auto;
+            padding: 0px;
+            color: inherit;
+            text-align: center;
+        }
+
+
+        .suit-value {
+            font-size: 5em * theme-value('size-modifier');
+            font-weight: bold;
+        }
+
+        .icon {
+            width: $suit-size * theme-value('size-modifier');
+            height: $suit-size * theme-value('size-modifier');
+        }
+        
+
+    }
+
+}
+} /* End @include themer */
+
+svg.player-card-back {
+    width: $card-width * theme-value('size-modifier');
+    height: $card-height * theme-value('size-modifier');
+}
+
+/* @media */
+@media all and (max-width: 720px) {
+    img.graphical-card { display: none; }
+    .svg-card { display: inline-block; }
+
+    div.svg-card {
+        @include border-radius(3px);
+        width: $card-width * $card-micro-modifier;
+        height: $card-height * $card-micro-modifier;
+        padding: ($card-height * $card-thumb-modifier) * 0.05;
+
+        .inner-border {
+            @include border-radius(5px);
+            .suit-value {
+                font-size: 5em * $card-micro-modifier;
+                font-weight: bold;
+            }
+
+            .icon {
+                width: $suit-size * $card-micro-modifier;
+                height: $suit-size * $card-micro-modifier;
+            }
+        
+
+        }
+    }
+}
+
+@media all and (max-width: 640px) {
+    div.svg-card {
+        @include border-radius(4px);
+        width: $card-width * $card-small-modifier;
+        height: $card-height * $card-small-modifier;
+        padding: ($card-height * $card-small-modifier) * 0.05;
+
+        .inner-border {
+            @include border-radius(5px);
+            .suit-value {
+                font-size: 5em * $card-small-modifier;
+                font-weight: bold;
+            }
+
+            .icon {
+                width: $suit-size * $card-small-modifier;
+                height: $suit-size * $card-small-modifier;
+            }
+        
+
+        }
+    }
+}
+
+@media all and (max-width: 480px) {
+    div.svg-card {
+        @include border-radius(3px);
+        width: $card-width * $card-micro-modifier;
+        height: $card-height * $card-micro-modifier;
+        padding: ($card-height * $card-micro-modifier) * 0.05;
+
+        .inner-border {
+            @include border-radius(5px);
+            .suit-value {
+                font-size: 5em * $card-micro-modifier;
+                font-weight: bold;
+            }
+
+            .icon {
+                width: $suit-size * $card-micro-modifier;
+                height: $suit-size * $card-micro-modifier;
+            }
+        
+
+        }
+    }
+}
+
+@media all and (max-width: 320px) {
+    div.svg-card {
+        @include border-radius(3px);
+        width: $card-width * $card-micro-modifier;
+        height: $card-height * $card-micro-modifier;
+        padding: ($card-height * $card-micro-modifier) * 0.05;
+
+        .inner-border {
+            @include border-radius(5px);
+            .suit-value {
+                font-size: 5em * $card-micro-modifier;
+                font-weight: bold;
+            }
+
+            .icon {
+                width: $suit-size * $card-micro-modifier;
+                height: $suit-size * $card-micro-modifier;
+            }
+        
+
+        }
+    }
+}

@@ -5,189 +5,101 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8" />
          
-        <script src="https://use.typekit.net/hiv2jke.js"></script>
-        <script>try{Typekit.load({ async: true });}catch(e){}</script>
+        <!-- script src="https://use.typekit.net/hiv2jke.js"></script>
+        <script>try{Typekit.load({ async: true });}catch(e){}</script -->
 
         <script type="text/javascript" src="/Scripts/angular.js"></script>
-        <script type="text/javascript" src="/Game/Scripts/deck.js"></script>
+        <script type="text/javascript" src="/Scripts/angular-sanitize.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/functions.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/game.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/players.js"></script>
+        <script type="text/javascript" src="/Game/Scripts/table.js"></script>
 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="/Styles/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="/Styles/main.css" />
+        <link rel="stylesheet" type="text/css" href="/Game/Styles/main.css" />
         <link rel="stylesheet" type="text/css" href="/Game/Styles/game.css" />
         
     </head>
     <body data-ng-controller="TableController as tableCtrl">
-        <div class="outer-wrapper">
+        <svg style="position: absolute; width: 0; height: 0;" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <symbol id="icon-spades" viewBox="0 0 16 16">
+                    <title>spades</title>
+                    <path class="path1" d="M12.775 5.44c-3.024-2.248-4.067-4.047-4.774-5.44v0c-0 0-0-0-0-0v0c-0.708 1.393-1.75 3.192-4.774 5.44-5.157 3.833-0.303 9.182 3.965 6.238-0.278 1.827-1.227 3.159-2.191 3.733v0.59h6v-0.59c-0.964-0.574-1.913-1.906-2.191-3.733 4.268 2.944 9.122-2.405 3.965-6.238z"></path>
+                </symbol>
+                <symbol id="icon-clubs" viewBox="0 0 16 16">
+                    <title>clubs</title>
+                    <path class="path1" d="M12.294 6.137c-0.922 0-1.751 0.384-2.341 1.011-0.25 0.265-0.684 0.58-1.153 0.856 0.22-0.842 0.917-1.902 1.4-2.367 0.619-0.596 1-1.435 1-2.367 0-1.795-1.429-3.252-3.2-3.271-1.771 0.019-3.2 1.475-3.2 3.271 0 0.932 0.38 1.771 1 2.367 0.484 0.465 1.18 1.525 1.4 2.367-0.469-0.277-0.903-0.591-1.153-0.856-0.59-0.627-1.419-1.011-2.341-1.011-1.787 0-3.236 1.463-3.236 3.271s1.448 3.271 3.236 3.271c0.923 0 1.751-0.396 2.341-1.023 0.263-0.279 0.726-0.627 1.223-0.916-0.047 2.308-1.149 4.003-2.271 4.67v0.59h6v-0.59c-1.122-0.668-2.224-2.363-2.271-4.67 0.498 0.289 0.961 0.637 1.223 0.916 0.59 0.626 1.419 1.023 2.341 1.023 1.787 0 3.236-1.464 3.236-3.271s-1.448-3.271-3.236-3.271z"></path>
+                </symbol>
+                <symbol id="icon-diamonds" viewBox="0 0 16 16">
+                    <title>diamonds</title>
+                    <path class="path1" d="M8 0l-5 8 5 8 5-8z"></path>
+                </symbol>
+                <symbol id="icon-heart" viewBox="0 0 16 16">
+                    <title>hearts</title>
+                    <path class="path1" d="M11.8 1c-1.682 0-3.129 1.368-3.799 2.797-0.671-1.429-2.118-2.797-3.8-2.797-2.318 0-4.2 1.882-4.2 4.2 0 4.716 4.758 5.953 8 10.616 3.065-4.634 8-6.050 8-10.616 0-2.319-1.882-4.2-4.2-4.2z"></path>
+                </symbol>
+            </defs>
+        </svg>
+
+        <div class="outer-wrapper container-fluid">
 
             <!-- #Start header -->
-            <header>
-                <div class="content-wrapper">
-                    <div class="site-title">
+            <header class="col-md-12 clearfix">
+                <!-- div class="content-wrapper" -->
+                    <div class="site-title col-md-12 h1">
                         How To Play Texas Hold'em
                     </div>
 
                     <!-- #Start Navigation -->
-                    <section class="navigation" data-role="navbar">
-                        <nav>
-                            <ul id="menu">
-                                <li>
-                                    <a href="/index.php">
-                                        Home
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/basicrules.php">
-                                        Basic Rules
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/protips.php">
-                                        "Pro Tips"
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/aboutme.php">
-                                        About Me
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/Game/index.html">
-                                        Play Poker
-                                    </a>
-                                </li>
+                    <section class="navigation clearfix" data-role="navbar">
+                        <nav class="col-md-12">
+                            <ul id="menu" class="clearfix">
+                                <li class="col-xs-4 col-sm-1 col-md-1 col-lg-1"><a href="/index.php" class="menu-item">Home</a></li>
+                                <li class="col-xs-4 col-sm-2 col-md-2 col-lg-1"><a href="/basicrules.php" class="menu-item">Basic Rules</a></li>
+                                <li class="col-xs-4 col-sm-2 col-md-2 col-lg-1"><a href="/protips.php" class="menu-item">"Pro Tips"</a></li>
+                                <li class="col-xs-4 col-sm-2 col-md-2 col-lg-1"><a href="/aboutme.php" class="menu-item">About Me</a></li>
+                                <li class="col-xs-4 col-sm-2 col-md-2 col-lg-1"><a href="/Game/index.html" class="menu-item">Play Poker</a></li>
                             </ul>
                         </nav>
                     </section>
                     <!-- #End Navigation -->
 
-                    <div class="clear-fix"></div>
-                </div>
-
             </header>
             <!-- #End header -->
 
-
             <!-- #Start div#main -->
-            <div id="main" class="clearfix">
-
-                <form class="actions clearfix box" name="playerForm" data-ng-controller="PlayerController as playerCtrl" data-ng-submit="">
-                    <h2>Play The Game</h2>
-                    
-                    <hr />
-                    
-                    <label>New Player: </label>
-                    <input type="text" data-ng-model="playerCtrl.player.name" />
-                    <br />
-                    <button data-ng-click="playerCtrl.addPlayer()">
-                        Add Player
-                    </button>
-
-                    <hr />
-                    <label>Small Blind (Seat {{ table.smallBlind.seat }}): </label>
-                    <input type="text" data-ng-model="table.smallBlind.amt" />
-                    <br />
-                    <br />
-                    <label>Big Blind (Seat {{ table.bigBlind.seat }}): </label>
-                    <input type="text" data-ng-model="table.bigBlind.amt" />
-
-                    <hr />
-
-                    <button class="game-play-button" data-ng-click="tableCtrl.dealCards()" data-ng-show="table.winner.seat >= 0 || table.players[0].cards.length == 0">
-                        Deal Cards
-                    </button>
-
-                    <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-hide="!table.winner.seat >= 0 && table.cards.length || table.players[0].cards.length !== 2">
-                        Deal the Flop!
-                    </button>
-                            
-                    <button class="game-play-button" data-ng-click="tableCtrl.dealTurn()" data-ng-hide="table.cards.length !== 3">
-                        Deal the Turn!
-                    </button>
-                            
-                    <button class="game-play-button" data-ng-click="tableCtrl.dealRiver()" data-ng-hide="table.cards.length !== 4">
-                        Deal the River!
-                    </button>
-                            
-                    <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-hide="table.cards.length !== 5 || table.winner.seat >= 0">
-                        Who Won!?
-                    </button>
+            <div id="main" class="front-content col-md-12 clearfix">
+                <h2>Play The Game</h2>
 
 
-                         
-                </form>
+                <game-options></game-options>
 
                 <section id="table">
+                    <!-- Display each player's hand -->
+                    <player-info></player-info>
 
-                    <div>
-
-                        <ul id="board">
-                            <li class="player seat-dealer">
-                                <h3 class="player-name">Dealer</h3>
-                            </li>
-                            <li class="player seat-{{$index + 1}}" data-ng-repeat="player in table.players">
-
-                                <h3 class="player-name">
-                                    {{ player.name }}
-
-                                    <span data-ng-show="table.winner.seat === $index" class="winning-player">
-                                        (Winner!)
-                                    </span>
-
-                                    <span class="player-money">({{ player.money | currency }})</span>
-                                    <span class="hand-rank" data-ng-show="player.handRank">(Hand Rank: {{ player.handRank }})</span>
-                                    <span data-ng-show="player.isSmallBlind">(Small Blind)</span>
-                                    <span data-ng-show="player.isBigBlind">(Big Blind)</span>
-                                </h3>
-
-                                <!-- ul>
-                                    <li>
-                                        <b>Money:</b>
-                                        <span data-ng-repeat="chip in player.chips">
-                                            <br />
-                                            <img data-ng-src="{{ chip.imgThumb }}" alt="chips" width="25" height="25" />
-                                            x {{ chip.qty }}
-                                        </span>
-                                    </li>
-                                </ul -->
-
-                                <div class="player-hand">
-                                    <span data-ng-repeat="card in player.cards">
-                                        <img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" />
-                                    </span>
-                                    <img class="dealer-button" src="/Game/Images/Chips/dealer-200.png" width="50" height="50" data-ng-show="player.isDealer" />
-                                </div>
-
-                            </li>
-
-                            <div id="cardContainer">
-                                <li class="card" data-ng-repeat="card in table.cards">
-                                    <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
-                                </li>
-                            </div>
-                            
-                            <li id="potSize">
-                                <span class="table-money">Pot Size: {{ table.money | currency }}</span>
-                                <span class="table-money">Blinds: {{ table.smallBlind.amt }} / {{ table.bigBlind.amt }}</span>
+                    <div id="board">
+                        <ul>
+                            <li class="card" data-ng-repeat="card in table.cards">
+                                <img class="graphical-card" data-ng-src="{{ game.deck.imgPath + table.tableDeck + '/' + card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
+                                <a-card class="table-card svg-card"></a-card>
                             </li>
                         </ul>
-                        
                     </div>
+
+                    <div id="potSize">
+                        <ul class="table-winner" data-ng-show="table.winner.length">
+                            <li>Winner{{ table.winner.length > 1 ? 's' : '' }}:</li>
+                            <li data-ng-repeat="winner in table.winner">{{ winner.name }} <small>({{ winner.handType.name }})</small></li>
+                        </ul>
+                        <span class="table-money">Pot Size: {{ table.potSize | currency }}</span>
+                        <span class="table-money">Blinds: {{ table.smallBlind.amt | currency }} / {{ table.bigBlind.amt | currency }}</span>
+                    </div>
+                    
                 </section>
                 <!-- #End section#players -->
-
-                <!-- #Start section#cards -->
-                <!-- section id="cards" class="the-game">
-                    <h2>All Cards (Count: {{ table.shuffledDeck.length }})</h2>
-                    <div>
-                        <ul class="list-group">
-                            <li data-ng-repeat="card in table.shuffledDeck">
-                                <img data-ng-src="{{ card.imgMid }}" data-ng-alt="{{ card.name }} of {{ card.suit }}" width="143" height="200" />
-                            </li>
-                        </ul>
-                    </div>
-                </section -->
-                <!-- #End section#cards -->
-
 
             </div>
             <!-- #End div#main-->

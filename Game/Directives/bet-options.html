@@ -1,0 +1,79 @@
+<div id="betOptionsContainer" class="col-md-1">
+    <h3>Your Turn</h3>
+    <form class="bet-options">
+        <button class="check" data-ng-show="table.currentBet === 0" data-ng-click="tableCtrl.playerBetAction('Check', player, 0)">
+            Check
+        </button>
+        <button class="call" data-ng-hide="table.currentBet === 0" data-ng-click="tableCtrl.playerBetAction('Call', player, table.currentBet)">
+            Call
+            {{ player.bet.amt > 0 && player.bet.amt < table.currentBet ? "+(" : "("
+            }}{{
+                (table.currentBet - player.bet.amt)
+                | currency
+            }})
+        </button>
+        <button class="fold" data-ng-hide="table.currentBet === 0" data-ng-click="tableCtrl.playerBetAction('Fold', player, player.bet.amt)">Fold</button>
+        
+        <div>
+            <h5>Bets</h5>
+            <button class="bet bet-minimum col-md-4"
+                    data-ng-click="tableCtrl.playerBetAction('Raise', player, (
+                        table.currentBet < table.bigBlind.amt
+                            ? table.bigBlind.amt > player.money ? player.money : table.bigBlind.amt
+                            : table.currentBet * 1.5 > player.money ? player.money : table.currentBet * 1.5
+                ))">
+                {{
+                    table.currentBet * 1.5 < table.bigBlind.amt
+                        ? table.bigBlind.amt > player.money
+                            ? player.money
+                            : table.bigBlind.amt
+                        : table.currentBet * 1.5 > player.money
+                            ? player.money
+                            : table.currentBet * 1.5
+                        | currency
+                }}
+                <!-- Add in handling for current bets being larger than the pot size -->
+            </button>
+            <button class="bet bet-half col-md-4"
+                    data-ng-click="tableCtrl.playerBetAction('Raise', player, (
+                        table.potSize / 2 > table.currentBet * 2
+                            ? table.potSize / 2 > player.money ? player.money : table.potSize / 2
+                            : table.currentBet * 2 > player.money ? player.money : table.currentBet * 2
+                ))">
+                {{
+                    table.potSize / 2 > table.currentBet * 2
+                        ? table.potSize / 2 > player.money
+                            ? player.money
+                            : table.potSize / 2
+                        : table.currentBet * 2 > player.money
+                            ? player.money
+                            : table.currentBet * 2
+                        | currency
+                }}
+            </button>
+            <button class="bet bet-pot col-md-4"
+                    data-ng-click="tableCtrl.playerBetAction('Raise', player, (
+                        table.potSize > table.currentBet * 2.5
+                            ? table.potSize > player.money ? player.money : table.potSize
+                            : table.currentBet * 2.5 > player.money ? player.money : table.currentBet * 2.5
+                ))">
+                {{
+                    table.potSize > table.currentBet * 2.5
+                        ? table.potSize > player.money
+                            ? player.money
+                            : table.potSize
+                        : table.currentBet * 2.5 > player.money
+                            ? player.money
+                            : table.currentBet * 2.5
+                        | currency
+                }}
+            </button>
+            <div class="bet-other col-md-12">
+                <input type="text" data-ng-model="player.bet.amt" format="currency" />
+                <button class="bet-other" data-ng-click="tableCtrl.playerBetAction('Raise', player, player.bet.amt)">Other</button>
+            </div>
+            
+            <button class="bet-all-in col-md-12" data-ng-click="tableCtrl.playerBetAction('Raise', player, player.money)">All In ({{ player.money | currency }})</button>
+        </div>
+    </form>
+</div>

@@ -1,29 +1,51 @@
-$font-stack:            Helvetica, sans-serif;
+$card-size-modifier: 1;
+@media all and (max-width: 4000px) { $card-size-modifier: 2; }
+@media all and (max-width: 1920px) { $card-size-modifier: 1; }
+@media all and (max-width: 720px) { $card-size-modifier: .5; }
+@media all and (max-width: 640px) { $card-size-modifier: .3; }
+@media all and (max-width: 480px) { $card-size-modifier: .2; }
+@media all and (max-width: 320px) { $card-size-modifier: .1; }
+
+$font-stack:            "Acumin Pro";
 $primary-font-color:    #333;
-$font-size:             1em;
-$card-full-width:       800px;
-$card-full-height:      1120px;
-$card-mid-width:        143px;
-$card-mid-height:       200px;
-$card-thumb-width:      54px;
-$card-thumb-height:     75px;
+$font-size:             16px;
+$background-light:      rgba(0, 100, 0, 1); /* #006400 */
+$background-dark:       rgba(15, 62, 15, 1); /* #0f3e0f */
+
+/* (w x h) Thumb - 54x75, Mid - 143x200, Full - 800x1120 */
+$card-width:            143px;
+$card-height:           200px;
+$card-margin:           5px;
+
+$player-card-width:     54px;
+$player-card-height:    75px;
 
 $options-width:         250px;
 
-$board-border-size:     30px;
-$board-width:           ($card-mid-width * 7) + 150px;
-$board-height:          ($card-mid-height * 2) + 150px;
-$board-x-middle:        ($board-width / 2) - $board-border-size;
-$board-y-middle:        ($board-height / 2) - $board-border-size;
+$player-width:          ($player-card-width * 2) + 75px;
+$player-height:         115px;
 
-$player-width:          ($card-thumb-width * 2) + 50px;
-$player-height:         75px;
+$board-width:           ($card-width * 5) + ($card-margin * 10) + 20px;
+$board-height:          $card-height + ($card-margin * 2);
 
+$table-border-size:     30px;
 $table-width:           $board-width + ($player-width * 2);
+$table-height:          ($card-height * 2) + 150px;
+$table-x-middle:        ($table-width / 2) - $table-border-size;
+$table-y-middle:        ($table-height / 2) - $table-border-size;
+
 
 $mainDiv-width:         $table-width + $options-width + 50px;
-$mainDiv-height:        $board-height + ($player-height * 2);
+$mainDiv-height:        $table-height + ($player-height * 2);
 
+
+@mixin transparent-background-light($transparency){
+    background-color: rgba(0, 100, 0, $transparency);
+}
+
+@mixin transparent-background-dark($transparency){
+    background-color: rgba(15, 62, 15, $transparency);
+}
 
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius;
@@ -32,25 +54,63 @@ $mainDiv-height:        $board-height + ($player-height * 2);
     border-radius: $radius;
 }
 
+@mixin top-border-radius($radius){
+    /* Border radius for top corners using webkit */
+    -webkit-border-top-left-radius: $radius;
+    -webkit-border-top-right-radius: $radius;
+    /* Border radius for top corners for firefox or other mozilla browsers */
+    -moz-border-radius-topleft: $radius;
+    -moz-border-radius-topright: $radius;
+    /* Border radius for top corners for all other browsers */
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+}
+
+@mixin text-shadow($x, $y, $blur, $color){
+    text-shadow: $x $y $blur $color;
+    -moz-text-shadow: $x $y $blur $color;
+    -webkit-text-shadow: $x $y $blur $color;
+}
+
+@mixin box-shadow($h-distance, $v-distance, $blur, $color) {
+    -webkit-box-shadow: $h-distance $v-distance $blur $color;
+       -moz-box-shadow: $h-distance $v-distance $blur $color;
+            box-shadow: $h-distance $v-distance $blur $color;
+}
+
+@font-face {
+    font-family: "Acumin Pro";
+}
 
 div#main {
     height: $mainDiv-height;
-    margin: 30px auto;
+    position: relative;
+    margin: 10px auto;
 
-    form.actions {
+    h2{
+        width: 98%;
+        margin: 0px auto;
+        margin-top: 15px;
+        font-weight: bold;
+        color: darkred;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+        border-bottom: solid black 2px;
+    }
+
+    aside.game-options {
         width: $options-width;
-        height: 100%;
-        float: left;
-        clear: none;
+        position: absolute;
+        top: 50px;
+        left: 1.5%;
         padding: 10px;
         border-right: dashed #999 3px;
-
-        h2{
-            font-weight: bold;
-            text-decoration: underline;
-        }
+        background-color: rgba(200, 200, 200, 0.3);
+        box-shadow: 4px 4px 2px rgba(100, 100, 100, 0.3);
+        -moz-box-shadow: 4px 4px 2px rgba(100, 100, 100, 0.3);
+        -webkit-box-shadow: 4px 4px 2px rgba(100, 100, 100, 0.3);
 
         label {
+            display: block;
             font-size: 1.3em;
             font-weight: bold;
         }
@@ -62,219 +122,402 @@ div#main {
             margin: 3px auto;
             border-width: 3px;
             @include border-radius(10px);
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: bold;
             text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
         }
 
+        div#playerList {
+            display: none;
+        }
     }
 }
 
 section#table {
+    display: block;
     width: $table-width;
+    height: $table-height;
     position: relative;
-    margin: 0px auto;
+    padding: 0px;
+    margin: 20px auto;
+    margin-top: $player-height;
+    margin-left: $player-width + $options-width;
     float: left;
     clear: none;
+    background-color: $background-light;
+    border: solid $background-dark $table-border-size;
+    @include border-radius(100px);
+    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.7);
     
     
-    ul#board {
-        display: block;
+    
+    div#board {
         width: $board-width;
         height: $board-height;
-        position: relative;
-        padding: 15px 50px;
-        margin: 20px auto;
-        margin-top: $player-height;
-        background-color: #006400;
-        border: solid #0f3e0f $board-border-size;
-        @include border-radius(100px);
-        clear: both;
+        margin: 0px auto;
+        padding: 0px;
+        margin-top: $table-y-middle - ($board-height / 2);
+        border: solid white 1px;
+        @include border-radius(10px);
 
-        div#cardContainer{
-            width: $card-mid-width * 5;
-            height: $card-mid-height + 5px;
-            margin: 0px;
+        ul{
             padding: 0px;
-            margin-top: $board-y-middle / 2;
-            margin-left: $board-x-middle / 4;
-
 
             li.card {
                 display: inline-block;
-                width: $card-mid-width;
-                height: $card-mid-height;
+                width: $card-width;
+                height: $card-height;
+                margin: $card-margin;
+                padding: 0px;
+                list-style: none;
         
-        
-                img {
-                    width: $card-mid-width;
-                    height: $card-mid-height;
+                img.graphical-card {
+                    width: $card-width;
+                    height: $card-height;
                 }
+
+                /*.svg-card { display: none; }*/
 
             }
         }
+    }
         
 
-        li#potSize {
-            width: $player-width;
-            position: absolute;
-            bottom: 0px;
-            left: $board-x-middle - ($player-width / 2);
-            text-align: center;
+    div#potSize {
+        width: $player-width;
+        position: absolute;
+        bottom: 0px;
+        left: $table-x-middle - ($player-width / 2);
+        text-align: center;
+        list-style: none;
+
+        span {
+            display: inline-block;
+            color: #fff;
+            font-size: 0.9em;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .table-winner {
+            color: #fff;
+            font-weight: bold;
+            font-size: .8em;
+            text-align: left;
             list-style: none;
+        }
+    }
+
+    div#potSize span:before{ content: "("; }
+    div#potSize span:after{ content: ")"; }
+
+
+    li.player {
+        display: inline-block;
+        width: $player-width;
+        height: $player-height;
+        position: absolute;
+        margin: 0px;
+        padding: 0px 10px;
+        color: #000;
+
+        h3 {
+            font-weight: bold;
+            margin: 0px;
+            padding: 0px;
+            
+            span.npc:before {
+                font-family: FontAwesome;
+                content: "\f108";
+            }
+
+            span:first-of-type {
+                font-size: 1em;
+                font-weight: bold;
+                font-style: none;
+            }
 
             span {
-                display: inline-block;
-                color: #fff;
-                font-size: 0.9em;
-                font-weight: bold;
+                display: block;
+                font-size: .6em;
+                font-weight: normal;
                 font-style: italic;
             }
+
+            span.winning-player {
+                display: inline;
+                color: blue;
+                font-size: .5em;
+                font-weight: bold;
+            }
         }
 
-        li#potSize span:before{ content: "("; }
-        li#potSize span:after{ content: ")"; }
-
-
-        li.player {
-            display: inline-block;
-            width: $player-width;
-            height: $player-height;
+        div#betOptionsContainer {
+            @include transparent-background-light(0.9);
+            @include border-radius(5px);
+            @include box-shadow(3px, 3px, 2px, rgba(0, 0, 0, 0.5));
+            width: $player-width + 50px;
             position: absolute;
+            top: 5px;
+            left: $player-width;
             margin: 0px;
-            padding: 0px 10px;
-            color: #000;
+            padding: 0px;
+            border: solid $background-dark 2px;
+            z-index: 1;
 
             h3 {
-                font-weight: bold;
-                margin: 0px;
-                padding: 0px;
-                
-                span {
-                    display: block;
-                    font-size: .6em;
-                    font-weight: normal;
-                    font-style: italic;
-                }
+                @include top-border-radius(5px);
+                padding: 2px 10px;
+                color: #fff;
+                font-size: .8em;
+                background-color: $background-dark;
+                border-bottom: solid black 2px;
+            }
+        }
 
-                span.winning-player {
-                    display: inline;
-                    color: blue;
-                    font-size: .5em;
-                    font-weight: bold;
-                }
+        form.bet-options{
+            width: 90%;
+            margin: 10px auto;
+
+            h5 {
+                margin: 10px 0px 5px 0px;
+                color: #fff;
+                font-weight: bold;
+                border-bottom: solid rgba(255, 255, 255, 0.8) 1px;
+            }
+            
+            button {
+                @include transparent-background-dark(0.8);
+                @include border-radius(5px);
+                @include text-shadow(-2px, -2px, 2px, rgba(0, 0, 0, 0.4));
+                @include box-shadow(2px, 2px, 2px, rgba(0, 0, 0, 0.3));
+                display: block;
+                width: 100%;
+                margin: 1px auto;
+                padding: 1px 5px;
+                text-align: center;
+                color: #fff;
+                font-size: .8em;
+                font-weight: 700;
+                font-variant: small-caps;
+                border-color: rgba(10, 41, 10, 0.87);
+                box-sizing: border-box;
             }
 
-            div.player-hand { 
-                position: absolute;
-            
+            button.bet {
+                display: inline-block;
+                width: 33%;
+            }
 
-                img.dealer-button {
+            .bet-other {
+                @include transparent-background-dark(0.8);
+                @include border-radius(5px);
+                @include box-shadow(2px, 2px, 2px, rgba(0, 0, 0, 0.3));
+                width: 100%;
+                position: relative;
+                margin: 1px auto;
+                padding: 5px 10px;
+                border: solid rgba(10, 41, 10, 0.87) 2px;
+                border-top-color: rgba(255, 255, 255, 0.4);
+                border-right-color: rgba(0, 0, 0, 0.4);
+                border-left-color: rgba(255, 255, 255, 0.4);
+                border-bottom-color: rgba(0, 0, 0, 0.4);
+                box-sizing: border-box;
+
+                input {
+                    width: 72%;
+                    min-width: 40px;
+                    margin: 0px;
+                    box-sizing: border-box;
+                }
+
+                button {
+                    display: inline-block;
+                    width: 30%;
                     position: absolute;
                     top: 0px;
-                    left: -50px;
+                    right: 0px;
+                    border: none;
+                    box-shadow: none;
+                    box-sizing: border-box;
                 }
             }
+
+            button.bet-all-in { font-weight: bold; font-size: 1.2em; }
+
+        }
+
+        div.player-hand { 
+            position: absolute;
             
-        }
 
-        li.seat-1, li.seat-2, li.seat-3, li.seat-4,
-        li.seat-5, li.seat-6, li.seat-7, li.seat-8,
-        li.seat-dealer {
+            img.dealer-button {
+                position: absolute;
+                top: 0px;
+                left: -50px;
+            }
+        }
             
+    }
+
+    li.seat-1, li.seat-2, li.seat-3, li.seat-4,
+    li.seat-5, li.seat-6, li.seat-7, li.seat-8,
+    li.seat-dealer {
+            
+    }
+
+    li.seat-dealer{
+        bottom: 0px - $player-height - $table-border-size;
+        left: $table-x-middle - ($player-width / 2);
+        padding-top: 10px;
+        font-variant: small-caps;
+        text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
+        text-align: center;
+        border: inset #0f3e0f 5px;
+        border-top: none;
+    }
+
+    li.seat-1 {
+        bottom: 0px - $player-height - $table-border-size;
+        left: ($table-x-middle - ($player-width / 2)) + $player-width;
+
+        /* The player's cards */
+        div.player-hand { top: 0px - $player-card-height - $table-border-size; }
+    }
+
+    li.seat-2 {
+        bottom: 0px - $player-height - $table-border-size;
+        right: ($table-x-middle - ($player-width / 2)) - ($player-width * 2);
+            
+        /* The player's cards */
+        div.player-hand { top: 0px - $player-card-height - $table-border-size; }
+    }
+
+    li.seat-3 {
+        top: $table-y-middle - ($table-y-middle / 4);
+        right: 0px - $player-width - $table-border-size;
+
+        /* The player's cards */
+        div.player-hand {
+            top: 0px;
+            left: 0px - ($player-card-width * 2) - $table-border-size - 5px;
         }
+    }
 
-        li.seat-dealer{
-            bottom: 0px - $player-height - $board-border-size;
-            left: $board-x-middle - ($player-width / 2);
-            padding-top: 10px;
-            font-variant: small-caps;
-            text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.4);
-            text-align: center;
-            border: inset #0f3e0f 5px;
-            border-top: none;
-        }
+    li.seat-4 {
+        top: 0 - $player-height - $table-border-size;
+        right: $table-x-middle / 6;
 
-        li.seat-1 {
-            bottom: 0px - $player-height - $board-border-size;
-            left: ($board-x-middle - ($player-width / 2)) + $player-width;
+        /* The player's cards */
+        div.player-hand { bottom: 0px - $player-card-height - $table-border-size; }
+    }
 
-            div { top: 0px - $card-thumb-height - $board-border-size; }
-        }
+    li.seat-5 {
+        top: 0 - $player-height - $table-border-size;
+        left: $table-x-middle - ($player-width / 2);
 
-        li.seat-2 {
-            bottom: 0px - $player-height - $board-border-size;
+        /* The player's cards */
+        div.player-hand { bottom: 0px - $player-card-height - $table-border-size; }
+    }
+
+    li.seat-6 {
+        top: 0 - $player-height - $table-border-size;
+        left: $table-x-middle / 6;
+        text-align: right;
+
+        /* The player's cards */
+        div.player-hand {
+            bottom: 0px - $player-card-height - $table-border-size;
             right: 0px;
+        }
+    }
+
+    li.seat-7 {
+        top: $table-y-middle - ($table-y-middle / 4);
+        left: 0px - $player-width - $table-border-size;
+        text-align: right;
+
+        /* The player's cards */
+        div.player-hand {
+            top: 0px;
+            right: 0px - ($player-card-width * 2) - $table-border-size - 5px;
+        }
+
+        #betOptionsContainer {
+            top: $player-card-height!important;
+        }
+    }
+
+    li.seat-8 {
+        bottom: 0px - $player-height - $table-border-size;
+        left: ($table-x-middle - ($player-width / 2)) - ($player-width * 2);
+        text-align: right;
             
-            div { top: 0px - $card-thumb-height - $board-border-size; }
+        /* The player's cards */
+        div.player-hand {
+            top: 0px - $player-card-height - $table-border-size;
+            right: 0px;
         }
+    }
 
-        li.seat-3 {
-            top: $board-y-middle - ($board-y-middle / 4);
-            right: 0px - $player-width - $board-border-size;
+    li.seat-9 {
+        bottom: 0px - $player-height - $table-border-size;
+        left: ($table-x-middle - ($player-width / 2)) - $player-width;
+        text-align: right;
 
-            div {
-                top: 0px;
-                left: 0px - ($card-thumb-width * 2) - $board-border-size - 5px;
-            }
+        /* The player's cards */
+        div.player-hand {
+            top: 0px - $player-card-height - $table-border-size;
+            right: 0px;
         }
-
-        li.seat-4 {
-            top: 0 - $player-height - $board-border-size;
-            right: $board-x-middle / 6;
-
-            div { bottom: 0px - $card-thumb-height - $board-border-size; }
-        }
-
-        li.seat-5 {
-            top: 0 - $player-height - $board-border-size;
-            left: $board-x-middle - ($player-width / 2);
-
-            div { bottom: 0px - $card-thumb-height - $board-border-size; }
-        }
-
-        li.seat-6 {
-            top: 0 - $player-height - $board-border-size;
-            left: $board-x-middle / 6;
-
-            div { bottom: 0px - $card-thumb-height - $board-border-size; }
-        }
-
-        li.seat-7 {
-            top: $board-y-middle - ($board-y-middle / 4);
-            left: 0px - $player-width - $board-border-size;
-            text-align: right;
-
-            div {
-                top: 0px;
-                right: 0px - ($card-thumb-width * 2) - $board-border-size - 5px;
-            }
-        }
-
-        li.seat-8 {
-            bottom: 0px - $player-height - $board-border-size;
-            left: 0px;
-            text-align: right;
-            
-            div { top: 0px - $card-thumb-height - $board-border-size; }
-        }
-
-        li.seat-9 {
-            bottom: 0px - $player-height - $board-border-size;
-            left: ($board-x-middle - ($player-width / 2)) - $player-width;
-            text-align: right;
-
-            div { top: 0px - $card-thumb-height - $board-border-size; }
-        }
-
     }
 
 
 }
-
-
 
 li.player-hand {
     font-size:  1.4em;
 }
 
+div.player-handtype {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 0px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    border: solid black 2px;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.4);
+    z-index: 1;
+
+    span {
+         display: inline-block;
+         margin: 2px 10px;
+         font-size: .9em;
+         text-align: left;
+    }
+
+    span:first-of-type {
+        display: block;
+        width: 100%;
+        margin: 0px;
+        padding: 2px 10px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        background-color: $background-light;
+        border-bottom: solid black 1px;
+        font-size: 1em;
+        font-weight: bold;
+        color: #fff;
+        text-align: left;
+    }
+}
+@import 'card';
+
+
+/* @media */
+@media all and (max-width: 4000px) { img.graphical-card { display: inline-block; } .svg-card { display: none; } }
+@media all and (max-width: 1920px) { img.graphical-card { display: inline-block; } .svg-card { display: none; } }
+@media all and (max-width: 1152px) { img.graphical-card { display: none; } .svg-card { display: inline-block; } }
+@media all and (max-width: 720px) { img.graphical-card { display: none; } .svg-card { display: inline-block; } }

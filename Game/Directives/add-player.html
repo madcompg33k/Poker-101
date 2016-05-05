@@ -1,0 +1,13 @@
+<form id="addPlayer" data-ng-controller="PlayerController as playerCtrl">
+    <label>Your Name: </label>
+    <input type="text" data-ng-model="game.players[0].name" />
+    <br />
+
+    <div id="playerList">
+        <ul>
+            <li data-ng-repeat="player in gameCtrl.players">
+                {{ player.name }}
+            </li>
+        </ul>
+    </div>
+</form>

@@ -1,0 +1,187 @@
+.red {
+  color: #f00;
+  fill: #f00; }
+
+.black {
+  color: #000;
+  fill: #000; }
+
+/* Begin regular expressions */
+.player-card div.svg-card {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 45px;
+  height: 60px;
+  border: solid black 1;
+  margin: 2px;
+  padding: 3px;
+  box-sizing: border-box;
+  clear: none;
+  background-color: #e6fae6; }
+  .player-card div.svg-card .inner-border {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    width: 100%;
+    /*($card-width * $card-size-modifier);*/
+    height: 100%;
+    /*($card-height * $card-size-modifier);*/
+    margin: 0px;
+    padding: 2px;
+    padding-top: 10%;
+    border: solid black 2px;
+    box-sizing: border-box; }
+    .player-card div.svg-card .inner-border div:first-of-type {
+      line-height: 90%; }
+    .player-card div.svg-card .inner-border div {
+      margin: auto;
+      padding: 0px;
+      color: inherit;
+      text-align: center; }
+    .player-card div.svg-card .inner-border .suit-value {
+      font-size: 1.5em;
+      font-weight: bold; }
+    .player-card div.svg-card .inner-border .icon {
+      width: 22.5px;
+      height: 22.5px; }
+
+.table-card div.svg-card {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 150px;
+  height: 200px;
+  border: solid black 1;
+  margin: 2px;
+  padding: 10px;
+  box-sizing: border-box;
+  clear: none;
+  background-color: #e6fae6; }
+  .table-card div.svg-card .inner-border {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    width: 100%;
+    /*($card-width * $card-size-modifier);*/
+    height: 100%;
+    /*($card-height * $card-size-modifier);*/
+    margin: 0px;
+    padding: 2px;
+    padding-top: 10%;
+    border: solid black 2px;
+    box-sizing: border-box; }
+    .table-card div.svg-card .inner-border div:first-of-type {
+      line-height: 90%; }
+    .table-card div.svg-card .inner-border div {
+      margin: auto;
+      padding: 0px;
+      color: inherit;
+      text-align: center; }
+    .table-card div.svg-card .inner-border .suit-value {
+      font-size: 5em;
+      font-weight: bold; }
+    .table-card div.svg-card .inner-border .icon {
+      width: 75px;
+      height: 75px; }
+
+/* End @include themer */
+svg.player-card-back {
+  width: 150px;
+  height: 200px; }
+
+/* @media */
+@media all and (max-width: 720px) {
+  img.graphical-card {
+    display: none; }
+
+  .svg-card {
+    display: inline-block; }
+
+  div.svg-card {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    width: 15px;
+    height: 20px;
+    padding: 3px; }
+    div.svg-card .inner-border {
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      border-radius: 5px; }
+      div.svg-card .inner-border .suit-value {
+        font-size: 0.5em;
+        font-weight: bold; }
+      div.svg-card .inner-border .icon {
+        width: 7.5px;
+        height: 7.5px; } }
+@media all and (max-width: 640px) {
+  div.svg-card {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    border-radius: 4px;
+    width: 30px;
+    height: 40px;
+    padding: 2px; }
+    div.svg-card .inner-border {
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      border-radius: 5px; }
+      div.svg-card .inner-border .suit-value {
+        font-size: 1em;
+        font-weight: bold; }
+      div.svg-card .inner-border .icon {
+        width: 15px;
+        height: 15px; } }
+@media all and (max-width: 480px) {
+  div.svg-card {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    width: 15px;
+    height: 20px;
+    padding: 1px; }
+    div.svg-card .inner-border {
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      border-radius: 5px; }
+      div.svg-card .inner-border .suit-value {
+        font-size: 0.5em;
+        font-weight: bold; }
+      div.svg-card .inner-border .icon {
+        width: 7.5px;
+        height: 7.5px; } }
+@media all and (max-width: 320px) {
+  div.svg-card {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    width: 15px;
+    height: 20px;
+    padding: 1px; }
+    div.svg-card .inner-border {
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      border-radius: 5px; }
+      div.svg-card .inner-border .suit-value {
+        font-size: 0.5em;
+        font-weight: bold; }
+      div.svg-card .inner-border .icon {
+        width: 7.5px;
+        height: 7.5px; } }
+
+/*# sourceMappingURL=_card.css.map */

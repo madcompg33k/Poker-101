@@ -1,0 +1,49 @@
+<aside class="game-options col-md-2 clearfix">
+    <add-player></add-player>
+                    
+    <hr />
+
+    <form class="actions clearfix box" name="playerForm" data-ng-submit="">
+        <label>Small Blind (Seat {{ table.smallBlind.seat + 1 }}): </label>
+        <input type="text" data-ng-model="table.smallBlind.amt" />
+        <br />
+        <br />
+        <label>Big Blind (Seat {{ table.bigBlind.seat + 1 }}): </label>
+        <input type="text" data-ng-model="table.bigBlind.amt" />
+        
+        <br /> <br />
+            <b>Show NPC Cards - </b>
+            <input type="checkbox" data-ng-model="game.showCards" />
+        <br /> <br />
+
+        <p>
+            Better: {{ table.better.name }}
+            <br />
+            Current Bet: {{ table.currentBet }}
+            <br />
+            Seat Turn: {{ table.turn }}
+        </p>
+
+        <hr />
+
+        <button class="game-play-button" data-ng-click="tableCtrl.dealCards()" data-ng-show="gameCtrl.players[0].handRank || !gameCtrl.players[0].cards.length">
+            Deal Cards
+        </button>
+
+        <button class="game-play-button" data-ng-click="tableCtrl.dealFlop()" data-ng-show="!table.cards.length && gameCtrl.players[0].cards.length">
+            Deal the Flop!
+        </button>
+                            
+        <button class="game-play-button" data-ng-click="tableCtrl.dealTurn()" data-ng-show="table.cards.length === 3 && gameCtrl.players[0].cards.length">
+            Deal the Turn!
+        </button>
+                            
+        <button class="game-play-button" data-ng-click="tableCtrl.dealRiver()" data-ng-show="table.cards.length === 4 && gameCtrl.players[0].cards.length">
+            Deal the River!
+        </button>
+                            
+        <button class="game-play-button" data-ng-click="tableCtrl.getWinner()" data-ng-show="table.cards.length === 5 && gameCtrl.players[0].cards.length && !gameCtrl.players[0].handRank">
+            Who Won!?
+        </button>
+    </form>
+</aside>
