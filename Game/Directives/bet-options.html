@@ -18,11 +18,25 @@
             <h5>Bets</h5>
             <button class="bet bet-minimum col-md-4"
                     data-ng-click="tableCtrl.playerBetAction('Raise', player, (
-                        table.currentBet < table.bigBlind.amt
-                            ? table.bigBlind.amt > player.money ? player.money : table.bigBlind.amt
-                            : table.currentBet * 1.5 > player.money ? player.money : table.currentBet * 1.5
+                        table.cards.length
+                            ? table.currentBet <= table.bigBlind.amt
+                                ? table.bigBlind.amt
+                                : table.currentBet * 1.5
+                            : table.currentBet <= table.bigBlind.amt * 2
+                                ? table.bigBlind.amt * 2
+                                : table.currentBet * 1.5
                 ))">
                 {{
+                    table.cards.length
+                        ? table.currentBet <= table.bigBlind.amt
+                            ? table.bigBlind.amt
+                            : table.currentBet * 1.5
+                        : table.currentBet <= table.bigBlind.amt * 2
+                            ? table.bigBlind.amt * 2
+                            : table.currentBet * 1.5
+                        | currency
+                }}
+                <!-- /*
                     table.currentBet * 1.5 < table.bigBlind.amt
                         ? table.bigBlind.amt > player.money
                             ? player.money
@@ -31,16 +45,30 @@
                             ? player.money
                             : table.currentBet * 1.5
                         | currency
-                }}
+                    */ -->
                 <!-- Add in handling for current bets being larger than the pot size -->
             </button>
             <button class="bet bet-half col-md-4"
                     data-ng-click="tableCtrl.playerBetAction('Raise', player, (
-                        table.potSize / 2 > table.currentBet * 2
-                            ? table.potSize / 2 > player.money ? player.money : table.potSize / 2
-                            : table.currentBet * 2 > player.money ? player.money : table.currentBet * 2
+                        table.cards.length
+                            ? table.currentBet <= table.bigBlind.amt * 2
+                                ? table.bigBlind.amt * 2
+                                : table.currentBet * 2
+                            : table.currentBet <= table.bigBlind.amt * 3
+                                ? table.bigBlind.amt * 3
+                                : table.currentBet * 2
                 ))">
                 {{
+                    table.cards.length
+                        ? table.currentBet <= table.bigBlind.amt * 2
+                            ? table.bigBlind.amt * 2
+                            : table.currentBet * 2
+                        : table.currentBet <= table.bigBlind.amt * 3
+                            ? table.bigBlind.amt * 3
+                            : table.currentBet * 2
+                        | currency
+                }}
+                <!-- /*
                     table.potSize / 2 > table.currentBet * 2
                         ? table.potSize / 2 > player.money
                             ? player.money
@@ -49,15 +77,29 @@
                             ? player.money
                             : table.currentBet * 2
                         | currency
-                }}
+                    */ -->
             </button>
             <button class="bet bet-pot col-md-4"
                     data-ng-click="tableCtrl.playerBetAction('Raise', player, (
-                        table.potSize > table.currentBet * 2.5
-                            ? table.potSize > player.money ? player.money : table.potSize
-                            : table.currentBet * 2.5 > player.money ? player.money : table.currentBet * 2.5
+                        table.cards.length
+                            ? table.currentBet <= table.bigBlind.amt * 3
+                                ? table.bigBlind.amt * 3
+                                : table.currentBet * 3
+                            : table.currentBet <= table.bigBlind.amt * 4
+                                ? table.bigBlind.amt * 4
+                                : table.currentBet * 3
                 ))">
                 {{
+                    table.cards.length
+                        ? table.currentBet <= table.bigBlind.amt * 3
+                            ? table.bigBlind.amt * 3
+                            : table.currentBet * 3
+                        : table.currentBet <= table.bigBlind.amt * 4
+                            ? table.bigBlind.amt * 4
+                            : table.currentBet * 3
+                        | currency
+                }}
+                <!-- /*
                     table.potSize > table.currentBet * 2.5
                         ? table.potSize > player.money
                             ? player.money
@@ -66,7 +108,7 @@
                             ? player.money
                             : table.currentBet * 2.5
                         | currency
-                }}
+                    */ -->
             </button>
             <div class="bet-other col-md-12">
                 <input type="text" data-ng-model="player.bet.amt" format="currency" />

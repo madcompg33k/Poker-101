@@ -21,6 +21,8 @@
 
         table = $scope.table;
 
+        /* Eventually move functions to services */
+
         /* Deal the cards to the players */
         this.dealCards = function () { newHand(); this.checkForNPC($scope.game.players[table.turn]); };
         this.dealCardsToTable = function () {
@@ -120,73 +122,82 @@
                     }
                 }
 
-                /* Find out if player's highest card is higher than the highest card on the board */
-                var hasHigherCard = true;
-                for (var card = 0; card < table.cards.length; card++) {
-                    if (table.cards[card].value > handType.cards[handType.cards.length - 1].value) { hasHigherCard = false; break; }
-                }
+                
 
-                /* Player has at least a full house, four of a kind, or a straight flush */
-                if (handType.rank >= 6) { multiplier = handType.rank; maxBet = player.money; }
-                /* Player has a flush */
-                else if (handType.rank == 5 && hasHigherCard) { multiplier = handType.rank + 1; maxBet = player.money; }
-                else if (handType.rank == 5) { multiplier = handType.rank; maxBet = player.money / 2; }
-                /* Player has either three of a kind or a straight */
-                else if (handType.rank >= 3 && hasHigherCard) { multiplier = handType.rank + 1; maxBet = player.money; }
-                else if (handType.rank >= 3) { multiplier = handType.rank; maxBet = player.money / 2; }
-                /* Player has either a pair or two pair */
-                else if (handType.rank >= 1 && hasHigherCard) { multiplier = 3; maxBet = player.money; }
-                else if (handType.rank >= 1) { multiplier = 2; maxBet = player.money / 4; }
-                /* Check if player has a 35% or more chance to a flush */
-                else if (hand.flushCards.percentage >= 35 && handType.cards[handType.cards.length - 1].value >= 14) { multiplier = 3; maxBet = player.money; }
-                else if (hand.flushCards.percentage >= 35) { multiplier = 3; maxBet = player.money / 2; }
-                /* Check if player has a 18% or more chance to a flush */
-                else if (hand.flushCards.percentage >= 18) { multiplier = 2; maxBet = player.money / 4; }
-                else if (hand.straightCards.percentage > 35 && handType.cards[handType.cards.length - 1].value >= 14) { multiplier = 3; maxBet = player.money / 2; }
-                else if (hand.straightCards.percentage > 18) { multiplier = 2; maxBet = player.money / 4; }
-                /* No cards on table yet, so working with just the player's hole cards */
-                else if (table.cards.length == 0) {
+                if (hand.straightCards.percentage) { alert("Straight chance: " + hand.straightCards.percentage + "%"); }
+
+            /* Add position checking */
+
+                /* Pre-flop logic */
+                if (!table.cards.length) {
+                    /* Check if cards are suited */
+                    var suited = cards[0].suit == cards[1].suit ? true : false;
+
+                    /* Player has a pocket pair */
+                    if (handType.rank >= 1 && cards[1].value >= 11) { multiplier = 3; maxBet = player.money; }
+                    else if (handType.rank >= 1) { multiplier = 1; maxBet = player.money / 4; }
                     /* Any card combination consisting of Ace, King, Queen, or Jack */
-                    if (cards[0].value >= 11 && cards[1].value >= 12) {
-                        /* Check if suited */
-                        if (cards[0].suit == cards[0].suit) {
-                            multiplier = 2;
-                            maxBet = player.money;
-                        }
-                        else { multiplier = 1; maxBet = player.money / 4; };
+                    else if (cards[0].value >= 11 && cards[1].value >= 12) {
+                        multiplier = suited ? 2 : 1;
+                        maxBet = suited ? player.money : player.money / 4;
+                    } /* Check if player has a chance at a straight */
+                    else if (cards[1].value <= cards[0].value + 4 || (cards[1].value == 14 && cards[0].value <= 5)) {
+                        multiplier = suited ? 2 : 1;
+                        maxBet = suited ? table.bigBlind.amt * 6 : table.bigBlind.amt * 3;
+                    } /* See if player's high card is at least a king */
+                    else if (cards[1].value >= 13) {
+                        multiplier = suited ? 2 : 1;
+                        maxBet = suited ? player.money / 2 : table.bigBlind.amt * 4;
+                    } else {
+                        multiplier = suited ? 1 : 0;
+                        maxBet = suited ? table.bigBlind.amt * 3 : 0;
                     }
-                    /* Check if player has a chance at a straight */
-                    else if (cards[1].value <= cards[0].value + 4) {
+
+                /* Post-flop logic */
+                } else {
+                    /* Find out if player's highest card is higher than the highest card on the board */
+                    var hasHigherCard = true;
+                    for (var card = 0; card < table.cards.length; card++) {
+                        if (table.cards[card].value > player.holeCards[0].value && table.cards[card.value > player.holeCards[1].value]) {
+                            hasHigherCard = false; break;
+                        }
+                    }
+
+                /* Add logic to see if hand is completely shared or not */
+
+                    /* Player has at least a full house, four of a kind, or a straight flush */
+                    if (handType.rank >= 6) { multiplier = handType.rank + 4; maxBet = player.money; }
+                    /* Player has a flush */
+                    else if (handType.rank == 5 && hasHigherCard) { multiplier = handType.rank + 2; maxBet = player.money; }
+                    else if (handType.rank == 5) { multiplier = handType.rank; maxBet = player.money / 2; }
+                    /* Player has either three of a kind or a straight */
+                    else if (handType.rank >= 3 && hasHigherCard) { multiplier = handType.rank + 2; maxBet = player.money; }
+                    else if (handType.rank >= 3) { multiplier = handType.rank; maxBet = player.money / 2; }
+                    /* Check if player has a 35% or more chance to a flush */
+                    else if (hand.flushCards.percentage >= 35 && handType.cards[handType.cards.length - 1].value >= 14) { multiplier = 3; maxBet = player.money; }
+                    else if (hand.flushCards.percentage >= 35) { multiplier = 2; maxBet = player.money / 2; }
+                    /* Check if player has a 18% or more chance to a flush */
+                    else if (hand.flushCards.percentage >= 18) { multiplier = 2; maxBet = player.money / 4; }
+                    /* Check if player has a 35% or more chance to a straight */
+                    else if (hand.straightCards.percentage > 35 && handType.cards[handType.cards.length - 1].value >= 14) { multiplier = 3; maxBet = player.money / 2; }
+                    /* Player has two pair */
+                    else if (handType.rank >= 2 && hand.pairedCards.pairs[0].cardValue >= 11) {
+                        multiplier = 4;
+                        maxBet = player.money / 2;
+                    }
+                    else if (handType.rank >= 2) { multiplier = 2; maxBet = player.money / 4; }
+                    /* Player has a pair */
+                    else if (handType.rank >= 1 && hand.pairedCards.pairs[0].cardValue >= 11) { multiplier = 4; maxBet = player.money; }
+                    else if (handType.rank >= 1) { multiplier = 2; maxBet = player.money / 4; }
+                    /* Check if player has a 18% or more chance to a straight */
+                    else if (hand.straightCards.percentage > 18) { multiplier = 2; maxBet = player.money / 4; }
+                    /* Check if player at least has two high hole cards */
+                    else if (player.holeCards[0].value >= 12 && player.holeCards[1].value >= 12) {
                         multiplier = 1;
-                        maxBet = table.bigBlind.amt * 3;
-                        /* Check if suited */
-                        if (cards[0].suit == cards[1].suit) {
-                            multiplier = 2;
-                            maxBet = table.bigBlind.amt * 4;
-                        }
+                        maxBet = table.bigBlind * 4;
                     }
-                    /* Check if cards are at least suited */
-                    else if (cards[0].suit == cards[1].suit) {
-                        /* See if player's high card is at least a kind */
-                        if (cards[1].value >= 13) {
-                            multiplier = 2;
-                            maxBet = player.money / 2;
-                        } else {
-                            multiplier = 1;
-                            maxBet = table.bigBlind.amt * 4;
-                        }
-
-                    } else { multiplier = 0; }
-
-                }
-                /* Check if player at least has two high hole cards */
-                else if (player.holeCards[0].value >= 12 && player.holeCards[1].value >= 12) {
-                    multiplier = 1;
-                    maxBet = table.bigBlind * 4;
-                }
-                else {
-                    multiplier = 0;
-                    maxBet = 0;
+                    /* Player has nothing, so fold */
+                    else { multiplier = 0; maxBet = 0; }
                 }
 
 
@@ -207,7 +218,7 @@
         this.playerAction = function (player, multiplier, maxBet) {
             var playerAction = {};
 
-            if (table.cards.length) { multiplier = multiplier > 1 ? multiplier / 2 : multiplier; }
+            if (table.cards.length) { multiplier = multiplier > 1 ? multiplier / 2 : 0; }
 
             /* Get player bet amount */
             if (table.currentBet <= table.bigBlind.amt * multiplier) {
@@ -219,6 +230,9 @@
                 playerAction.action = 'Fold';
                 playerAction.bet = 0;
             }
+
+        /* Add player types (e.g. conservative player, aggressive player, etc. */
+        /* Make bets/multiplier progressively higher as the board is dealt */
 
             /* Set player action */
             playerAction.action = playerAction.bet == 0 ? 'Fold' : playerAction.bet > table.currentBet ? 'Raise' : 'Call';
