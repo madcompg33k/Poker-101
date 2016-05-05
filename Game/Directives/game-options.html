@@ -11,6 +11,11 @@
         <label>Big Blind (Seat {{ table.bigBlind.seat + 1 }}): </label>
         <input type="text" data-ng-model="table.bigBlind.amt" />
         
+        <br /> <br />
+            <b>Show NPC Cards - </b>
+            <input type="checkbox" data-ng-model="game.showCards" />
+        <br /> <br />
+
         <p>
             Better: {{ table.better.name }}
             <br />

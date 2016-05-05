@@ -1,6 +1,6 @@
 <div class="svg-card" data-ng-class="{{ card.suitColor }}">
     
-    <div class="inner-border" data-ng-class="card.suitColor">
+    <div class="inner-border" data-ng-class="card.suitColor" data-ng-hide="player.playerType === 'npc' && !player.handType.cards && !game.showCards">
         <div class="suit-value">
             {{ card.shortname }}
         </div>

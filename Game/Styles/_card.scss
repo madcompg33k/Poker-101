@@ -99,6 +99,10 @@ div.svg-card {
 }
 } /* End @include themer */
 
+svg.player-card-back {
+    width: $card-width * theme-value('size-modifier');
+    height: $card-height * theme-value('size-modifier');
+}
 
 /* @media */
 @media all and (max-width: 720px) {

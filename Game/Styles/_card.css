@@ -92,6 +92,10 @@
       height: 75px; }
 
 /* End @include themer */
+svg.player-card-back {
+  width: 150px;
+  height: 200px; }
+
 /* @media */
 @media all and (max-width: 720px) {
   img.graphical-card {

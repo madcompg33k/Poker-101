@@ -15,39 +15,48 @@
         $scope.handType = {
             highCard: {
                 rank: 0,
-                name: 'High card'
+                name: 'High card',
+                cards: []
             },
             pair: {
                 rank: 1,
-                name: 'A pair'
+                name: 'A pair',
+                cards: []
             },
             twoPair: {
                 rank: 2,
-                name: 'Two pair'
+                name: 'Two pair',
+                cards: []
             },
             threeOfAKind: {
                 rank: 3,
-                name: 'Three of a kind'
+                name: 'Three of a kind',
+                cards: []
             },
             straight: {
                 rank: 4,
-                name: 'Straight'
+                name: 'Straight',
+                cards: []
             },
             flush: {
                 rank: 5,
-                name: 'Flush'
+                name: 'Flush',
+                cards: []
             },
             fullHouse: {
                 rank: 6,
-                name: 'Full house'
+                name: 'Full house',
+                cards: []
             },
             fourOfAKind: {
                 rank: 7,
-                name: 'Four of a kind'
+                name: 'Four of a kind',
+                cards: []
             },
             straightFlush: {
                 rank: 8,
-                name: 'Straight flush'
+                name: 'Straight flush',
+                cards: []
             }
         };
         /* Add DOM element for review in testing environment only */

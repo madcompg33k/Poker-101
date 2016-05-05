@@ -34,6 +34,8 @@ function clearBoard(){
             game.players[p].handType = {};
             game.players[p].bet.amt = 0;
             game.players[p].hasBet = false;
+
+            if (game.players[p].money <= 0) { game.players.splice(p, 1); p--; }
         }
     }
 
