@@ -65,6 +65,12 @@ function newHand() {
         game.errorMessage = "You cannot play with only one player.";
         return;
     }
+
+    /* Pay the winner(s) from the last hand */
+    for (var i = 0; i < table.winner.length; i++) {
+        table.winner[i].money = parseInt(table.winner[i].money, 10) + (parseInt(table.potSize, 10) / parseInt(table.winner.length, 10));
+    }
+    table.potSize = parseInt(0, 10);
     
     /* Reset board */
     clearBoard();
@@ -162,6 +168,7 @@ function addMoneyToPot(){
         table.potSize += parseInt(game.players[seat].bet.amt, 10);
         /* Reset player's bet amount for the next round */
         game.players[seat].bet.amt = 0;
+        game.players[seat].action = "";
     }
 }
 

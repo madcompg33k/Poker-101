@@ -2,7 +2,7 @@
         //require_once ("Includes/simplecms-config.php"); 
         //require_once  ("Includes/connectDB.php");
         $currentPage = "Tips";
-        include("/Includes/header.php");
+        include '/Includes/header.php';
      ?>
 
 
@@ -159,5 +159,5 @@
     </section>
 
 <?php 
-    include ("/Includes/footer.php");
+    include '/Includes/footer.php';
  ?>

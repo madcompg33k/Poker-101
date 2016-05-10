@@ -1,6 +1,8 @@
 body {
     margin: 0px;
     padding: 0px;
+    padding-top: 75px;
+    padding-bottom: 75px;
     color: #fff;
 }
 body:before {
@@ -32,10 +34,10 @@ svg.logo {
 }
 
 .front-content {
-    position: fixed;
+    /*position: fixed;
     top: 50px;
     right: 0;
-    bottom: 50px;
+    bottom: 50px;*/
     left: 0;
     z-index: -1;
 }
@@ -46,8 +48,8 @@ svg.logo {
 }
 
 section#main {
-    margin-top: 75px;
-    margin-bottom: 75px;
+    /*margin-top: 75px;
+    margin-bottom: 75px;*/
 }
 
 .page-header {

@@ -1,4 +1,4 @@
-<?php include("/Includes/head.php"); ?>
+<?php include 'head.php'; ?>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -20,7 +20,7 @@
                     <li class="<?php echo $currentPage == "Rules" ? "active" : "inactive" ?>"><a href="/basicrules.php">Basic Rules</a></li>
                     <li class="<?php echo $currentPage == "Tips" ? "active" : "inactive" ?>"><a href="/protips.php">"Pro Tips"</a></li>
                     <li class="<?php echo $currentPage == "About" ? "active" : "inactive" ?>"><a href="/aboutme.php">About Me</a></li>
-                    <li class="<?php echo $currentPage == "Game" ? "active" : "inactive" ?>"><a href="/Game/index.html">Play Poker</a></li>
+                    <li class="<?php echo $currentPage == "Game" ? "active" : "inactive" ?>"><a href="/Game/index.php">Play Poker</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

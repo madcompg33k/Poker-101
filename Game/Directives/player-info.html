@@ -1,43 +1,31 @@
-<ul class="players">
+<ul id="players">
     <!-- Create a seat for the dealer, since every table has a dealer -->
-    <li class="player seat-dealer">
+    <!-- li class="player seat-dealer">
         <h3 class="player-name">Dealer</h3>
-    </li>
-    <li data-ng-repeat="player in gameCtrl.players" class="player seat-{{$index + 1}}">
-
-        <h3 class="player-name">
-            <span data-ng-class="player.playerType"> {{ player.name }}</span>
-
-            <span class="player-money">({{ player.money | currency }})</span>
-            <span>Current Bet: {{ player.bet.amt | currency }}</span>
-            <span class="hand-name" data-ng-show="player.handType.name">(Hand: {{ player.handType.name }})</span>
-            <span class="hand-rank" data-ng-show="player.handType.rank">(Hand Rank: {{ player.handType.rank }})</span>
-            <span data-ng-show="table.smallBlind.seat === $index">(Small Blind)</span>
-            <span data-ng-show="table.bigBlind.seat === $index">(Big Blind)</span>
-        </h3>
-
-        <bet-options data-ng-show="table.turn === $index && !player.handType.rank"></bet-options>
-        <!-- ul>
-            <li>
-                <b>Money:</b>
-                <span data-ng-repeat="chip in player.chips">
-                    <br />
-                    <img data-ng-src="{{ chip.imgThumb }}" alt="chips" width="25" height="25" />
-                    x {{ chip.qty }}
-                </span>
-            </li>
-        </ul -->
-
+    </li -->
+    <li data-ng-repeat="player in gameCtrl.players track by $index" class="player seat-{{$index + 1}}">
+        
         <div class="player-hand">
             <span data-ng-repeat="card in player.holeCards">
                 <a-card class="player-card card-thumb"></a-card>
-                <!-- img data-ng-src="{{ card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" width="54" height="75" / -->
+                <!-- img data-ng-src="{{ game.deck.imgPath + table.tableDeck + '/' + card.imgThumb }}" alt="{{ card.name }} of {{ card.suit }}" class="graphical-card" width="54" height="75" / -->
             </span>
+            <!-- move to player-info -->
             <img class="dealer-button" src="/Game/Images/Chips/dealer-200.png" width="50" height="50" data-ng-show="table.dealer.seat === $index" />
         </div>
+
         <div class="player-handtype" data-ng-show="player.handType.cards">
-            <span> {{ player.name }} {{ player.handType.name }} </span>
-            <span data-ng-repeat="card in player.handType.cards"> {{ $index + 1 }}: {{ card.name }} of {{ card.suit }}</span>
+            <div> {{ player.name }} ({{ player.handType.name }}) </div>
+            <div data-ng-repeat="card in player.handType.cards"> {{ $index + 1 }}: {{ card.name }} of {{ card.suit }}</div>
+        </div>
+        
+        <div class="player-info">
+                <div class="h4" data-ng-class="player.playerType" data-ng-bind="player.name"></div>
+                <div class="player-money">({{ player.money | currency }})</div>
+                <div class="blind" data-ng-show="table.smallBlind.seat === $index">(Small Blind)</div>
+                <div class="blind" data-ng-show="table.bigBlind.seat === $index">(Big Blind)</div>
+                <div class="action" data-ng-show="player.action" data-ng-bind="player.action">()</div>
+                <div>Current Bet: {{ player.bet.amt | currency }}</span>
         </div>
 
     </li>

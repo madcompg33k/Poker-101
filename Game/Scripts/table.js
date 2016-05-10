@@ -1,6 +1,5 @@
 (function () {
     var app = angular.module('table', [])
-
     /* Controller for all players */
     .controller('TableController', ['$scope', '$timeout', '$interval', function ($scope, $timeout, $interval) {
         /* Declare/Initialize table */
@@ -24,20 +23,20 @@
         /* Eventually move functions to services */
 
         /* Deal the cards to the players */
-        this.dealCards = function () { newHand(); this.checkForNPC($scope.game.players[table.turn]); };
+        this.dealCards = function () {
+            newHand();
+            this.checkForNPC($scope.game.players[table.turn]);
+        };
         this.dealCardsToTable = function () {
             switch (table.cards.length) {
                 case 0:
                     dealBoard(3);
-                    $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
                     break;
                 case 3:
                     dealBoard(1);
-                    $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
                     break;
                 case 4:
                     dealBoard(1);
-                    $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
                     break;
                 default:
                     for (var seat = 0; seat < $scope.game.players.length; seat++) {
@@ -47,14 +46,11 @@
                         }
                     }
                     table.winner = this.calculateWinner($scope.game.players);
-                    /* Pay the winner(s) */
-                    for (var i = 0; i < table.winner.length; i++) {
-                        table.winner[i].money = parseInt(table.winner[i].money, 10) + (parseInt(table.potSize, 10) / parseInt(table.winner.length, 10));
-                    }
-                    table.potSize = parseInt(0, 10);
                     table.turn = -1;
                     break;
             }
+
+            this.checkForNPC($scope.game.players[table.turn]);
 
         };
 
@@ -68,17 +64,20 @@
                     table.better = player;
                     break;
                 case 'Fold':
-                    player.holeCards.length = 0;
+                    player.holeCards.length = 0
                     player.handType = {};
                     break;
             }
+
+            player.action = action;
             /* Set bet.amt to amount player bet */
             player.bet.amt = amount > player.money ? player.money : amount;
 
             /* Move to the next active player */
             this.moveSeat(player);
+
             if (table.turn != -1) {
-                $timeout(this.checkForNPC($scope.game.players[table.turn]), 5000);
+                this.checkForNPC($scope.game.players[table.turn]);
             }
         };
 
@@ -122,11 +121,11 @@
                     }
                 }
 
-                
+
 
                 if (hand.straightCards.percentage) { alert("Straight chance: " + hand.straightCards.percentage + "%"); }
 
-            /* Add position checking */
+                /* Add position checking */
 
                 /* Pre-flop logic */
                 if (!table.cards.length) {
@@ -153,7 +152,7 @@
                         maxBet = suited ? table.bigBlind.amt * 3 : 0;
                     }
 
-                /* Post-flop logic */
+                    /* Post-flop logic */
                 } else {
                     /* Find out if player's highest card is higher than the highest card on the board */
                     var hasHigherCard = true;
@@ -163,7 +162,7 @@
                         }
                     }
 
-                /* Add logic to see if hand is completely shared or not */
+                    /* Add logic to see if hand is completely shared or not */
 
                     /* Player has at least a full house, four of a kind, or a straight flush */
                     if (handType.rank >= 6) { multiplier = handType.rank + 4; maxBet = player.money; }
@@ -208,6 +207,7 @@
                 /* If the npc calls, but there is no bet, check instead */
                 if (table.currentBet == 0 && (playerAction.action == 'Call' || playerAction.action == 'Fold')) { playerAction.action = 'Check'; }
 
+
                 this.playerBetAction(playerAction.action, player, playerAction.bet);
             } /* Player is not npc, so let the player take his/her turn */
 
@@ -231,8 +231,8 @@
                 playerAction.bet = 0;
             }
 
-        /* Add player types (e.g. conservative player, aggressive player, etc. */
-        /* Make bets/multiplier progressively higher as the board is dealt */
+            /* Add player types (e.g. conservative player, aggressive player, etc. */
+            /* Make bets/multiplier progressively higher as the board is dealt */
 
             /* Set player action */
             playerAction.action = playerAction.bet == 0 ? 'Fold' : playerAction.bet > table.currentBet ? 'Raise' : 'Call';

@@ -1,6 +1,6 @@
 <?php 
 	$currentPage = "Home";
-	include("/Includes/header.php");
+	include '/Includes/header.php';
 ?>
 
     <div class="front-content container-fluid text-center">
@@ -36,4 +36,4 @@
         </div>
     </div>
 
-<?php include("/Includes/footer.php"); ?>
+<?php include '/Includes/footer.php'; ?>
